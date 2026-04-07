@@ -1,0 +1,27 @@
+{
+  "name": "deadleaf_13b10_empirical_piecewise",
+  "source_count": 40,
+  "blend_width_cpp": 0.08,
+  "piecewise_segments": [
+    {
+      "start_cpp": 0.0,
+      "stop_cpp": 0.27999999999999997,
+      "log_frequency_polynomial_coefficients": [
+        -0.11849775532840472,
+        -2.5536064863988224,
+        -10.82031440586601
+      ],
+      "polynomial_degree": 2
+    },
+    {
+      "start_cpp": 0.19999999999999998,
+      "stop_cpp": 0.5,
+      "log_frequency_polynomial_coefficients": [
+        -0.006235002425834691,
+        -2.001486919002356,
+        -10.19178996557952
+      ],
+      "polynomial_degree": 2
+    }
+  ]
+}

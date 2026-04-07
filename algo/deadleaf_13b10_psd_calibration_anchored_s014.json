@@ -1,0 +1,28 @@
+{
+  "name": "deadleaf_13b10_empirical_anchored_s014",
+  "source_count": 40,
+  "blend_width_cpp": 0.0,
+  "log_frequency_polynomial_coefficients": [
+    -0.08560034693213156,
+    -2.304373899007511,
+    -10.427709574750658
+  ],
+  "polynomial_degree": 2,
+  "anchored_high_frequency_correction": {
+    "start_cpp": 0.14,
+    "stop_cpp": 0.5,
+    "log_frequency_residual_coefficients": [
+      -0.10424566096852125,
+      0.1152814796377789
+    ],
+    "regularization_lambda": 0.005,
+    "nyquist_relax_start_cpp": 0.35,
+    "nyquist_relax_end_weight": 0.5,
+    "term_count": 2
+  },
+  "log_frequency_quadratic_coefficients": [
+    -0.08560034693213156,
+    -2.304373899007511,
+    -10.427709574750658
+  ]
+}

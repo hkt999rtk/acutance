@@ -1,0 +1,11 @@
+{
+  "name": "deadleaf_13b10_empirical_cubic",
+  "log_frequency_polynomial_coefficients": [
+    0.024385543778345654,
+    0.14422026974476942,
+    -1.7219686730037893,
+    -10.041515633699856
+  ],
+  "polynomial_degree": 3,
+  "source_count": 40
+}

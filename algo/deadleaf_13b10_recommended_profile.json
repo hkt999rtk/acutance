@@ -1,0 +1,61 @@
+{
+  "name": "deadleaf_13b10_recommended_profile",
+  "dataset": "20260318_deadleaf_13b10",
+  "shared": {
+    "width": 4032,
+    "height": 3024,
+    "gamma": 1.0,
+    "ideal_psd_mode": "calibrated_log",
+    "ideal_psd_calibration_file": "/Users/kevinhuang/work/acutance/algo/deadleaf_13b10_psd_calibration.json",
+    "reference_bins": true,
+    "roi_width": 1655,
+    "roi_height": 1673
+  },
+  "mtf_profile": {
+    "purpose": "Match Imatest-style MTF20/30/50 as closely as possible without altering the acutance path.",
+    "normalization_band_lo": 0.01,
+    "normalization_band_hi": 0.03,
+    "normalization_mode": "max",
+    "readout_smoothing_window": 1,
+    "readout_interpolation": "linear",
+    "texture_support_scale": true,
+    "high_frequency_guard_start_cpp": null,
+    "high_frequency_guard_stop_cpp": 0.5
+  },
+  "acutance_profile": {
+    "purpose": "Improve Acutance agreement while leaving the MTF threshold readout path unchanged.",
+    "acutance_band_lo": 0.017,
+    "acutance_band_hi": 0.035,
+    "acutance_band_mode": "mean",
+    "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+    "acutance_noise_share_band_lo": 0.36,
+    "acutance_noise_share_band_hi": 0.5,
+    "acutance_noise_share_scale_coefficients": [
+      521.08180962,
+      -26.62905791,
+      1.59615575
+    ],
+    "high_frequency_guard_start_cpp": 0.36,
+    "high_frequency_guard_stop_cpp": 0.5,
+    "small_print_display_mtf_model": "ideal_lowpass",
+    "small_print_display_mtf_cutoff_cpd": 18.0,
+    "large_print_display_mtf_model": "ideal_lowpass",
+    "large_print_display_mtf_cutoff_cpd": 18.0,
+    "quality_loss_mode": "om_quadratic_global",
+    "quality_loss_om_ceiling": 0.8851,
+    "quality_loss_coefficients": [
+      64.99250542,
+      9.37974246,
+      0.72233291
+    ]
+  },
+  "notes": [
+    "The high-frequency guard is Acutance-specific and should not be used to tune MTF20/30/50.",
+    "Acutance estimates a conservative noise PSD scale from the measured high-frequency noise share, while the MTF threshold-readout path remains at 1.0.",
+    "The guard is implemented as a cosine taper from guard_start_cpp to guard_stop_cpp in the acutance path only.",
+    "For the current dataset, guard_start_cpp around 0.36 is the best practical tradeoff between curve MAE and Computer Monitor MAE.",
+    "The adaptive acutance noise scale is a quadratic function of the measured high-frequency noise share over 0.36 to 0.5 c/p.",
+    "Small Print and Large Print presets additionally apply an ideal low-pass display MTF with a cutoff of 18 cycles/degree.",
+    "Quality Loss is reconstructed from OM = max(0, 0.8851 - Acutance) using a global quadratic fit."
+  ]
+}

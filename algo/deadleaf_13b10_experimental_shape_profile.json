@@ -1,0 +1,25 @@
+{
+  "name": "deadleaf_13b10_experimental_shape_profile",
+  "dataset": "20260318_deadleaf_13b10",
+  "base_profile": "/Users/kevinhuang/work/acutance/algo/deadleaf_13b10_recommended_profile.json",
+  "purpose": "Experimental MTF-shape correction profile that gates a constrained mid-band boost / high-band attenuation by measured high-frequency noise share.",
+  "mtf_shape_correction": {
+    "mode": "hf_noise_share_gated_bump",
+    "gain": 0.035,
+    "share_gate_lo": 0.05,
+    "share_gate_hi": 0.08,
+    "mid_start_cpp": 0.095,
+    "mid_peak_cpp": 0.145,
+    "mid_stop_cpp": 0.19,
+    "high_start_cpp": 0.36,
+    "high_peak_cpp": 0.4,
+    "high_stop_cpp": 0.49,
+    "high_weight": 0.25
+  },
+  "notes": [
+    "This profile keeps the current acutance noise-share model and high-frequency guard unchanged.",
+    "The correction is post-MTF and post-acutance-anchor, so it is kept as an experimental profile rather than replacing the base profile.",
+    "It improved overall MTF20/30/50, acutance curve MAE, Computer Monitor MAE, and preset mean on the 40-file benchmark.",
+    "The ori subset still shows a slight curve regression, so this profile remains opt-in."
+  ]
+}
