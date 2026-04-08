@@ -85,25 +85,37 @@ CSF(v) = 75 * v^0.8 * exp(-0.2 v) / 34.05
   目前已接上 `Computer Monitor / 5.5" Phone / UHDTV / Small Print / Large Print`
   並已針對目前資料集把 `5.5" Phone` 的 viewing geometry 校準到較接近 CSV
 
-預設分析使用線性 raw 域，也就是 `gamma=1.0`。
-這比先套 display gamma 再做 Fourier 分析更符合 dead-leaves / PSD 的學理假設。
+從學理角度來看，dead-leaves / PSD 分析通常更偏向線性域；
+因此這個原型保留了 `gamma=1.0` 的分析能力，作為診斷與對照實驗使用。
 
-另外，針對這批資料已額外驗證一個重要差異：
+但這裡要明確區分：
 
 - golden sample 報告中的 `Gamma, 0.5`
 - 不應直接等同於本原型分析前處理的 `gamma`
+- `gamma=1.0` 是診斷用 control
+- 不是目前對標 Imatest 的最終 fitting target
 
-在 `demosaic_red` 條件下，若把分析 gamma 也硬設成 `0.5`，
-整批 40 份資料的 `curve_mae_mean` 會惡化到約 `0.131`；
-而採用 `analysis gamma = 1.0`、但在報告層仍輸出 `Gamma = 0.5`，
-整批 `curve_mae_mean` 可回到約 `0.0469`。
+目前真正的擬合目標，應由 golden sample / Imatest report 中
+可直接觀察到的 input 與 output 定義，而不是先由原型主觀指定。
 
-這表示目前較合理的工程做法是把：
+對這批資料，已明確可觀察到：
 
-- `analysis pipeline`
-- `report metadata`
+- `Gamma, 0.5`
+- `Color channel, R`
+- `Use unnormalized MTF for Acutance calculation`
 
-分開處理。
+因此後續的主線擬合應緊跟這些 observable conditions。
+
+另外，針對這批資料目前已驗證一個重要差異：
+
+- 若在 `demosaic_red` 條件下把 analysis gamma 直接設為 `0.5`
+- 整批 40 份資料的 `curve_mae_mean` 會惡化到約 `0.131`
+
+這代表：
+
+- 我們不能只靠報告欄位名稱，就直接假設 black box 內部 analysis gamma 也一定是 `0.5`
+- `gamma=1.0` 相關結果只能拿來定位誤差來源
+- 不能把它寫成最終 baseline 或 final target
 
 ## 尚未完全對齊 Imatest 的部分
 
@@ -123,6 +135,15 @@ CSF(v) = 75 * v^0.8 * exp(-0.2 v) / 34.05
   仍可能有未完全重現之處
 
 ## 目前已驗證出的校準結論
+
+下面很多數字來自較早期的 `gamma=1.0` 診斷線或其衍生 profile。
+這些結果可以作為：
+
+- 誤差分析
+- 方法比較
+- 實驗控制組
+
+但不應直接解讀為「最終對標 Imatest 的主線已經如此定義」。
 
 對 `20260318_deadleaf_13b10` 這批資料，目前驗證結果如下：
 

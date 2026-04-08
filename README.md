@@ -36,13 +36,36 @@
 
 `raw -> ROI -> PSD -> MTF -> Acutance`
 
+## 擬合目標怎麼定義
+
+這個專案的擬合目標，不是先由我們主觀指定某個內部參數，而是：
+
+- 緊跟 golden sample / Imatest report 中可直接觀察到的 input 與 output
+- 再反推中間看不到的 black box
+
+目前從 golden sample 可直接觀察到的條件包括：
+
+- `Gamma = 0.5`
+- `Color channel = R`
+- `Image pixels (WxH) = 4032 x 3024`
+- `Crop`
+- `L R T B`
+- `Use unnormalized MTF for Acutance calculation`
+
+因此：
+
+- `Gamma 0.5`
+- `Color channel R`
+
+是目前已知、必須對標的 observable conditions。
+
 ## 目前重要結論
 
 目前已經確認：
 
-- `Color channel = R` 是 golden CSV 的可觀測欄位
-- `Gamma = 0.5` 也是 golden CSV 的可觀測欄位
-- 但 `Gamma = 0.5` 目前不能直接等同於分析前處理的 `gamma`
+- `Color channel = R` 是 golden sample 中可直接觀察到、必須保留的條件
+- `Gamma = 0.5` 也是 golden sample 中可直接觀察到的條件
+- 但我們還**不能直接假設**報告欄位中的 `Gamma = 0.5` 就等於 black box 內部實際使用的 analysis gamma
 
 實際 benchmark 顯示：
 
@@ -51,20 +74,13 @@
   - `bayer_mode = demosaic_red`
   - 整體誤差會明顯惡化
 
-- 目前較合理的工程做法是分離：
-  - `analysis pipeline`
-  - `report metadata`
+- 目前暫時存在一個 split workaround：
+  - 報告欄位維持對標 Imatest sample
+  - 但分析路徑會用 `analysis_gamma = 1.0`
+- 這個 workaround 只能視為當前 release / 診斷用折衷
+- 不能把它當成最終擬合目標
 
-也就是：
-
-- 報告欄位仍可對標 Imatest sample
-  - `Gamma = 0.5`
-  - `Color channel = R`
-- 但分析路徑目前以 benchmark 證據較支持的條件為主
-  - `analysis_gamma = 1.0`
-  - `bayer_mode = demosaic_red`
-
-這表示這個專案現在的核心工作，不是再追報告文字表面一致，而是：
+這表示這個專案現在的核心工作是：
 
 - 在 Imatest 的 input / output 約束下
 - 持續把中間的 Python black box 擬合得更接近它

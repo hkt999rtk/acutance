@@ -10,6 +10,8 @@ import numpy as np
 from .dead_leaves import (
     ACUTANCE_HF_NOISE_SHARE_BAND,
     ACUTANCE_HF_NOISE_SHARE_SCALE_COEFFICIENTS,
+    BayerMode,
+    BayerPattern,
     IMATEST_REFERENCE_BINS,
     MTF_SHAPE_CORRECTION_SHARE_GATE,
     RoiBounds,
@@ -20,6 +22,7 @@ from .dead_leaves import (
     compare_acutance_presets,
     detect_texture_roi,
     estimate_dead_leaves_mtf,
+    extract_analysis_plane,
     load_ideal_psd_calibration,
     load_raw_u16,
     normalize_for_analysis,
@@ -110,9 +113,26 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("dataset_root", type=Path)
     parser.add_argument("--width", type=int, default=4032)
     parser.add_argument("--height", type=int, default=3024)
+    parser.add_argument("--gamma", type=float, default=1.0)
+    parser.add_argument(
+        "--bayer-pattern",
+        choices=[pattern.value for pattern in BayerPattern],
+        default=BayerPattern.RGGB.value,
+    )
+    parser.add_argument(
+        "--bayer-mode",
+        choices=[mode.value for mode in BayerMode],
+        default=BayerMode.GRAY.value,
+    )
     parser.add_argument("--calibration-file", type=Path, required=True)
     parser.add_argument("--roi-width", type=int, default=1655)
     parser.add_argument("--roi-height", type=int, default=1673)
+    parser.add_argument(
+        "--roi-source",
+        choices=["fixed", "reference"],
+        default="fixed",
+        help="Use the fixed centered ROI or the observed L/R/T/B bounds from each reference CSV.",
+    )
     parser.add_argument("--normalization-band-lo", type=float, default=0.01)
     parser.add_argument("--normalization-band-hi", type=float, default=0.03)
     parser.add_argument(
@@ -206,17 +226,26 @@ def main() -> int:
         if not raw_path.exists():
             continue
 
+        reference = parse_imatest_random_csv(csv_path)
         raw = load_raw_u16(raw_path, args.width, args.height)
-        image = normalize_for_analysis(raw, gamma=1.0)
-        detected = detect_texture_roi(image)
-        roi = RoiBounds.centered(
-            center_x=(detected.left + detected.right) // 2,
-            center_y=(detected.top + detected.bottom) // 2,
-            width=args.roi_width,
-            height=args.roi_height,
-            image_width=image.shape[1],
-            image_height=image.shape[0],
+        plane = extract_analysis_plane(
+            raw,
+            bayer_pattern=BayerPattern(args.bayer_pattern),
+            mode=BayerMode(args.bayer_mode),
         )
+        image = normalize_for_analysis(plane, gamma=args.gamma)
+        if args.roi_source == "reference":
+            roi = reference.lrtb.clamp(image.shape[1], image.shape[0])
+        else:
+            detected = detect_texture_roi(image)
+            roi = RoiBounds.centered(
+                center_x=(detected.left + detected.right) // 2,
+                center_y=(detected.top + detected.bottom) // 2,
+                width=args.roi_width,
+                height=args.roi_height,
+                image_width=image.shape[1],
+                image_height=image.shape[0],
+            )
         result = estimate_dead_leaves_mtf(
             image,
             num_bins=len(bin_centers),
@@ -275,8 +304,6 @@ def main() -> int:
             corrected_mtf_for_acutance,
             pixels_along_picture_height=result.roi.height,
         )
-        reference = parse_imatest_random_csv(csv_path)
-
         curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
         preset_cmp = compare_acutance_presets(presets, reference.reported_acutance)
         labels = classify_csv(csv_path, args.dataset_root)
@@ -298,6 +325,12 @@ def main() -> int:
         )
 
     payload = {
+        "analysis_pipeline": {
+            "gamma": args.gamma,
+            "bayer_pattern": args.bayer_pattern,
+            "bayer_mode": args.bayer_mode,
+            "roi_source": args.roi_source,
+        },
         "overall": summarize_accumulator(overall),
         "by_source": {
             key: summarize_accumulator(values)
