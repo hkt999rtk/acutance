@@ -34,6 +34,11 @@
     "acutance_band_lo": 0.017,
     "acutance_band_hi": 0.035,
     "acutance_band_mode": "mean",
+    "preset_overrides": {
+      "5.5\" Phone Display Acutance": {
+        "viewing_distance_cm": 25.55
+      }
+    },
     "acutance_noise_scale_mode": "fixed",
     "acutance_noise_share_band_lo": 0.36,
     "acutance_noise_share_band_hi": 0.5,
@@ -59,6 +64,6 @@
   "notes": [
     "This is the primary release-facing parity-fit profile.",
     "It keeps the observed report fields Gamma 0.5 and Color channel R, while using analysis_gamma 1.0 with demosaic_red and an explicit frequency_scale 1.17 validated by the parity PSD/MTF and Acutance/Quality Loss benchmarks.",
-    "Known caveat: the 5.5-inch Phone preset still regresses relative to the older workaround profiles even though Monitor, UHDTV, and print presets improve overall."
+    "Issue #18 adds a narrow 5.5-inch Phone viewing-distance override to 25.55 cm so the release profile keeps the broader parity-fit gains while reducing the remaining Phone regression."
   ]
 }

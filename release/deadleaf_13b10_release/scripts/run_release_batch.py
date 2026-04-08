@@ -14,8 +14,10 @@ if str(RELEASE_ROOT) not in sys.path:
     sys.path.insert(0, str(RELEASE_ROOT))
 
 from algo.dead_leaves import (
+    AcutancePreset,
     BayerMode,
     BayerPattern,
+    DEFAULT_ACUTANCE_PRESETS,
     IMATEST_REFERENCE_BINS,
     RoiBounds,
     acutance_curve_from_mtf,
@@ -80,6 +82,30 @@ def _color_channel_label(bayer_mode: str) -> str:
     return "Gray"
 
 
+def build_acutance_presets(
+    overrides: dict[str, dict[str, float | str | None]] | None = None,
+) -> tuple[AcutancePreset, ...]:
+    presets: list[AcutancePreset] = []
+    override_map = overrides or {}
+    for preset in DEFAULT_ACUTANCE_PRESETS:
+        override = override_map.get(preset.name, {})
+        display_mtf_c50_cpd = override.get("display_mtf_c50_cpd", preset.display_mtf_c50_cpd)
+        presets.append(
+            AcutancePreset(
+                name=preset.name,
+                picture_height_cm=float(override.get("picture_height_cm", preset.picture_height_cm)),
+                viewing_distance_cm=float(
+                    override.get("viewing_distance_cm", preset.viewing_distance_cm)
+                ),
+                display_mtf_c50_cpd=(
+                    None if display_mtf_c50_cpd is None else float(display_mtf_c50_cpd)
+                ),
+                display_mtf_model=str(override.get("display_mtf_model", preset.display_mtf_model)),
+            )
+        )
+    return tuple(presets)
+
+
 def analyze_one(
     release_root: Path,
     profile: dict[str, object],
@@ -94,6 +120,7 @@ def analyze_one(
     report_color_channel = str(
         report.get("color_channel", _color_channel_label(str(shared["bayer_mode"])))
     )
+    acutance_presets = build_acutance_presets(acutance_profile.get("preset_overrides"))
 
     raw = load_raw_u16(raw_path, int(shared["width"]), int(shared["height"]))
     plane = extract_analysis_plane(
@@ -223,12 +250,13 @@ def analyze_one(
         viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
         pixels_along_picture_height=result.roi.height,
     )
-    acutance_presets = acutance_presets_from_mtf(
+    acutance_presets_result = acutance_presets_from_mtf(
         scaled_frequencies,
         corrected_mtf_for_acutance,
         pixels_along_picture_height=result.roi.height,
+        presets=acutance_presets,
     )
-    quality_loss_presets = quality_loss_presets_from_acutance(acutance_presets)
+    quality_loss_presets = quality_loss_presets_from_acutance(acutance_presets_result)
 
     return {
         "raw_path": raw_path,
@@ -241,7 +269,7 @@ def analyze_one(
         "signal_psd": result.psd_signal,
         "metrics": metrics,
         "acutance_curve": acutance_curve,
-        "acutance_presets": acutance_presets,
+        "acutance_presets": acutance_presets_result,
         "quality_loss_presets": quality_loss_presets,
         "analysis_gamma": analysis_gamma,
         "report_gamma": report_gamma,
