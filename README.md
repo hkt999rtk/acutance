@@ -95,6 +95,8 @@
   - Imatest / ISP / dead-leaves black-box 公式與變數盤點
 - [docs/parity_refit_benchmarks_2026-04-08.md](docs/parity_refit_benchmarks_2026-04-08.md)
   - issue `#4` 的 parity re-fit benchmark 狀態、已驗證無效的修正方向、以及目前阻塞點
+- [docs/parity_input_pipeline_candidates.md](docs/parity_input_pipeline_candidates.md)
+  - issue `#10` 的 input-path benchmark、目前鎖定的 parity input pipeline、以及被排除的候選路徑
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
   - 演算法原型、數學流程、校準與 benchmark 記錄
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
