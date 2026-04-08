@@ -3,7 +3,19 @@
 這份文件只記錄 `deadleaf_13b10` 這批資料上，已經做過與尚未做的主要實驗，
 目的是避免重複嘗試同一類方法。
 
-## 目前推薦基線
+## 目前 target 定義
+
+- 主線 target：
+  - 緊跟 golden sample / Imatest report 中可直接觀察到的 input 與 output 去擬合
+  - 目前可明確觀察到的條件包含：
+    - `Gamma = 0.5`
+    - `Color channel = R`
+    - `Use unnormalized MTF for Acutance calculation`
+- 診斷控制組：
+  - `gamma=1.0` 相關實驗可以保留
+  - 但只能用來定位誤差，不是最終 fitting target
+
+## 舊基線紀錄
 
 - ideal PSD: [deadleaf_13b10_psd_calibration.json](/Users/kevinhuang/work/acutance/algo/deadleaf_13b10_psd_calibration.json)
 - Acutance high-frequency guard: `start=0.36`, `stop=0.5`
@@ -22,8 +34,9 @@
 - 先前很多 benchmark 是在 `gamma=1.0 + gray` 下收斂的
 - 後來為了對標 Imatest sample，又驗證了 `Gamma, 0.5` 與 `Color channel, R`
 - 目前已確認：
-  - `Color channel = R` 應該保留，`demosaic_red` 是合理基線
-  - 但 `Gamma, 0.5` 這個報告欄位，**不能直接等同**分析前處理的 linearization exponent
+  - `Color channel = R` 是 observable target condition
+  - `Gamma, 0.5` 也是 observable target condition
+  - 但 `Gamma, 0.5` 這個報告欄位，**不能直接假設**等同 black box 內部 analysis gamma
 
 ### 已做過的 parity benchmark
 
@@ -75,10 +88,9 @@
   - `Large Print = 0.03390`
 - 結論：
   - 明顯優於 full-parity `analysis gamma = 0.5`
-  - 仍比舊 `gamma=1.0 + gray` 基線差，但已足以作為目前 release 的較合理做法
-  - release 端應分離：
-    - `analysis pipeline`
-    - `report metadata`
+  - 這是目前的 interim workaround / 診斷用工程折衷
+  - 不是最終 fitting target
+  - release 端若採用這條線，必須清楚標成 workaround，而不是 parity 完成
 
 ## 已做過
 

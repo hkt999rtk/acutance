@@ -24,7 +24,12 @@
 ```
 
 這個預設模式只會直接產生分析結果，不做 regression comparison。
-預設 profile 現在將「分析參數」和「報告欄位」分開：
+目前 release 文件需要先說清楚兩件事：
+
+- golden sample / Imatest report 中可直接觀察到的欄位，包含 `Gamma = 0.5`、`Color channel = R`
+- 但目前原型還沒把這條 full-parity pipeline 完整擬合好
+
+因此目前 release 預設使用的是一個 interim workaround，將「分析參數」和「報告欄位」分開：
 
 - `report gamma = 0.5`
 - `report color channel = R`
@@ -78,13 +83,16 @@ python3 scripts/run_release_batch.py \
     - 現在的 release 預設
     - 報告欄位對標你手上的 Imatest sample：`Gamma=0.5`, `Color channel=R`
     - 分析路徑使用 `analysis_gamma=1.0 + demosaic_red`
-    - 這是目前根據 benchmark 證據較合理的設定
+    - 這只是目前的 interim workaround，方便先產生較穩定的結果
+    - 不能把它視為最終 fitting target
   - `imatest_parity_profile.release.json`
     - full-parity profile
     - 報告欄位與分析路徑都使用 `gamma=0.5 + demosaic_red`
-    - 目前 benchmark 顯示誤差顯著較大，保留作對照
+    - 這個 profile 才代表目前真正要擬合的 observable target
+    - 目前 benchmark 顯示誤差顯著較大，因此仍待後續繼續擬合
   - `legacy_linear_profile.release.json`
     - 舊的 linear/gray baseline，保留做比較
-- `Gamma, 0.5` 這個報告欄位目前不應直接等同於分析線性化指數。
-  現有 sample 與整批 benchmark 都顯示，若把分析 gamma 也硬設成 `0.5`，
+- `Gamma, 0.5` 這個報告欄位目前屬於 observable target condition。
+- 但現有 sample 與整批 benchmark 都顯示，若把 analysis gamma 也直接硬設成 `0.5`，
   `MTF / Acutance` 會整體失配很多。
+- 這代表目前最缺的不是改文件或改欄位，而是把 full-parity pipeline 的 black box 繼續擬合下去。
