@@ -1,0 +1,2624 @@
+{
+  "baseline": {
+    "presets": {
+      "5.5\" Phone Display Acutance": {
+        "direction_group_count": 4,
+        "direction_match_count": 0,
+        "gain_delta_mae_mean": 0.009316438753540546,
+        "groups": [
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.15",
+            "predicted": [
+              0.7442069269751291,
+              0.7427300257945247,
+              0.7420613779341486,
+              0.7439709221162263
+            ],
+            "predicted_direction": "flat",
+            "predicted_gain_delta": -0.0002360048589028496,
+            "reported": [
+              0.749,
+              0.745,
+              0.745,
+              0.744
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.0025076867949928028
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.25",
+            "predicted": [
+              0.7595506357444166,
+              0.757565223490835,
+              0.7575419755015658,
+              0.7605341367906264
+            ],
+            "predicted_direction": "flat",
+            "predicted_gain_delta": 0.0009835010462098115,
+            "reported": [
+              0.763,
+              0.759,
+              0.758,
+              0.757
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.006000000000000005,
+            "series_mae_mean": 0.0022190755134522677
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.4",
+            "predicted": [
+              0.7826608616774823,
+              0.7801014747491768,
+              0.7809808439556438,
+              0.7856654586307031
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.0030045969532208616,
+            "reported": [
+              0.783,
+              0.779,
+              0.779,
+              0.777
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.006000000000000005,
+            "series_mae_mean": 0.0030217289145103576
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.8",
+            "predicted": [
+              0.8409818178463684,
+              0.8373441880794282,
+              0.8404684990414193,
+              0.8494954797200027
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.008513661873634337,
+            "reported": [
+              0.835,
+              0.84,
+              0.841,
+              0.827
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.008000000000000007,
+            "series_mae_mean": 0.0079161526113809
+          }
+        ],
+        "predicted_mean_gain_delta": 0.00306643875354054,
+        "reported_mean_gain_delta": -0.0062500000000000056,
+        "series_mae_mean": 0.003916160958584082
+      },
+      "Computer Monitor Acutance": {
+        "direction_group_count": 4,
+        "direction_match_count": 3,
+        "gain_delta_mae_mean": 0.01979919916286209,
+        "groups": [
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.15",
+            "predicted": [
+              0.23918011010828188,
+              0.2387574214836969,
+              0.2423470165732693,
+              0.24831963668834983
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.009139526580067947,
+            "reported": [
+              0.231,
+              0.227,
+              0.229,
+              0.232
+            ],
+            "reported_direction": "flat",
+            "reported_gain_delta": 0.0010000000000000009,
+            "series_mae_mean": 0.01240104621339947
+          },
+          {
+            "direction_match": true,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.25",
+            "predicted": [
+              0.267191075194863,
+              0.26764051652659276,
+              0.27449531864042076,
+              0.28484020671949095
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.017649131524627937,
+            "reported": [
+              0.267,
+              0.262,
+              0.265,
+              0.271
+            ],
+            "reported_direction": "up",
+            "reported_gain_delta": 0.0040000000000000036,
+            "series_mae_mean": 0.007291779270341858
+          },
+          {
+            "direction_match": true,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.4",
+            "predicted": [
+              0.30984073292382164,
+              0.3119843335253666,
+              0.32312924184291714,
+              0.3395868607145117
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.02974612779069008,
+            "reported": [
+              0.321,
+              0.315,
+              0.321,
+              0.33
+            ],
+            "reported_direction": "up",
+            "reported_gain_delta": 0.009000000000000008,
+            "series_mae_mean": 0.006472759027060154
+          },
+          {
+            "direction_match": true,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.8",
+            "predicted": [
+              0.41640474925616433,
+              0.4225239409333991,
+              0.4438935319451124,
+              0.4760667600122267
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.05966201075606237,
+            "reported": [
+              0.463,
+              0.461,
+              0.475,
+              0.486
+            ],
+            "reported_direction": "up",
+            "reported_gain_delta": 0.022999999999999965,
+            "series_mae_mean": 0.03152775446327437
+          }
+        ],
+        "predicted_mean_gain_delta": 0.029049199162862083,
+        "reported_mean_gain_delta": 0.009249999999999994,
+        "series_mae_mean": 0.014423334743518963
+      },
+      "Large Print Acutance": {
+        "direction_group_count": 4,
+        "direction_match_count": 0,
+        "gain_delta_mae_mean": 0.02215952084342565,
+        "groups": [
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.15",
+            "predicted": [
+              0.38303778338330446,
+              0.3808752692625084,
+              0.38244151330809933,
+              0.386660240462696
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.0036224570793915167,
+            "reported": [
+              0.385,
+              0.38,
+              0.379,
+              0.38
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.003234809912499817
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.25",
+            "predicted": [
+              0.41014862831080495,
+              0.407873588728993,
+              0.41149867770876514,
+              0.4187518031315889
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.008603174820783932,
+            "reported": [
+              0.407,
+              0.402,
+              0.401,
+              0.401
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.00599999999999995,
+            "series_mae_mean": 0.00931817447003798
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.4",
+            "predicted": [
+              0.45117406270545724,
+              0.4491259193785493,
+              0.4554979047303552,
+              0.4671074808470707
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.015933418141613476,
+            "reported": [
+              0.44,
+              0.433,
+              0.433,
+              0.433
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.007000000000000006,
+            "series_mae_mean": 0.020976341915358104
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.8",
+            "predicted": [
+              0.5539000643222923,
+              0.5526027056813153,
+              0.5654934154879219,
+              0.588379097654206
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.03447903333191371,
+            "reported": [
+              0.525,
+              0.523,
+              0.524,
+              0.517
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.008000000000000007,
+            "series_mae_mean": 0.04284382078643387
+          }
+        ],
+        "predicted_mean_gain_delta": 0.01565952084342566,
+        "reported_mean_gain_delta": -0.006499999999999992,
+        "series_mae_mean": 0.019093286771082442
+      },
+      "Small Print Acutance": {
+        "direction_group_count": 4,
+        "direction_match_count": 0,
+        "gain_delta_mae_mean": 0.015818112150755972,
+        "groups": [
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.15",
+            "predicted": [
+              0.4547719025845677,
+              0.452047599777568,
+              0.4525864761013689,
+              0.4557597229218144
+            ],
+            "predicted_direction": "flat",
+            "predicted_gain_delta": 0.0009878203372467032,
+            "reported": [
+              0.457,
+              0.453,
+              0.452,
+              0.452
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.0018816741652619012
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.25",
+            "predicted": [
+              0.4796883686148111,
+              0.4764847275513367,
+              0.47843790069269754,
+              0.48390146833344927
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.004213099718638147,
+            "reported": [
+              0.475,
+              0.471,
+              0.469,
+              0.469
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.006000000000000005,
+            "series_mae_mean": 0.008628116298073682
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.4",
+            "predicted": [
+              0.5173089505958716,
+              0.5137292806152086,
+              0.517634224326019,
+              0.5264482195137999
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.009139268917928378,
+            "reported": [
+              0.502,
+              0.496,
+              0.496,
+              0.495
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.007000000000000006,
+            "series_mae_mean": 0.02153016876272479
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.8",
+            "predicted": [
+              0.6116928521510523,
+              0.607563425579487,
+              0.6161086113102289,
+              0.6336251117802629
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.021932259629210638,
+            "reported": [
+              0.572,
+              0.571,
+              0.572,
+              0.563
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.009000000000000008,
+            "series_mae_mean": 0.04774750020525781
+          }
+        ],
+        "predicted_mean_gain_delta": 0.009068112150755966,
+        "reported_mean_gain_delta": -0.006750000000000006,
+        "series_mae_mean": 0.019946864857829545
+      },
+      "UHDTV Display Acutance": {
+        "direction_group_count": 4,
+        "direction_match_count": 0,
+        "gain_delta_mae_mean": 0.023651143844830358,
+        "groups": [
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.15",
+            "predicted": [
+              0.41029562373110723,
+              0.4083109729331885,
+              0.41023450848415133,
+              0.4149329489783097
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.004637325247202451,
+            "reported": [
+              0.366,
+              0.36,
+              0.36,
+              0.361
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.0491935135316892
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.25",
+            "predicted": [
+              0.43896372081355445,
+              0.4370470004443522,
+              0.4413413850614296,
+              0.4494492820460861
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.010485561232531637,
+            "reported": [
+              0.403,
+              0.395,
+              0.395,
+              0.398
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.04395034709135556
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.4",
+            "predicted": [
+              0.4823860907576693,
+              0.48096667653374603,
+              0.48841588878115566,
+              0.5013941415669191
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.019008050809249777,
+            "reported": [
+              0.458,
+              0.448,
+              0.45,
+              0.453
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.036040699409872506
+          },
+          {
+            "direction_match": false,
+            "gains": [
+              1.0,
+              4.0,
+              8.0,
+              15.5
+            ],
+            "mixup": "0.8",
+            "predicted": [
+              0.5911139927064689,
+              0.5910660856249722,
+              0.6060404702321439,
+              0.6315876307968065
+            ],
+            "predicted_direction": "up",
+            "predicted_gain_delta": 0.04047363809033755,
+            "reported": [
+              0.601,
+              0.594,
+              0.599,
+              0.596
+            ],
+            "reported_direction": "down",
+            "reported_gain_delta": -0.0050000000000000044,
+            "series_mae_mean": 0.013862005674377315
+          }
+        ],
+        "predicted_mean_gain_delta": 0.018651143844830353,
+        "reported_mean_gain_delta": -0.0050000000000000044,
+        "series_mae_mean": 0.03576164142682365
+      }
+    },
+    "profile_name": "deadleaf_13b10_release_parity_fit",
+    "profile_path": "release/deadleaf_13b10_release/config/parity_fit_profile.release.json",
+    "summary": {
+      "focus_preset_direction_group_count": 20,
+      "focus_preset_direction_match_count": 3,
+      "focus_preset_gain_delta_mae_mean": 0.018148882951082922,
+      "focus_preset_series_mae_mean": 0.018628257751567734
+    }
+  },
+  "dataset_root": "20260318_deadleaf_13b10/output3_Amodel",
+  "flat_epsilon": 0.002,
+  "hypotheses": [
+    {
+      "comparison_vs_baseline": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_delta": 0,
+        "focus_preset_gain_delta_mae_delta": -0.0025152247944825075,
+        "focus_preset_gain_delta_mae_improvement": 0.0025152247944825075,
+        "focus_preset_series_mae_delta": -0.0005837090734825794,
+        "focus_preset_series_mae_improvement": 0.0005837090734825794,
+        "presets": {
+          "5.5\" Phone Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.00306643875354054,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0008418187976878821,
+            "gain_delta_mae_improvement": 0.0008418187976878821,
+            "hypothesis_predicted_mean_gain_delta": 0.002224619955852658,
+            "predicted_mean_gain_delta_delta": -0.0008418187976878821,
+            "reported_mean_gain_delta": -0.0062500000000000056,
+            "series_mae_delta": -0.00014105897093409647,
+            "series_mae_improvement": 0.00014105897093409647
+          },
+          "Computer Monitor Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.029049199162862083,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.004194275923185248,
+            "gain_delta_mae_improvement": 0.004194275923185248,
+            "hypothesis_predicted_mean_gain_delta": 0.024854923239676835,
+            "predicted_mean_gain_delta_delta": -0.004194275923185248,
+            "reported_mean_gain_delta": 0.009249999999999994,
+            "series_mae_delta": 0.00010579522165597363,
+            "series_mae_improvement": -0.00010579522165597363
+          },
+          "Large Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.01565952084342566,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0026347560968950773,
+            "gain_delta_mae_improvement": 0.0026347560968950773,
+            "hypothesis_predicted_mean_gain_delta": 0.013024764746530582,
+            "predicted_mean_gain_delta_delta": -0.0026347560968950773,
+            "reported_mean_gain_delta": -0.006499999999999992,
+            "series_mae_delta": -0.0010062200157562595,
+            "series_mae_improvement": 0.0010062200157562595
+          },
+          "Small Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.009068112150755966,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0018820106615671794,
+            "gain_delta_mae_improvement": 0.0018820106615671794,
+            "hypothesis_predicted_mean_gain_delta": 0.007186101489188787,
+            "predicted_mean_gain_delta_delta": -0.0018820106615671794,
+            "reported_mean_gain_delta": -0.006750000000000006,
+            "series_mae_delta": -0.0006983816964167208,
+            "series_mae_improvement": 0.0006983816964167208
+          },
+          "UHDTV Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.018651143844830353,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0030232624930771612,
+            "gain_delta_mae_improvement": 0.0030232624930771612,
+            "hypothesis_predicted_mean_gain_delta": 0.015627881351753192,
+            "predicted_mean_gain_delta_delta": -0.0030232624930771612,
+            "reported_mean_gain_delta": -0.0050000000000000044,
+            "series_mae_delta": -0.0011786799059618006,
+            "series_mae_improvement": 0.0011786799059618006
+          }
+        }
+      },
+      "presets": {
+        "5.5\" Phone Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.008474619955852664,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.7441929755886696,
+                0.7426910024428319,
+                0.741980977701595,
+                0.7437256713575464
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": -0.00046730423112317787,
+              "reported": [
+                0.749,
+                0.745,
+                0.745,
+                0.744
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0026023432273392655
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.7595292905245852,
+                0.7574999471561105,
+                0.7573950718661262,
+                0.7599806449103684
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.0004513543857832536,
+              "reported": [
+                0.763,
+                0.759,
+                0.758,
+                0.757
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.002139083840886652
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.7826258752700568,
+                0.7800166212095759,
+                0.7807497211293073,
+                0.784612794875288
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.00198691960523123,
+              "reported": [
+                0.783,
+                0.779,
+                0.779,
+                0.777
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.002688315486028603
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.8409107540605875,
+                0.8371843347531137,
+                0.8398820218461989,
+                0.8478382641241068
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0069275100635193265,
+              "reported": [
+                0.835,
+                0.84,
+                0.841,
+                0.827
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.007670665396345422
+            }
+          ],
+          "predicted_mean_gain_delta": 0.002224619955852658,
+          "reported_mean_gain_delta": -0.0062500000000000056,
+          "series_mae_mean": 0.0037751019876499856
+        },
+        "Computer Monitor Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 3,
+          "gain_delta_mae_mean": 0.01560492323967684,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.2381886894090661,
+                0.2376137432319063,
+                0.24097333098434986,
+                0.245975698039588
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.007787008630521897,
+              "reported": [
+                0.231,
+                0.227,
+                0.229,
+                0.232
+              ],
+              "reported_direction": "flat",
+              "reported_gain_delta": 0.0010000000000000009,
+              "series_mae_mean": 0.01093786541622755
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.2660326972948469,
+                0.2662256566130371,
+                0.2726173506320532,
+                0.2807761215140221
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.014743424219175183,
+              "reported": [
+                0.267,
+                0.262,
+                0.265,
+                0.271
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.0040000000000000036,
+              "series_mae_mean": 0.005646607866066369
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.3084127575272977,
+                0.31027178713478965,
+                0.3205094007982979,
+                0.33292624176294594
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.024513484235648253,
+              "reported": [
+                0.321,
+                0.315,
+                0.321,
+                0.33
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.009000000000000008,
+              "series_mae_mean": 0.0051830740756401705
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.41426524294440387,
+                0.419839319278831,
+                0.43885852894793664,
+                0.4666410188177659
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.05237577587336201,
+              "reported": [
+                0.463,
+                0.461,
+                0.475,
+                0.486
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.022999999999999965,
+              "series_mae_mean": 0.036348972502765656
+            }
+          ],
+          "predicted_mean_gain_delta": 0.024854923239676835,
+          "reported_mean_gain_delta": 0.009249999999999994,
+          "series_mae_mean": 0.014529129965174937
+        },
+        "Large Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.019524764746530573,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.38298943386031625,
+                0.38073020119057593,
+                0.38215299482402987,
+                0.3857889523583297
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0027995184980134646,
+              "reported": [
+                0.385,
+                0.38,
+                0.379,
+                0.38
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.002920678628154816
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4100718553742251,
+                0.407637298353358,
+                0.4109826771245721,
+                0.41686932152567924
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006797466151454157,
+              "reported": [
+                0.407,
+                0.402,
+                0.401,
+                0.401
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.00599999999999995,
+              "series_mae_mean": 0.00864028809445859
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.45105184410732996,
+                0.4488402767218114,
+                0.45468768229840656,
+                0.46369483484711627
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.012642990739786308,
+              "reported": [
+                0.44,
+                0.433,
+                0.433,
+                0.433
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.019818659493666055
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.5536754181546246,
+                0.5520961898493533,
+                0.5635684534646302,
+                0.583534501751493
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.029859083596868397,
+              "reported": [
+                0.525,
+                0.523,
+                0.524,
+                0.517
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.04096864080502527
+            }
+          ],
+          "predicted_mean_gain_delta": 0.013024764746530582,
+          "reported_mean_gain_delta": -0.006499999999999992,
+          "series_mae_mean": 0.018087066755326182
+        },
+        "Small Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.013936101489188793,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.4547395457880094,
+                0.45195001822615377,
+                0.45238688598764704,
+                0.45516318120112026
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.0004236354131108566,
+              "reported": [
+                0.457,
+                0.453,
+                0.452,
+                0.452
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0017151257936510317
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4796379561116183,
+                0.4763259100849531,
+                0.4780778167574254,
+                0.48259654683175485
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0029585907201365447,
+              "reported": [
+                0.475,
+                0.471,
+                0.469,
+                0.469
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.00815955744643794
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.5172277790267751,
+                0.5135326468851549,
+                0.5170780832294795,
+                0.5240392037858884
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006811424759113338,
+              "reported": [
+                0.502,
+                0.496,
+                0.496,
+                0.495
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.02071942823182446
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.6115387102094093,
+                0.6072105496620688,
+                0.6147605595496695,
+                0.6300894652738037
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.01855075506439441,
+              "reported": [
+                0.572,
+                0.571,
+                0.572,
+                0.563
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.009000000000000008,
+              "series_mae_mean": 0.046399821173737865
+            }
+          ],
+          "predicted_mean_gain_delta": 0.007186101489188787,
+          "reported_mean_gain_delta": -0.006750000000000006,
+          "series_mae_mean": 0.019248483161412824
+        },
+        "UHDTV Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.020627881351753197,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.4101041580133145,
+                0.4080085926613585,
+                0.4097680643164893,
+                0.41378458905236754
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0036804310390530226,
+              "reported": [
+                0.366,
+                0.36,
+                0.36,
+                0.361
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.048666351010882486
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4387196004762771,
+                0.4366200830796135,
+                0.4405906421957281,
+                0.4471282154996065
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.008408615023329402,
+              "reported": [
+                0.403,
+                0.395,
+                0.395,
+                0.398
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.043014635312806276
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.48205849508845733,
+                0.48044628158513325,
+                0.4872812738773529,
+                0.49729081112312373
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.015232316034666404,
+              "reported": [
+                0.458,
+                0.448,
+                0.45,
+                0.453
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0345192154185168
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.5905814922503722,
+                0.590191017546381,
+                0.6035274316013844,
+                0.6257716555603361
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.03519016330996394,
+              "reported": [
+                0.601,
+                0.594,
+                0.599,
+                0.596
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.012131644341241837
+            }
+          ],
+          "predicted_mean_gain_delta": 0.015627881351753192,
+          "reported_mean_gain_delta": -0.0050000000000000044,
+          "series_mae_mean": 0.03458296152086185
+        }
+      },
+      "profile_name": "deadleaf_13b10_release_parity_gain_noise_hypothesis",
+      "profile_path": "release/deadleaf_13b10_release/config/parity_gain_noise_profile.release.json",
+      "summary": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_count": 3,
+        "focus_preset_gain_delta_mae_mean": 0.015633658156600415,
+        "focus_preset_series_mae_mean": 0.018044548678085155
+      }
+    },
+    {
+      "comparison_vs_baseline": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_delta": 0,
+        "focus_preset_gain_delta_mae_delta": -0.002848954458580801,
+        "focus_preset_gain_delta_mae_improvement": 0.002848954458580801,
+        "focus_preset_series_mae_delta": 0.00013753290385025776,
+        "focus_preset_series_mae_improvement": -0.00013753290385025776,
+        "presets": {
+          "5.5\" Phone Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.00306643875354054,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.001030084580301932,
+            "gain_delta_mae_improvement": 0.001030084580301932,
+            "hypothesis_predicted_mean_gain_delta": 0.002036354173238608,
+            "predicted_mean_gain_delta_delta": -0.001030084580301932,
+            "reported_mean_gain_delta": -0.0062500000000000056,
+            "series_mae_delta": -0.00017241660322560998,
+            "series_mae_improvement": 0.00017241660322560998
+          },
+          "Computer Monitor Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.029049199162862083,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.004508692231553937,
+            "gain_delta_mae_improvement": 0.004508692231553937,
+            "hypothesis_predicted_mean_gain_delta": 0.024540506931308145,
+            "predicted_mean_gain_delta_delta": -0.004508692231553937,
+            "reported_mean_gain_delta": 0.009249999999999994,
+            "series_mae_delta": -0.0001526215394213673,
+            "series_mae_improvement": 0.0001526215394213673
+          },
+          "Large Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.01565952084342566,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0030250209503490805,
+            "gain_delta_mae_improvement": 0.0030250209503490805,
+            "hypothesis_predicted_mean_gain_delta": 0.012634499893076578,
+            "predicted_mean_gain_delta_delta": -0.0030250209503490805,
+            "reported_mean_gain_delta": -0.006499999999999992,
+            "series_mae_delta": 0.0005357477444620888,
+            "series_mae_improvement": -0.0005357477444620888
+          },
+          "Small Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.009068112150755966,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.002266448445231564,
+            "gain_delta_mae_improvement": 0.002266448445231564,
+            "hypothesis_predicted_mean_gain_delta": 0.006801663705524402,
+            "predicted_mean_gain_delta_delta": -0.002266448445231564,
+            "reported_mean_gain_delta": -0.006750000000000006,
+            "series_mae_delta": 0.0006819890259291174,
+            "series_mae_improvement": -0.0006819890259291174
+          },
+          "UHDTV Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.018651143844830353,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.0034145260854674953,
+            "gain_delta_mae_improvement": 0.0034145260854674953,
+            "hypothesis_predicted_mean_gain_delta": 0.015236617759362858,
+            "predicted_mean_gain_delta_delta": -0.0034145260854674953,
+            "reported_mean_gain_delta": -0.0050000000000000044,
+            "series_mae_delta": -0.00020503410849295745,
+            "series_mae_improvement": 0.00020503410849295745
+          }
+        }
+      },
+      "presets": {
+        "5.5\" Phone Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.008286354173238614,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.7447370888574367,
+                0.7432215126652553,
+                0.7425169859780341,
+                0.7442743043090941
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": -0.0004627845483425874,
+              "reported": [
+                0.749,
+                0.745,
+                0.745,
+                0.744
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0021996792020920197
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.7601949820797436,
+                0.7581477696008813,
+                0.7580544137160664,
+                0.7605074151666911
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.0003124330869475056,
+              "reported": [
+                0.763,
+                0.759,
+                0.758,
+                0.757
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.0018047693005331655
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.7834767156706168,
+                0.7808457399066726,
+                0.7815987499313505,
+                0.7851647519312712
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.0016880362606543908,
+              "reported": [
+                0.783,
+                0.779,
+                0.779,
+                0.777
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.0032714893599777584
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.8422263659549355,
+                0.8384710046818921,
+                0.8412066991136496,
+                0.8488340978486306
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0066077318936951235,
+              "reported": [
+                0.835,
+                0.84,
+                0.841,
+                0.827
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.007699039558830945
+            }
+          ],
+          "predicted_mean_gain_delta": 0.002036354173238608,
+          "reported_mean_gain_delta": -0.0062500000000000056,
+          "series_mae_mean": 0.003743744355358472
+        },
+        "Computer Monitor Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 3,
+          "gain_delta_mae_mean": 0.015290506931308151,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.2390679272954663,
+                0.23846980017993544,
+                0.24183948013011664,
+                0.24686312211484687
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.007795194819380569,
+              "reported": [
+                0.231,
+                0.227,
+                0.229,
+                0.232
+              ],
+              "reported_direction": "flat",
+              "reported_gain_delta": 0.0010000000000000009,
+              "series_mae_mean": 0.011810082430091302
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.2671252488759461,
+                0.26728709011232676,
+                0.2736996587238127,
+                0.2816420054184314
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.014516756542485298,
+              "reported": [
+                0.267,
+                0.262,
+                0.265,
+                0.271
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.0040000000000000036,
+              "series_mae_mean": 0.006188500782629211
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.3098302267706012,
+                0.3116510017566604,
+                0.3219246317632218,
+                0.3338466015762222
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.02401637480562102,
+              "reported": [
+                0.321,
+                0.315,
+                0.321,
+                0.33
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.009000000000000008,
+              "series_mae_mean": 0.004822501203045601
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.41649707581623224,
+                0.42201874695329333,
+                0.4411063262539994,
+                0.46833077737397794
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.05183370155774569,
+              "reported": [
+                0.463,
+                0.461,
+                0.475,
+                0.486
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.022999999999999965,
+              "series_mae_mean": 0.03426176840062427
+            }
+          ],
+          "predicted_mean_gain_delta": 0.024540506931308145,
+          "reported_mean_gain_delta": 0.009249999999999994,
+          "series_mae_mean": 0.014270713204097596
+        },
+        "Large Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.01913449989307657,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.3841104358727378,
+                0.38182341399633946,
+                0.3832605354842455,
+                0.386925302672968
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.002814866800230187,
+              "reported": [
+                0.385,
+                0.38,
+                0.379,
+                0.38
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0034747040702037824
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4114633690120743,
+                0.4089923462189675,
+                0.41236689155619455,
+                0.41797865880522583
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006515289793151524,
+              "reported": [
+                0.407,
+                0.402,
+                0.401,
+                0.401
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.00599999999999995,
+              "series_mae_mean": 0.009950316398115541
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.45285572847801275,
+                0.45060065366249763,
+                0.4564977489876527,
+                0.4648746671322369
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.012018938654224154,
+              "reported": [
+                0.44,
+                0.433,
+                0.433,
+                0.433
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.021457199565100005
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.5565132755652702,
+                0.5548769516014997,
+                0.5664432650582947,
+                0.5857021798899706
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.02918890432470045,
+              "reported": [
+                0.525,
+                0.523,
+                0.524,
+                0.517
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.043633918028758795
+            }
+          ],
+          "predicted_mean_gain_delta": 0.012634499893076578,
+          "reported_mean_gain_delta": -0.006499999999999992,
+          "series_mae_mean": 0.01962903451554453
+        },
+        "Small Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.013551663705524408,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.45584455550429187,
+                0.4530275675530426,
+                0.45347806551671754,
+                0.45628229051911273
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.0004377350148208614,
+              "reported": [
+                0.457,
+                0.453,
+                0.452,
+                0.452
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.0017358420211452397
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.48100639855820626,
+                0.4776583082748654,
+                0.4794380717683871,
+                0.48368609670582924
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0026796981476229775,
+              "reported": [
+                0.475,
+                0.471,
+                0.469,
+                0.469
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.00944721882682202
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.5189977435491667,
+                0.5152594606720053,
+                0.5188524526557516,
+                0.5251952389566387
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006197495407471942,
+              "reported": [
+                0.502,
+                0.496,
+                0.496,
+                0.495
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.022326223958390595
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.6143156403063397,
+                0.6099306921412687,
+                0.6175708239085771,
+                0.6322073665585215
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.017891726252181828,
+              "reported": [
+                0.572,
+                0.571,
+                0.572,
+                0.563
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.009000000000000008,
+              "series_mae_mean": 0.049006130728676794
+            }
+          ],
+          "predicted_mean_gain_delta": 0.006801663705524402,
+          "reported_mean_gain_delta": -0.006750000000000006,
+          "series_mae_mean": 0.020628853883758663
+        },
+        "UHDTV Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 0,
+          "gain_delta_mae_mean": 0.020236617759362863,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.41122174847011783,
+                0.40909802787806543,
+                0.4108710939102116,
+                0.41491561914776826
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0036938706776504238,
+              "reported": [
+                0.366,
+                0.36,
+                0.36,
+                0.361
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.04977662235154079
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4401048515123579,
+                0.43796818367030893,
+                0.4419665971372873,
+                0.44823007499708806
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.00812522348473016,
+              "reported": [
+                0.403,
+                0.395,
+                0.395,
+                0.398
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.04431742682926053
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.4838516645011663,
+                0.48219470004465936,
+                0.48907735160799737,
+                0.49846053616687164
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.014608871665705347,
+              "reported": [
+                0.458,
+                0.448,
+                0.45,
+                0.453
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.03614606308017365
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.593397533823885,
+                0.5929475923933256,
+                0.6063743552333513,
+                0.6279160390332506
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.0345185052093655,
+              "reported": [
+                0.601,
+                0.594,
+                0.599,
+                0.596
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.011986317012347786
+            }
+          ],
+          "predicted_mean_gain_delta": 0.015236617759362858,
+          "reported_mean_gain_delta": -0.0050000000000000044,
+          "series_mae_mean": 0.03555660731833069
+        }
+      },
+      "profile_name": "deadleaf_13b10_release_parity_gain_shape_hypothesis",
+      "profile_path": "release/deadleaf_13b10_release/config/parity_gain_shape_profile.release.json",
+      "summary": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_count": 3,
+        "focus_preset_gain_delta_mae_mean": 0.015299928492502122,
+        "focus_preset_series_mae_mean": 0.01876579065541799
+      }
+    },
+    {
+      "comparison_vs_baseline": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_delta": 10,
+        "focus_preset_gain_delta_mae_delta": -0.010271022826125782,
+        "focus_preset_gain_delta_mae_improvement": 0.010271022826125782,
+        "focus_preset_series_mae_delta": 0.01142973165314589,
+        "focus_preset_series_mae_improvement": -0.01142973165314589,
+        "presets": {
+          "5.5\" Phone Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.00306643875354054,
+            "direction_group_count": 4,
+            "direction_match_delta": 4,
+            "gain_delta_mae_delta": -0.006280875876136793,
+            "gain_delta_mae_improvement": 0.006280875876136793,
+            "hypothesis_predicted_mean_gain_delta": -0.005345880183582702,
+            "predicted_mean_gain_delta_delta": -0.008412318937123242,
+            "reported_mean_gain_delta": -0.0062500000000000056,
+            "series_mae_delta": 0.039080396242716066,
+            "series_mae_improvement": -0.039080396242716066
+          },
+          "Computer Monitor Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.029049199162862083,
+            "direction_group_count": 4,
+            "direction_match_delta": 0,
+            "gain_delta_mae_delta": -0.004777274329284396,
+            "gain_delta_mae_improvement": 0.004777274329284396,
+            "hypothesis_predicted_mean_gain_delta": 0.024271924833577686,
+            "predicted_mean_gain_delta_delta": -0.004777274329284396,
+            "reported_mean_gain_delta": 0.009249999999999994,
+            "series_mae_delta": 0.0053141572725472225,
+            "series_mae_improvement": -0.0053141572725472225
+          },
+          "Large Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.01565952084342566,
+            "direction_group_count": 4,
+            "direction_match_delta": 2,
+            "gain_delta_mae_delta": -0.015783448649361723,
+            "gain_delta_mae_improvement": 0.015783448649361723,
+            "hypothesis_predicted_mean_gain_delta": -0.00012392780593606378,
+            "predicted_mean_gain_delta_delta": -0.015783448649361723,
+            "reported_mean_gain_delta": -0.006499999999999992,
+            "series_mae_delta": 0.004440185159053724,
+            "series_mae_improvement": -0.004440185159053724
+          },
+          "Small Print Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.009068112150755966,
+            "direction_group_count": 4,
+            "direction_match_delta": 3,
+            "gain_delta_mae_delta": -0.012056751236693794,
+            "gain_delta_mae_improvement": 0.012056751236693794,
+            "hypothesis_predicted_mean_gain_delta": -0.004589932750962311,
+            "predicted_mean_gain_delta_delta": -0.013658044901718278,
+            "reported_mean_gain_delta": -0.006750000000000006,
+            "series_mae_delta": 0.003079518828674105,
+            "series_mae_improvement": -0.003079518828674105
+          },
+          "UHDTV Display Acutance": {
+            "baseline_predicted_mean_gain_delta": 0.018651143844830353,
+            "direction_group_count": 4,
+            "direction_match_delta": 1,
+            "gain_delta_mae_delta": -0.012456764039152204,
+            "gain_delta_mae_improvement": 0.012456764039152204,
+            "hypothesis_predicted_mean_gain_delta": 0.006194379805678149,
+            "predicted_mean_gain_delta_delta": -0.012456764039152204,
+            "reported_mean_gain_delta": -0.0050000000000000044,
+            "series_mae_delta": 0.005234400762738331,
+            "series_mae_improvement": -0.005234400762738331
+          }
+        }
+      },
+      "presets": {
+        "5.5\" Phone Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 4,
+          "gain_delta_mae_mean": 0.0030355628774037524,
+          "groups": [
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.7889612486039667,
+                0.7865607975255131,
+                0.7870424329902985,
+                0.781289314046237
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.007671934557729632,
+              "reported": [
+                0.749,
+                0.745,
+                0.745,
+                0.744
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.040213448291503834
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.8042020638673933,
+                0.8013383394826608,
+                0.8007247475568645,
+                0.7966111123031501
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.007590951564243276,
+              "reported": [
+                0.763,
+                0.759,
+                0.758,
+                0.757
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.04146906580251716
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.8266214769609755,
+                0.8233644896726531,
+                0.8226219882260921,
+                0.8238666270064601
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.0027548499545154703,
+              "reported": [
+                0.783,
+                0.779,
+                0.779,
+                0.777
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.044618645466545176
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.8848065471040419,
+                0.8799842734361617,
+                0.8795086939921344,
+                0.8814407624461995
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.00336578465784243,
+              "reported": [
+                0.835,
+                0.84,
+                0.841,
+                0.827
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.04568506924463442
+            }
+          ],
+          "predicted_mean_gain_delta": -0.005345880183582702,
+          "reported_mean_gain_delta": -0.0062500000000000056,
+          "series_mae_mean": 0.04299655720130015
+        },
+        "Computer Monitor Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 3,
+          "gain_delta_mae_mean": 0.015021924833577692,
+          "groups": [
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.24556463562147776,
+                0.24583862315865412,
+                0.2501780420198555,
+                0.25175151901498133
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006186883393503567,
+              "reported": [
+                0.231,
+                0.227,
+                0.229,
+                0.232
+              ],
+              "reported_direction": "flat",
+              "reported_gain_delta": 0.0010000000000000009,
+              "series_mae_mean": 0.018583204953742168
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.27964843856718985,
+                0.28171243798217455,
+                0.28740878708232687,
+                0.2920453612829193
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.012396922715729453,
+              "reported": [
+                0.267,
+                0.262,
+                0.265,
+                0.271
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.0040000000000000036,
+              "series_mae_mean": 0.018953756228652627
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.3321411420964996,
+                0.33665988170279354,
+                0.3454557772343099,
+                0.35754631318222807
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.025405171085728484,
+              "reported": [
+                0.321,
+                0.315,
+                0.321,
+                0.33
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.009000000000000008,
+              "series_mae_mean": 0.021200778553957772
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.46881172708105917,
+                0.4789528684306234,
+                0.49617386857955775,
+                0.5219104492204084
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.05309872213934924,
+              "reported": [
+                0.463,
+                0.461,
+                0.475,
+                0.486
+              ],
+              "reported_direction": "up",
+              "reported_gain_delta": 0.022999999999999965,
+              "series_mae_mean": 0.020212228327912182
+            }
+          ],
+          "predicted_mean_gain_delta": 0.024271924833577686,
+          "reported_mean_gain_delta": 0.009249999999999994,
+          "series_mae_mean": 0.019737492016066185
+        },
+        "Large Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 2,
+          "gain_delta_mae_mean": 0.006376072194063928,
+          "groups": [
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.37859978771807096,
+                0.3752251687611024,
+                0.37704035565822297,
+                0.373629714120896
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.00497007359717494,
+              "reported": [
+                0.385,
+                0.38,
+                0.379,
+                0.38
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.004876243435426919
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.41079033625515565,
+                0.4068685181287234,
+                0.4080228712277342,
+                0.4065856099644879
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.00420472629066776,
+              "reported": [
+                0.407,
+                0.402,
+                0.401,
+                0.401
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.00599999999999995,
+              "series_mae_mean": 0.0053168338940252635
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.4591608422350436,
+                0.4544400238015567,
+                0.45626439648819106,
+                0.46114139228148293
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": 0.001980550046439322,
+              "reported": [
+                0.44,
+                0.433,
+                0.433,
+                0.433
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.023001663701568573
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.5840548620907878,
+                0.576953718737816,
+                0.580994605221045,
+                0.590753400708447
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.006698538617659122,
+              "reported": [
+                0.525,
+                0.523,
+                0.524,
+                0.517
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.008000000000000007,
+              "series_mae_mean": 0.06093914668952391
+            }
+          ],
+          "predicted_mean_gain_delta": -0.00012392780593606378,
+          "reported_mean_gain_delta": -0.006499999999999992,
+          "series_mae_mean": 0.023533471930136166
+        },
+        "Small Print Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 3,
+          "gain_delta_mae_mean": 0.0037613609140621784,
+          "groups": [
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.44685049701636137,
+                0.44285310008736256,
+                0.4440627716910061,
+                0.44032356401034284
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.0065269330060185315,
+              "reported": [
+                0.457,
+                0.453,
+                0.452,
+                0.452
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.009977516798731795
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4765155922460314,
+                0.4717453108946258,
+                0.4718494788275602,
+                0.46883993792200096
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.007675654324030445,
+              "reported": [
+                0.475,
+                0.471,
+                0.469,
+                0.469
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.006000000000000005,
+              "series_mae_mean": 0.001317611011554115
+            },
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.5207566800202786,
+                0.514905520122072,
+                0.5151581914831279,
+                0.5183220645272074
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.002434615493071224,
+              "reported": [
+                0.502,
+                0.496,
+                0.496,
+                0.495
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.007000000000000006,
+              "series_mae_mean": 0.0200356140381715
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.6349164033315903,
+                0.6258952931451479,
+                0.6270935999626291,
+                0.6331938751508612
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": -0.0017225281807290438,
+              "reported": [
+                0.572,
+                0.571,
+                0.572,
+                0.563
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.009000000000000008,
+              "series_mae_mean": 0.06077479289755719
+            }
+          ],
+          "predicted_mean_gain_delta": -0.004589932750962311,
+          "reported_mean_gain_delta": -0.006750000000000006,
+          "series_mae_mean": 0.02302638368650365
+        },
+        "UHDTV Display Acutance": {
+          "direction_group_count": 4,
+          "direction_match_count": 1,
+          "gain_delta_mae_mean": 0.011194379805678153,
+          "groups": [
+            {
+              "direction_match": true,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.15",
+              "predicted": [
+                0.4069431527526066,
+                0.4042566631202791,
+                0.4067197115391533,
+                0.40441910433236317
+              ],
+              "predicted_direction": "down",
+              "predicted_gain_delta": -0.002524048420243452,
+              "reported": [
+                0.366,
+                0.36,
+                0.36,
+                0.361
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.04383465793610056
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.25",
+              "predicted": [
+                0.4413081231108691,
+                0.43871561143748583,
+                0.4409651636100382,
+                0.4412333433071907
+              ],
+              "predicted_direction": "flat",
+              "predicted_gain_delta": -7.477980367837089e-05,
+              "reported": [
+                0.403,
+                0.395,
+                0.395,
+                0.398
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.042805560366395934
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.4",
+              "predicted": [
+                0.4931770603486074,
+                0.4906639830178106,
+                0.494214570255608,
+                0.5012175312435949
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.008040470894987495,
+              "reported": [
+                0.458,
+                0.448,
+                0.45,
+                0.453
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.042568286216405224
+            },
+            {
+              "direction_match": false,
+              "gains": [
+                1.0,
+                4.0,
+                8.0,
+                15.5
+              ],
+              "mixup": "0.8",
+              "predicted": [
+                0.6269018822709712,
+                0.6242544604216558,
+                0.6317085554421397,
+                0.6462377588226181
+              ],
+              "predicted_direction": "up",
+              "predicted_gain_delta": 0.019335876551646924,
+              "reported": [
+                0.601,
+                0.594,
+                0.599,
+                0.596
+              ],
+              "reported_direction": "down",
+              "reported_gain_delta": -0.0050000000000000044,
+              "series_mae_mean": 0.03477566423934622
+            }
+          ],
+          "predicted_mean_gain_delta": 0.006194379805678149,
+          "reported_mean_gain_delta": -0.0050000000000000044,
+          "series_mae_mean": 0.04099604218956198
+        }
+      },
+      "profile_name": "deadleaf_13b10_release_experimental_shape",
+      "profile_path": "release/deadleaf_13b10_release/config/experimental_shape_profile.release.json",
+      "summary": {
+        "focus_preset_direction_group_count": 20,
+        "focus_preset_direction_match_count": 13,
+        "focus_preset_gain_delta_mae_mean": 0.00787786012495714,
+        "focus_preset_series_mae_mean": 0.030057989404713624
+      }
+    }
+  ]
+}
