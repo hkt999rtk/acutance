@@ -1,0 +1,12 @@
+{
+  "name": "deadleaf_13b10_locked_input_baseline",
+  "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+  "gamma": 1.0,
+  "bayer_pattern": "RGGB",
+  "bayer_mode": "demosaic_red",
+  "roi_source": "fixed",
+  "roi_width": 1655,
+  "roi_height": 1673,
+  "frequency_scale": 1.0,
+  "signal_psd_correction_gain": 0.0
+}
