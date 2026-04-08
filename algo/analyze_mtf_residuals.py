@@ -65,6 +65,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--calibration-file", type=Path, required=True)
     parser.add_argument("--roi-width", type=int, default=1655)
     parser.add_argument("--roi-height", type=int, default=1673)
+    parser.add_argument(
+        "--roi-source",
+        choices=["fixed", "reference"],
+        default="fixed",
+        help="Use the fixed centered ROI or the observed L/R/T/B bounds from each reference CSV.",
+    )
     parser.add_argument("--normalization-band-lo", type=float, default=0.01)
     parser.add_argument("--normalization-band-hi", type=float, default=0.03)
     parser.add_argument(
@@ -249,15 +255,18 @@ def main() -> int:
             mode=BayerMode(args.bayer_mode),
         )
         image = normalize_for_analysis(plane, gamma=args.gamma)
-        detected = detect_texture_roi(image)
-        roi = RoiBounds.centered(
-            center_x=(detected.left + detected.right) // 2,
-            center_y=(detected.top + detected.bottom) // 2,
-            width=args.roi_width,
-            height=args.roi_height,
-            image_width=image.shape[1],
-            image_height=image.shape[0],
-        )
+        if args.roi_source == "reference":
+            roi = reference.lrtb.clamp(image.shape[1], image.shape[0])
+        else:
+            detected = detect_texture_roi(image)
+            roi = RoiBounds.centered(
+                center_x=(detected.left + detected.right) // 2,
+                center_y=(detected.top + detected.bottom) // 2,
+                width=args.roi_width,
+                height=args.roi_height,
+                image_width=image.shape[1],
+                image_height=image.shape[0],
+            )
         estimate = estimate_dead_leaves_mtf(
             image,
             num_bins=len(IMATEST_REFERENCE_BINS),
@@ -342,6 +351,7 @@ def main() -> int:
             "gamma": args.gamma,
             "bayer_pattern": args.bayer_pattern,
             "bayer_mode": args.bayer_mode,
+            "roi_source": args.roi_source,
         },
         "overall": summarize_accumulator(overall),
         "by_source": {

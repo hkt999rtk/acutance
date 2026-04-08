@@ -2,6 +2,11 @@
 
 這個目錄是可獨立交付的 release 包，內容包含：
 
+- canonical observable target 定義：
+  - [../../docs/observable_target_from_golden_samples.md](../../docs/observable_target_from_golden_samples.md)
+  - [../../docs/gamma_0_5_hypothesis_matrix.md](../../docs/gamma_0_5_hypothesis_matrix.md)
+  - [../../docs/parity_refit_benchmarks_2026-04-08.md](../../docs/parity_refit_benchmarks_2026-04-08.md)
+
 - `algo/`
   - 演算法程式碼
 - `config/`
@@ -36,6 +41,9 @@
 - `analysis gamma = 1.0`
 - `analysis bayer_mode = demosaic_red`
 
+其中前兩者是目前 golden CSV 可直接觀測到的 report fields；
+後兩者則是目前 release 採用的工程分析假設，不是 golden sample 直接揭露的內部 black-box 條件。
+
 或明確指定 profile：
 
 ```bash
@@ -50,7 +58,7 @@ python3 scripts/run_release_batch.py \
   --profile config/experimental_shape_profile.release.json
 ```
 
-Imatest 輸入條件對標 profile：
+`Gamma = 0.5` literal-analysis hypothesis profile：
 
 ```bash
 python3 scripts/run_release_batch.py \
@@ -86,10 +94,14 @@ python3 scripts/run_release_batch.py \
     - 這只是目前的 interim workaround，方便先產生較穩定的結果
     - 不能把它視為最終 fitting target
   - `imatest_parity_profile.release.json`
-    - full-parity profile
+    - literal Gamma-hypothesis profile
     - 報告欄位與分析路徑都使用 `gamma=0.5 + demosaic_red`
-    - 這個 profile 才代表目前真正要擬合的 observable target
-    - 目前 benchmark 顯示誤差顯著較大，因此仍待後續繼續擬合
+    - 這個 profile 對應的是目前真正要擬合的 observable target conditions
+    - 但它同時也只是目前一個已測試過的 literal-Gamma hypothesis，不代表 `Gamma = 0.5` 的內部意義已被證實
+    - `2026-04-08` 的 parity re-fit note 已確認：
+      - 現有 shape correction reuse 沒有 material improvement
+      - 直接改用觀測 ROI 反而更差
+    - 因此在後續擬合真正改善前，這個 profile 目前仍應視為 reference-only hypothesis
   - `legacy_linear_profile.release.json`
     - 舊的 linear/gray baseline，保留做比較
 - `Gamma, 0.5` 這個報告欄位目前屬於 observable target condition。

@@ -79,7 +79,7 @@ def acutance_with_display_model(
         * np.exp(-0.2 * angular_frequency)
         / 34.05
     )
-    numerator = np.trapezoid(effective_mtf * csf, angular_frequency)
+    numerator = np.trapz(effective_mtf * csf, angular_frequency)
     denominator = (75.0 / 34.05) * math.gamma(1.8) / (0.2**1.8)
     return float(numerator / max(denominator, 1e-12))
 

@@ -1,5 +1,15 @@
 # Acutance / Dead Leaves
 
+先看這份 canonical target 定義：
+
+- [docs/observable_target_from_golden_samples.md](docs/observable_target_from_golden_samples.md)
+
+這份文件明確區分：
+
+- golden CSV 直接可觀測到的條件與輸出
+- 尚未解開的 black-box latent variables
+- 目前原型採用的工程假設
+
 這個專案的初衷是：
 
 - 針對同一批 `dead leaves` 測試 `raw`
@@ -13,9 +23,9 @@
 這個專案不是只做一個近似的 sharpness 指標，而是要在以下約束下擬合 Imatest 的 black box：
 
 1. input 要對標 Imatest
-- 包含 `gamma`
-- 包含 `color channel`
-- 包含分析口徑與前處理條件
+- 先對標 golden CSV 中直接可觀測到的欄位
+- 例如 `Gamma`、`Color channel`、`Crop`、`L R T B`
+- 但不要把未觀測到的內部前處理條件當成已知事實
 
 2. output 也要對標 Imatest
 - 輸出格式
@@ -53,8 +63,8 @@
 
 目前已經確認：
 
-- `Color channel = R` 必須保留
-- `Gamma = 0.5` 是 golden sample 中可直接觀察到的條件
+- `Color channel = R` 是 golden sample 中可直接觀察到、必須保留的條件
+- `Gamma = 0.5` 也是 golden sample 中可直接觀察到的條件
 - 但我們還**不能直接假設**報告欄位中的 `Gamma = 0.5` 就等於 black box 內部實際使用的 analysis gamma
 
 實際 benchmark 顯示：
@@ -77,6 +87,14 @@
 
 ## 目錄
 
+- [docs/observable_target_from_golden_samples.md](docs/observable_target_from_golden_samples.md)
+  - golden sample 的 canonical observable target 定義
+- [docs/gamma_0_5_hypothesis_matrix.md](docs/gamma_0_5_hypothesis_matrix.md)
+  - `Gamma = 0.5` 的假設矩陣與目前可排除的解讀
+- [docs/dead_leaves_black_box_research.md](docs/dead_leaves_black_box_research.md)
+  - Imatest / ISP / dead-leaves black-box 公式與變數盤點
+- [docs/parity_refit_benchmarks_2026-04-08.md](docs/parity_refit_benchmarks_2026-04-08.md)
+  - issue `#4` 的 parity re-fit benchmark 狀態、已驗證無效的修正方向、以及目前阻塞點
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
   - 演算法原型、數學流程、校準與 benchmark 記錄
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)

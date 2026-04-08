@@ -56,7 +56,8 @@
     "mtf_shape_correction_high_weight": 0.25
   },
   "notes": [
-    "This profile enforces full parity for both report metadata and analysis input: gamma 0.5 and R channel via demosaic_red.",
-    "Current benchmarks show this full-parity analysis path is not yet re-fitted and has much larger MTF/Acutance error than the recommended profile."
+    "This profile tests the literal interpretation that the observed CSV Gamma 0.5 field should also be used as the dead-leaves analysis exponent, with R channel via demosaic_red.",
+    "Current benchmarks show this literal-Gamma hypothesis path is not yet validated and has much larger MTF/Acutance error than the recommended split profile.",
+    "The 2026-04-08 parity refit note records that the tested shape-correction reuse was only a negligible improvement and the observed-ROI variant was worse; keep this as a reference-only hypothesis profile until a broader model family is added."
   ]
 }

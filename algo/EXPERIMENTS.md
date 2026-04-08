@@ -92,6 +92,30 @@
   - 不是最終 fitting target
   - release 端若採用這條線，必須清楚標成 workaround，而不是 parity 完成
 
+6. parity shape correction reuse: `gamma=0.5 + demosaic_red + hf_noise_share_gated_bump`
+- 40 份整批結果：
+  - `curve_mae_mean = 0.13121`
+- 結論：
+  - 比 full parity baseline 只好極小幅
+  - 改善量級不足以稱為 material improvement
+  - 目前不值得把這條 correction 升級成 parity profile
+
+7. parity reference ROI: `gamma=0.5 + demosaic_red + roi_source=reference`
+- 40 份整批結果：
+  - `curve_mae_mean = 0.13431`
+  - `Monitor = 0.18193`
+  - `UHDTV = 0.14468`
+- 結論：
+  - 直接改用 golden CSV 的觀測 ROI 反而更差
+  - 表示 parity gap 不是單純的 crop mismatch
+
+8. parity re-fit status note
+- 文件：
+  - [../docs/parity_refit_benchmarks_2026-04-08.md](../docs/parity_refit_benchmarks_2026-04-08.md)
+- 結論：
+  - issue `#4` 目前的阻塞點在模型家族，而不是小幅參數微調
+  - 若不新增 OECF / compensation / intrinsic-method 類變數，短期內不應再把同類 tuning 當主方向
+
 ## 已做過
 
 1. `Bayer pattern / Bayer mode`
