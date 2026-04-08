@@ -1,6 +1,6 @@
 Imatest-style,Python Release,,Random
 File,OV13b10_AG8_ET5500_deadleaf_12M_40_denoised.raw
-Run date,08-Apr-2026 12:09:46,,Release
+Run date,08-Apr-2026 13:08:39,,Release
 
 Image pixels (WxH),4032,3024
 Crop,1672,1654
@@ -197,8 +197,8 @@ Use unnormalized MTF for Acutance calculation
 CPIQ Results
 Computer Monitor Acutance,0.345,
 Computer Monitor Quality Loss,24.732,
-"5.5"" Phone Display Acutance",0.872,
-"5.5"" Phone Display Quality Loss",0.858,
+"5.5"" Phone Display Acutance",0.826,
+"5.5"" Phone Display Quality Loss",1.510,
 UHDTV Display Acutance,0.534,
 UHDTV Display Quality Loss,12.033,
 Small Print Acutance,0.571,

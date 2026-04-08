@@ -11,8 +11,10 @@ import numpy as np
 from .dead_leaves import (
     ACUTANCE_HF_NOISE_SHARE_BAND,
     ACUTANCE_HF_NOISE_SHARE_SCALE_COEFFICIENTS,
+    AcutancePreset,
     BayerMode,
     BayerPattern,
+    DEFAULT_ACUTANCE_PRESETS,
     IMATEST_REFERENCE_BINS,
     MTF_SHAPE_CORRECTION_SHARE_GATE,
     RoiBounds,
@@ -94,6 +96,7 @@ class Profile:
     mtf_shape_correction_high_weight: float = 0.25
     quality_loss_om_ceiling: float = 0.8851
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
+    acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
 
 
 def load_profile(path: Path) -> Profile:
@@ -144,6 +147,30 @@ def mean_named_metrics(values: dict[str, list[float]], names: tuple[str, ...]) -
     return float(np.mean([np.mean(values[name]) for name in names]))
 
 
+def build_acutance_presets(
+    overrides: dict[str, dict[str, float | str | None]] | None = None,
+) -> tuple[AcutancePreset, ...]:
+    presets: list[AcutancePreset] = []
+    override_map = overrides or {}
+    for preset in DEFAULT_ACUTANCE_PRESETS:
+        override = override_map.get(preset.name, {})
+        display_mtf_c50_cpd = override.get("display_mtf_c50_cpd", preset.display_mtf_c50_cpd)
+        presets.append(
+            AcutancePreset(
+                name=preset.name,
+                picture_height_cm=float(override.get("picture_height_cm", preset.picture_height_cm)),
+                viewing_distance_cm=float(
+                    override.get("viewing_distance_cm", preset.viewing_distance_cm)
+                ),
+                display_mtf_c50_cpd=(
+                    None if display_mtf_c50_cpd is None else float(display_mtf_c50_cpd)
+                ),
+                display_mtf_model=str(override.get("display_mtf_model", preset.display_mtf_model)),
+            )
+        )
+    return tuple(presets)
+
+
 def summarize_profile(
     *,
     dataset_root: Path,
@@ -153,6 +180,7 @@ def summarize_profile(
     height: int,
 ) -> dict[str, object]:
     calibration = load_ideal_psd_calibration(profile.calibration_file)
+    presets = build_acutance_presets(profile.acutance_preset_overrides)
     csv_paths = sorted(dataset_root.glob("**/Results/*_R_Random.csv"))
     curve_mae: list[float] = []
     acutance_preset_errors: dict[str, list[float]] = {}
@@ -240,6 +268,7 @@ def summarize_profile(
             scaled_frequencies,
             corrected_mtf_for_acutance,
             pixels_along_picture_height=estimate.roi.height,
+            presets=presets,
         )
         acutance_cmp = compare_acutance_presets(acutance, reference.reported_acutance)
         for name, values in acutance_cmp.items():
@@ -271,6 +300,7 @@ def summarize_profile(
             "acutance_noise_scale_mode": profile.acutance_noise_scale_mode,
             "high_frequency_guard_start_cpp": profile.high_frequency_guard_start_cpp,
             "mtf_shape_correction_mode": profile.mtf_shape_correction_mode,
+            "acutance_preset_overrides": profile.acutance_preset_overrides,
         },
         "overall": {
             "curve_mae_mean": float(np.mean(curve_mae)),

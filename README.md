@@ -101,8 +101,10 @@
   - issue `#11` 的 parity PSD/MTF refit、基線與新 profile 比較、以及後續 validation 邊界
 - [docs/parity_acutance_quality_loss_validation.md](docs/parity_acutance_quality_loss_validation.md)
   - issue `#12` 的 Acutance / Quality Loss validation、整體改善、以及 `Phone` preset 殘餘回歸
+- [docs/parity_phone_preset_followup.md](docs/parity_phone_preset_followup.md)
+  - issue `#18` 的 Phone preset follow-up、Phone-only 幾何修正、以及保留 parity-fit curve 的驗證
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
-  - issue `#13` 的 release-facing parity-fit profile、預設 release 執行入口、以及保留的 reference/diagnostic profiles
+  - issue `#13` 與 `#18` 的 release-facing parity-fit profile、預設 release 執行入口、以及保留的 reference/diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
   - 演算法原型、數學流程、校準與 benchmark 記錄
   - 可交付的 release 包與批次執行方式

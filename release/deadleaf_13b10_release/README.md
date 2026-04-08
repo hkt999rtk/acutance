@@ -32,7 +32,7 @@
 目前 release 文件需要先說清楚兩件事：
 
 - golden sample / Imatest report 中可直接觀察到的欄位，包含 `Gamma = 0.5`、`Color channel = R`
-- 雖然 repo 現在已有一條可發布的 parity-fit release profile，但 `5.5" Phone` preset 仍有明確回歸，這個 caveat 不能被隱藏
+- 目前的 parity-fit release profile 仍然沿用同一條 PSD/MTF baseline，但 issue `#18` 另外加入了 `5.5" Phone` 的窄幅 viewing-geometry 修正
 
 目前 release 的 primary target profile 是：
 
@@ -41,6 +41,7 @@
 - `analysis gamma = 1.0`
 - `analysis bayer_mode = demosaic_red`
 - `frequency_scale = 1.17`
+- `5.5" Phone viewing_distance_cm = 25.55`
 
 其中前兩者是目前 golden CSV 可直接觀測到的 report fields；
 後三者則是目前 release 採用、並已在 repo benchmark 中驗證過的工程分析假設。
@@ -99,8 +100,8 @@ python3 scripts/run_release_batch.py \
     - 現在的 release 預設與 primary target profile
     - 報告欄位對標 golden sample：`Gamma=0.5`, `Color channel=R`
     - 分析路徑使用 `analysis_gamma=1.0 + demosaic_red + frequency_scale=1.17`
-    - 這條線已經通過 parity PSD/MTF 與 Acutance/Quality Loss validation
-    - 但 `5.5" Phone` preset 仍有回歸，這點需要在對外交付說明中保留
+    - issue `#18` 在不改動這條 parity-fit PSD/MTF baseline 的前提下，加入 `5.5" Phone viewing_distance_cm = 25.55` 的 preset override
+    - 這樣可以把 `Phone` preset 拉回到比舊 baseline 更接近 CSV 的區間，同時保留 Monitor/UHDTV/print 的既有改善
   - `recommended_profile.release.json`
     - 保留的 split-workaround reference profile
     - 不再是 primary target profile
@@ -121,4 +122,4 @@ python3 scripts/run_release_batch.py \
 - 但現有 sample 與整批 benchmark 都顯示，若把 analysis gamma 也直接硬設成 `0.5`，
   `MTF / Acutance` 會整體失配很多。
 - `parity_fit_profile.release.json` 已經是目前最好的整體 release profile，
-  但若後續要進一步改善，優先要追的是 `5.5" Phone` preset 的殘餘回歸，而不是再回頭把 literal `gamma=0.5` 路徑當成主線。
+  現在則另外帶入 issue `#18` 的 Phone-only 幾何修正，而不是回頭改壞整條 parity-fit 主線。
