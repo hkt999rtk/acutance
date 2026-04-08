@@ -103,6 +103,8 @@
   - issue `#12` 的 Acutance / Quality Loss validation、整體改善、以及 `Phone` preset 殘餘回歸
 - [docs/parity_phone_preset_followup.md](docs/parity_phone_preset_followup.md)
   - issue `#18` 的 Phone preset follow-up、Phone-only 幾何修正、以及保留 parity-fit curve 的驗證
+- [docs/amodel_gain_trend_experiment.md](docs/amodel_gain_trend_experiment.md)
+  - issue `#20` 的 A-model gain-trend experiment、現有 release profiles 的趨勢比較、以及尚未解決的 gain-dependent mismatch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13` 與 `#18` 的 release-facing parity-fit profile、預設 release 執行入口、以及保留的 reference/diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
