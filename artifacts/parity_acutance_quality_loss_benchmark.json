@@ -1,0 +1,167 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 1.0,
+        "high_frequency_guard_start_cpp": null,
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed"
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.0622343120090446,
+        "0.25": 0.057198175355299564,
+        "0.4": 0.04767289917446428,
+        "0.65": 0.036924043873611694,
+        "0.8": 0.02660295576139359,
+        "ori": 0.025420760894761103
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 2.5178271514780404,
+        "0.25": 2.3815895450392053,
+        "0.4": 2.1273746221054495,
+        "0.65": 2.058623954708096,
+        "0.8": 1.8810098653023173,
+        "ori": 2.1131952780455805
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.034795463537163916,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.006882270413960398,
+          "Computer Monitor Acutance": 0.06497067495156086,
+          "Large Print Acutance": 0.03388383054321927,
+          "Small Print Acutance": 0.03074517484201833,
+          "UHDTV Display Acutance": 0.03749536693506072
+        },
+        "curve_mae_mean": 0.04497614893687769,
+        "overall_quality_loss_mae_mean": 2.19874216006037,
+        "quality_loss_focus_preset_mae_mean": 2.19874216006037,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.11741435481300955,
+          "Computer Monitor Quality Loss": 4.837338525475545,
+          "Large Print Quality Loss": 2.2271428971931457,
+          "Small Print Quality Loss": 1.8119635302516492,
+          "UHDTV Display Quality Loss": 1.9998514925685023
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_locked_input_baseline_profile.json"
+    },
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.17,
+        "gamma": 1.0,
+        "high_frequency_guard_start_cpp": null,
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed"
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.025673827782072948,
+        "0.25": 0.020230526812152965,
+        "0.4": 0.012405734170996701,
+        "0.65": 0.012002787961412935,
+        "0.8": 0.019411063571392433,
+        "ori": 0.029539915614656298
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 1.064799308597913,
+        "0.25": 1.0448021238767673,
+        "0.4": 1.1435812069735452,
+        "0.65": 1.3433767163508576,
+        "0.8": 1.5614406779340824,
+        "ori": 1.7894287947862528
+      },
+      "delta_vs_first_profile": {
+        "acutance_focus_preset_mae_mean": -0.005681217089636918,
+        "curve_mae_mean": -0.025277648111947756,
+        "overall_quality_loss_mae_mean": -0.9225369454701975,
+        "quality_loss_focus_preset_mae_mean": -0.9225369454701975
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.029114246447526998,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.048248216995706236,
+          "Computer Monitor Acutance": 0.024747720107661214,
+          "Large Print Acutance": 0.022229647508049944,
+          "Small Print Acutance": 0.028952087494203603,
+          "UHDTV Display Acutance": 0.021393560132013982
+        },
+        "curve_mae_mean": 0.01969850082492993,
+        "overall_quality_loss_mae_mean": 1.2762052145901726,
+        "quality_loss_focus_preset_mae_mean": 1.2762052145901726,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.7316292982758597,
+          "Computer Monitor Quality Loss": 1.7683304037552425,
+          "Large Print Quality Loss": 1.19961405435829,
+          "Small Print Quality Loss": 1.3990701063786954,
+          "UHDTV Display Quality Loss": 1.2823822101827755
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_parity_psd_mtf_profile.json"
+    },
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 1.0,
+        "high_frequency_guard_start_cpp": 0.36,
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed"
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.06378102008289613,
+        "0.25": 0.059100419381098834,
+        "0.4": 0.0501605071015645,
+        "0.65": 0.03999237641159908,
+        "0.8": 0.02849560748175056,
+        "ori": 0.026033247390604905
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 2.5698139134113074,
+        "0.25": 2.450674717313817,
+        "0.4": 2.219747417417767,
+        "0.65": 2.1301806585937637,
+        "0.8": 1.966893704482174,
+        "ori": 2.191663486080589
+      },
+      "delta_vs_first_profile": {
+        "acutance_focus_preset_mae_mean": 0.0009990569204172545,
+        "curve_mae_mean": 0.0019339242528047182,
+        "overall_quality_loss_mae_mean": 0.0748682049320788,
+        "quality_loss_focus_preset_mae_mean": 0.0748682049320788
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.03579452045758117,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.0067709920553639755,
+          "Computer Monitor Acutance": 0.06849272829512854,
+          "Large Print Acutance": 0.033899738656773745,
+          "Small Print Acutance": 0.0306349162873575,
+          "UHDTV Display Acutance": 0.03917422699328207
+        },
+        "curve_mae_mean": 0.046910073189682405,
+        "overall_quality_loss_mae_mean": 2.273610364992449,
+        "quality_loss_focus_preset_mae_mean": 2.273610364992449,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.11631420781107131,
+          "Computer Monitor Quality Loss": 5.112060551184991,
+          "Large Print Quality Loss": 2.236736690537176,
+          "Small Print Quality Loss": 1.8107657158310453,
+          "UHDTV Display Quality Loss": 2.0921746595979593
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_split_workaround_reference_profile.json"
+    }
+  ]
+}

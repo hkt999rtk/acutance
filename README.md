@@ -99,6 +99,8 @@
   - issue `#10` 的 input-path benchmark、目前鎖定的 parity input pipeline、以及被排除的候選路徑
 - [docs/parity_psd_mtf_refit.md](docs/parity_psd_mtf_refit.md)
   - issue `#11` 的 parity PSD/MTF refit、基線與新 profile 比較、以及後續 validation 邊界
+- [docs/parity_acutance_quality_loss_validation.md](docs/parity_acutance_quality_loss_validation.md)
+  - issue `#12` 的 Acutance / Quality Loss validation、整體改善、以及 `Phone` preset 殘餘回歸
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
   - 演算法原型、數學流程、校準與 benchmark 記錄
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
