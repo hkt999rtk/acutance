@@ -1,0 +1,121 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 1.0,
+        "roi_source": "fixed",
+        "signal_psd_correction_gain": 0.0
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.0622343120090446,
+        "0.25": 0.057198175355299564,
+        "0.4": 0.04767289917446428,
+        "0.65": 0.036924043873611694,
+        "0.8": 0.02660295576139359,
+        "ori": 0.025420760894761103
+      },
+      "overall": {
+        "curve_mae_mean": 0.04497614893687769,
+        "mtf_abs_signed_rel_mean": 0.3301961269108969,
+        "mtf_bands": {
+          "high": {
+            "mae_mean": 0.06788209389112695,
+            "mre_mean": 0.3039261591755178,
+            "signed_rel_mean": -0.3039261591755178
+          },
+          "low": {
+            "mae_mean": 0.07472327731477817,
+            "mre_mean": 0.09352839949870431,
+            "signed_rel_mean": -0.09315912645914094
+          },
+          "mid": {
+            "mae_mean": 0.09717871788037263,
+            "mre_mean": 0.23805383716973952,
+            "signed_rel_mean": -0.23805383716973952
+          },
+          "top": {
+            "mae_mean": 0.2532767819288416,
+            "mre_mean": 0.6856453848391892,
+            "signed_rel_mean": -0.6856453848391892
+          }
+        },
+        "mtf_threshold_mae": {
+          "mtf20": 0.11418549045866118,
+          "mtf30": 0.07118338176569487,
+          "mtf50": 0.03341906068011393
+        },
+        "preset_mae": {
+          "5.5\" Phone Display Acutance": 0.006882270413960398,
+          "Computer Monitor Acutance": 0.06497067495156086,
+          "Large Print Acutance": 0.03388383054321927,
+          "Small Print Acutance": 0.03074517484201833,
+          "UHDTV Display Acutance": 0.03749536693506072
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_locked_input_baseline_profile.json"
+    },
+    {
+      "analysis_pipeline": {
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.17,
+        "gamma": 1.0,
+        "roi_source": "fixed",
+        "signal_psd_correction_gain": 0.0
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.025673827782072948,
+        "0.25": 0.020230526812152965,
+        "0.4": 0.012405734170996701,
+        "0.65": 0.012002787961412935,
+        "0.8": 0.019411063571392433,
+        "ori": 0.029539915614656298
+      },
+      "overall": {
+        "curve_mae_mean": 0.01969850082492993,
+        "mtf_abs_signed_rel_mean": 0.22759253303406912,
+        "mtf_bands": {
+          "high": {
+            "mae_mean": 0.045647557754144585,
+            "mre_mean": 0.20922883557710184,
+            "signed_rel_mean": -0.20921622243130006
+          },
+          "low": {
+            "mae_mean": 0.03729147398888756,
+            "mre_mean": 0.043762691172511844,
+            "signed_rel_mean": -0.029994625523639684
+          },
+          "mid": {
+            "mae_mean": 0.04206713812391215,
+            "mre_mean": 0.09284374699989298,
+            "signed_rel_mean": -0.08460575667510425
+          },
+          "top": {
+            "mae_mean": 0.21280150110229198,
+            "mre_mean": 0.5865535275062325,
+            "signed_rel_mean": -0.5865535275062325
+          }
+        },
+        "mtf_threshold_mae": {
+          "mtf20": 0.11804519815785279,
+          "mtf30": 0.06466880584991799,
+          "mtf50": 0.019311830361967347
+        },
+        "preset_mae": {
+          "5.5\" Phone Display Acutance": 0.048248216995706236,
+          "Computer Monitor Acutance": 0.024747720107661214,
+          "Large Print Acutance": 0.022229647508049944,
+          "Small Print Acutance": 0.028952087494203603,
+          "UHDTV Display Acutance": 0.021393560132013982
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_parity_psd_mtf_profile.json"
+    }
+  ]
+}
