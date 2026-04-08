@@ -1,0 +1,21 @@
+{
+  "name": "deadleaf_13b10_split_workaround_reference",
+  "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+  "gamma": 1.0,
+  "bayer_pattern": "RGGB",
+  "bayer_mode": "demosaic_red",
+  "roi_source": "fixed",
+  "roi_width": 1655,
+  "roi_height": 1673,
+  "frequency_scale": 1.0,
+  "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+  "acutance_noise_share_band_lo": 0.36,
+  "acutance_noise_share_band_hi": 0.5,
+  "acutance_noise_share_scale_coefficients": [
+    521.08180962,
+    -26.62905791,
+    1.59615575
+  ],
+  "high_frequency_guard_start_cpp": 0.36,
+  "high_frequency_guard_stop_cpp": 0.5
+}
