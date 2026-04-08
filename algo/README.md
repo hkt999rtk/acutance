@@ -3,6 +3,14 @@
 這個目錄包含一套純 Python 原型，用來在不依賴 Imatest 的前提下，
 重建 `Random / Dead Leaves` 報告中的核心數值與流程。
 
+在看這份 README 前，先看 canonical observable target：
+
+- [../docs/observable_target_from_golden_samples.md](../docs/observable_target_from_golden_samples.md)
+- [../docs/gamma_0_5_hypothesis_matrix.md](../docs/gamma_0_5_hypothesis_matrix.md)
+
+這份 README 會討論目前的模型與校準結論，但其中凡是沒有直接出現在 golden CSV 的內容，
+都應視為工程推論或暫時假設，而不是 Imatest 已明示的內部條件。
+
 整體設計刻意拆成兩層：
 
 - `raw -> ROI -> PSD -> MTF`
@@ -82,7 +90,7 @@ CSF(v) = 75 * v^0.8 * exp(-0.2 v) / 34.05
 
 另外，針對這批資料已額外驗證一個重要差異：
 
-- Imatest sample 報告中的 `Gamma, 0.5`
+- golden sample 報告中的 `Gamma, 0.5`
 - 不應直接等同於本原型分析前處理的 `gamma`
 
 在 `demosaic_red` 條件下，若把分析 gamma 也硬設成 `0.5`，
@@ -111,7 +119,7 @@ CSF(v) = 75 * v^0.8 * exp(-0.2 v) / 34.05
   目前 `texture_support_scale` 可以用「crop 支撐尺寸 / 有效紋理支撐尺寸」來解釋
   但和 Imatest 完全一致的底層定義仍未完全反推
 - 特定 CFA / color channel 的內部處理細節
-  目前資料中 CSV 全部是 `Color channel, R`，但 Imatest 的最終 channel pipeline
+  目前資料中 CSV 全部觀測到 `Color channel, R`，但 Imatest 的最終 channel pipeline
   仍可能有未完全重現之處
 
 ## 目前已驗證出的校準結論

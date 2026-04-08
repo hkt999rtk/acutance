@@ -1,0 +1,90 @@
+version: 1
+updated_at: "2026-04-08"
+notes:
+  - "Created during PM clarification because this repository did not yet contain planning/workgraph.yaml."
+  - "Issue #4 currently has no linked PRs or parity-specific follow-up issues."
+
+nodes:
+  issue-1:
+    kind: github_issue
+    number: 1
+    title: "Define observable input/output conditions from golden samples"
+    status: done
+    url: "https://github.com/hkt999rtk/acutance/issues/1"
+    workflow_state: closed
+    done_criteria:
+      - "Canonical observable target document exists and is referenced by project docs."
+
+  issue-2:
+    kind: github_issue
+    number: 2
+    title: "Research Imatest and ISP formulas for the dead-leaves black box"
+    status: done
+    url: "https://github.com/hkt999rtk/acutance/issues/2"
+    workflow_state: closed
+    done_criteria:
+      - "Source-backed variable inventory exists for future fitting work."
+
+  issue-3:
+    kind: github_issue
+    number: 3
+    title: "Clarify the role of Gamma 0.5 in Imatest dead-leaves reports"
+    status: done
+    url: "https://github.com/hkt999rtk/acutance/issues/3"
+    workflow_state: closed
+    done_criteria:
+      - "Gamma hypothesis matrix exists and issue #4 no longer treats report gamma as a proven analysis exponent."
+
+  issue-4:
+    kind: github_issue
+    number: 4
+    title: "Re-fit PSD/MTF/Acutance under the observable parity target"
+    status: question
+    url: "https://github.com/hkt999rtk/acutance/issues/4"
+    workflow_state: question
+    labels:
+      - "question"
+    depends_on:
+      - "issue-1"
+      - "issue-2"
+      - "issue-3"
+    linked_prs: []
+    related_docs:
+      - "docs/observable_target_from_golden_samples.md"
+      - "docs/gamma_0_5_hypothesis_matrix.md"
+      - "docs/dead_leaves_black_box_research.md"
+      - "docs/parity_refit_benchmarks_2026-04-08.md"
+    current_baseline:
+      benchmark_date: "2026-04-08"
+      scope:
+        - "Gamma = 0.5"
+        - "Color channel = R"
+        - "Use unnormalized MTF for Acutance calculation"
+        - "Full Random / Dead Leaves CSV parity target"
+      metrics:
+        curve_mae_mean: 0.13126369948174793
+        overall_quality_loss_mae_mean: 7.774160884003233
+        mtf_signed_rel_mean:
+          low: -0.1019628113485191
+          mid: -0.38469925271336475
+          high: -0.7133118945815905
+          top: -0.7599363328352176
+    attempted_followups:
+      - name: "Reuse HF-noise-share gated shape correction"
+        result: "Negligible improvement"
+        curve_mae_mean: 0.13120729088665492
+      - name: "Use observed golden-CSV ROI"
+        result: "Worse than parity baseline"
+        curve_mae_mean: 0.13430841096729565
+    blocker:
+      type: external_product_or_research_decision
+      summary: "Engineering has reproduced the parity path, but no tested change inside the current reduced model family materially improves the parity metrics."
+      exact_question: "Which broader source-backed model family should engineering implement next for issue #4: OECF-driven linearization, chart/sensor MTF compensation, intrinsic/full-reference dead-leaves, or another explicitly cited model family with supporting reference data?"
+    acceptance_criteria:
+      - "After the next model-family decision, the parity path shows material improvement over the 2026-04-08 baseline in MTF residual bands, curve_mae_mean, preset MAEs, and overall_quality_loss_mae_mean."
+      - "New parity-fit artifacts are versioned and documented."
+      - "Release docs continue to distinguish the true parity target from any interim hypothesis profile."
+    resume_when:
+      - "A single next model family is explicitly chosen."
+      - "Any required citation, reference data, or external evidence for that family is linked."
+      - "If the implementation is larger than issue #4 should carry alone, a follow-up implementation issue is created and linked back to issue #4 before engineering resumes."

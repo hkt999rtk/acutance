@@ -177,8 +177,12 @@ class _TextureSupportComponent:
 
 @dataclass
 class ParsedImatestCsv:
+    image_shape: tuple[int, int] | None
     crop: tuple[int, int]
     lrtb: RoiBounds
+    report_gamma: float | None
+    color_channel: str | None
+    max_detected_frequency_cpp: float | None
     frequencies_cpp: np.ndarray
     mtf: np.ndarray
     mtf_with_noise: np.ndarray
@@ -706,7 +710,7 @@ def radial_psd(
 
     bin_ids = np.digitize(radius, edges) - 1
     valid = (bin_ids >= 0) & (bin_ids < num_bins)
-    for idx, value in zip(bin_ids[valid], psd2[valid], strict=False):
+    for idx, value in zip(bin_ids[valid], psd2[valid]):
         psd[idx] += float(value)
         counts[idx] += 1
 
@@ -1658,7 +1662,7 @@ def acutance_from_mtf(
         * np.exp(-0.2 * angular_frequency)
         / 34.05
     )
-    numerator = np.trapezoid(effective_mtf * csf, angular_frequency)
+    numerator = np.trapz(effective_mtf * csf, angular_frequency)
     denominator = (75.0 / 34.05) * math.gamma(1.8) / (0.2**1.8)
     return float(numerator / max(denominator, EPS))
 
@@ -1736,7 +1740,8 @@ def quality_loss_presets_from_acutance(
 
 
 def parse_imatest_random_csv(path: str | Path) -> ParsedImatestCsv:
-    rows = list(csv.reader(Path(path).open("r", encoding="utf-8", errors="ignore")))
+    with Path(path).open("r", encoding="utf-8", errors="ignore") as handle:
+        rows = list(csv.reader(handle))
 
     def find_row(prefix: str) -> list[str]:
         for row in rows:
@@ -1744,8 +1749,18 @@ def parse_imatest_random_csv(path: str | Path) -> ParsedImatestCsv:
                 return row
         raise KeyError(f"Could not find row starting with {prefix!r} in {path}")
 
+    def find_optional_row(prefix: str) -> list[str] | None:
+        for row in rows:
+            if row and row[0].strip().startswith(prefix):
+                return row
+        return None
+
+    image_pixels_row = find_optional_row("Image pixels (WxH)")
     crop_row = find_row("Crop")
     lrtb_row = find_row("L R T B")
+    gamma_row = find_optional_row("Gamma")
+    color_channel_row = find_optional_row("Color channel")
+    max_detected_f_row = find_optional_row("Max detected f (c/p)")
 
     table_start = next(
         idx for idx, row in enumerate(rows) if row and row[0].strip() == "f (c/p)"
@@ -1822,8 +1837,19 @@ def parse_imatest_random_csv(path: str | Path) -> ParsedImatestCsv:
     bottom = int(float(lrtb_row[4]))
 
     return ParsedImatestCsv(
+        image_shape=(
+            int(float(image_pixels_row[1])),
+            int(float(image_pixels_row[2])),
+        )
+        if image_pixels_row is not None
+        else None,
         crop=(int(float(crop_row[1])), int(float(crop_row[2]))),
         lrtb=RoiBounds(left=left, right=right, top=top, bottom=bottom),
+        report_gamma=float(gamma_row[1]) if gamma_row is not None else None,
+        color_channel=color_channel_row[1].strip() if color_channel_row is not None else None,
+        max_detected_frequency_cpp=(
+            float(max_detected_f_row[1]) if max_detected_f_row is not None else None
+        ),
         frequencies_cpp=frequencies,
         mtf=mtf,
         mtf_with_noise=mtf_with_noise,
