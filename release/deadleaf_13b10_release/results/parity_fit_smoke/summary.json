@@ -1,0 +1,13 @@
+{
+  "count_total": 4,
+  "dataset_root": "/Users/kevinhuang/work/ai_agent/runtime/contexts/acutance/release/deadleaf_13b10_release/data/20260318_deadleaf_13b10/output2_Bmodel/OV13B10_AI_NR_OV13B10_20251205_v2_2650_ppqpkl_0.25",
+  "generated_files": [
+    "results/parity_fit_smoke/Results/OV13b10_AG15.5_ET2800_deadleaf_12M_60_denoised_R_Random.csv",
+    "results/parity_fit_smoke/Results/OV13b10_AG1_ET40000_deadleaf_12M_1_denoised_R_Random.csv",
+    "results/parity_fit_smoke/Results/OV13b10_AG4_ET11000_deadleaf_12M_20_denoised_R_Random.csv",
+    "results/parity_fit_smoke/Results/OV13b10_AG8_ET5500_deadleaf_12M_40_denoised_R_Random.csv"
+  ],
+  "output_root": "/Users/kevinhuang/work/ai_agent/runtime/contexts/acutance/release/deadleaf_13b10_release/results/parity_fit_smoke",
+  "profile": "/Users/kevinhuang/work/ai_agent/runtime/contexts/acutance/release/deadleaf_13b10_release/config/parity_fit_profile.release.json",
+  "profile_name": "deadleaf_13b10_release_parity_fit"
+}

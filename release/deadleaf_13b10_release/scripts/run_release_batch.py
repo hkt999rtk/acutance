@@ -39,7 +39,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--profile",
         type=Path,
-        default=Path("config/recommended_profile.release.json"),
+        default=Path("config/parity_fit_profile.release.json"),
         help="Release profile JSON path, relative to release root by default.",
     )
     parser.add_argument(
@@ -152,7 +152,7 @@ def analyze_one(
         high_frequency_guard_stop_cpp=float(acutance_profile["high_frequency_guard_stop_cpp"]),
     )
 
-    effective_frequency_scale = 1.0
+    effective_frequency_scale = float(shared.get("frequency_scale", 1.0))
     texture_support = None
     if bool(shared.get("texture_support_scale")):
         crop = image[result.roi.top : result.roi.bottom + 1, result.roi.left : result.roi.right + 1]
@@ -163,7 +163,7 @@ def analyze_one(
 
     corrected_mtf, _ = apply_mtf_shape_correction(
         result.mtf,
-        result.frequencies_cpp,
+        scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
         gain=float(acutance_profile["mtf_shape_correction_gain"]),
@@ -179,7 +179,7 @@ def analyze_one(
     )
     corrected_mtf_with_noise, _ = apply_mtf_shape_correction(
         result.mtf_with_noise,
-        result.frequencies_cpp,
+        scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
         gain=float(acutance_profile["mtf_shape_correction_gain"]),
@@ -195,7 +195,7 @@ def analyze_one(
     )
     corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
         result.mtf_for_acutance,
-        result.frequencies_cpp,
+        scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
         gain=float(acutance_profile["mtf_shape_correction_gain"]),
@@ -217,14 +217,14 @@ def analyze_one(
         interpolation_mode=str(mtf_profile["readout_interpolation"]),
     )
     acutance_curve = acutance_curve_from_mtf(
-        result.frequencies_cpp,
+        scaled_frequencies,
         corrected_mtf_for_acutance,
         picture_height_cm=40.0,
         viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
         pixels_along_picture_height=result.roi.height,
     )
     acutance_presets = acutance_presets_from_mtf(
-        result.frequencies_cpp,
+        scaled_frequencies,
         corrected_mtf_for_acutance,
         pixels_along_picture_height=result.roi.height,
     )
@@ -247,6 +247,7 @@ def analyze_one(
         "report_gamma": report_gamma,
         "color_channel": report_color_channel,
         "max_detected_frequency_cpp": float(np.max(scaled_frequencies)),
+        "effective_frequency_scale": effective_frequency_scale,
         "texture_support": texture_support,
     }
 
@@ -362,6 +363,7 @@ def main() -> int:
         "output_root": str(output_root),
         "count_total": 0,
         "generated_files": [],
+        "profile_name": profile.get("name"),
     }
 
     for raw_path in raw_paths:
