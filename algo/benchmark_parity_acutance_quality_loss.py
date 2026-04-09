@@ -99,6 +99,8 @@ class Profile:
     matched_ori_acutance_blend_stop_relative_scale: float = 0.0
     matched_ori_acutance_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_strength_curve_values: tuple[float, ...] | None = None
+    matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
+    matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -603,8 +605,14 @@ def summarize_profile(
                     strength=profile.matched_ori_acutance_correction_strength,
                     blend_start_cpp=profile.matched_ori_acutance_blend_start_relative_scale,
                     blend_stop_cpp=profile.matched_ori_acutance_blend_stop_relative_scale,
-                    strength_curve_frequencies=profile.matched_ori_acutance_strength_curve_relative_scales,
-                    strength_curve_values=profile.matched_ori_acutance_strength_curve_values,
+                    strength_curve_frequencies=(
+                        profile.matched_ori_acutance_preset_strength_curve_relative_scales
+                        or profile.matched_ori_acutance_strength_curve_relative_scales
+                    ),
+                    strength_curve_values=(
+                        profile.matched_ori_acutance_preset_strength_curve_values
+                        or profile.matched_ori_acutance_strength_curve_values
+                    ),
                 )
                 acutance = {
                     preset.name: float(value)
@@ -664,6 +672,8 @@ def summarize_profile(
             "matched_ori_acutance_blend_stop_relative_scale": profile.matched_ori_acutance_blend_stop_relative_scale,
             "matched_ori_acutance_strength_curve_relative_scales": profile.matched_ori_acutance_strength_curve_relative_scales,
             "matched_ori_acutance_strength_curve_values": profile.matched_ori_acutance_strength_curve_values,
+            "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
+            "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,

@@ -140,6 +140,8 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_acutance_blend_stop_relative_scale=5.5,
             matched_ori_acutance_strength_curve_relative_scales=(0.0, 3.0, 5.8),
             matched_ori_acutance_strength_curve_values=(1.0, 1.0, 0.4),
+            matched_ori_acutance_preset_strength_curve_relative_scales=(0.0, 4.5, 5.8),
+            matched_ori_acutance_preset_strength_curve_values=(1.0, 0.85, 0.45),
         )
         self.assertTrue(profile.matched_ori_acutance_reference_anchor)
         self.assertEqual(profile.matched_ori_acutance_correction_strength, 0.75)
@@ -147,6 +149,14 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(profile.matched_ori_acutance_blend_stop_relative_scale, 5.5)
         self.assertEqual(profile.matched_ori_acutance_strength_curve_relative_scales, (0.0, 3.0, 5.8))
         self.assertEqual(profile.matched_ori_acutance_strength_curve_values, (1.0, 1.0, 0.4))
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_strength_curve_relative_scales,
+            (0.0, 4.5, 5.8),
+        )
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_strength_curve_values,
+            (1.0, 0.85, 0.45),
+        )
 
 
 if __name__ == "__main__":
