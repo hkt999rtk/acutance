@@ -145,6 +145,8 @@
   - issue `#29` 的第十九個 acutance-side follow-up，將 curve-side 與 preset-side 的 direct Acutance correction clip 分開後，能在完全不改變 preset 指標的前提下把 `curve_mae_mean` 進一步降到 `0.03806777`，成為目前最好的 overall branch
 - [docs/imatest_parity_reference_anchor_acutance_curve_clip_shape_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_clip_shape_followup.md)
   - issue `#29` 的第二十個 acutance-side follow-up，將 curve-side 的 direct Acutance correction `clip_hi` 做成 relative-scale shape 後，再把 `curve_mae_mean` 進一步降到 `0.03803290`，而 preset 與 Quality Loss 指標維持不變，成為目前最好的 overall branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_curve_delta_power_split_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_curve_delta_power_split_followup.md)
+  - issue `#29` 的第二十一個 acutance-side follow-up，將 nonlinear `delta_power` 分成 curve-side 與 preset-side 後，發現 curve-side `0.95` 可以把 `curve_mae_mean` 再降到 `0.03776865`，同時完全保留目前最好的 preset 與 Quality Loss 指標
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

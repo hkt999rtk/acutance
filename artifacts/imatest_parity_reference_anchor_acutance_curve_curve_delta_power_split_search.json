@@ -1,0 +1,65 @@
+{
+  "base_curve_clip_shape": {
+    "curve_mae_mean": 0.03803289687776197,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.04533414097048802,
+      "0.25": 0.03662466611888426,
+      "0.4": 0.029378824960660688,
+      "0.65": 0.03385969254467648,
+      "0.8": 0.039732701477683666,
+      "ori": 0.044328609177509956
+    }
+  },
+  "curve_dp095": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.045883697222583536,
+      "0.25": 0.03701426196467171,
+      "0.4": 0.029404867118321232,
+      "0.65": 0.033255284136037566,
+      "0.8": 0.03844904396755884,
+      "ori": 0.04292743567579083
+    },
+    "matched_ori_acutance_curve_correction_delta_power": 0.95
+  },
+  "curve_dp105": {
+    "curve_mae_mean": 0.03833542761865376,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.04491756037981691,
+      "0.25": 0.03634271683685139,
+      "0.4": 0.02952619125539696,
+      "0.65": 0.03444130695427235,
+      "0.8": 0.04087504386410491,
+      "ori": 0.04558994455992491
+    },
+    "matched_ori_acutance_curve_correction_delta_power": 1.05
+  },
+  "curve_dp110": {
+    "curve_mae_mean": 0.038669487925832385,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.044597892233384076,
+      "0.25": 0.036169478509733274,
+      "0.4": 0.029817408349337087,
+      "0.65": 0.03498839038860128,
+      "0.8": 0.04189974566022283,
+      "ori": 0.04673743936436807
+    },
+    "matched_ori_acutance_curve_correction_delta_power": 1.1
+  }
+}

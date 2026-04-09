@@ -107,6 +107,8 @@ class Profile:
     matched_ori_acutance_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_strength_curve_values: tuple[float, ...] | None = None
     matched_ori_acutance_correction_delta_power: float = 1.0
+    matched_ori_acutance_curve_correction_delta_power: float | None = None
+    matched_ori_acutance_preset_correction_delta_power: float | None = None
     matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
     frequency_scale: float = 1.0
@@ -608,7 +610,11 @@ def summarize_profile(
                     blend_stop_cpp=profile.matched_ori_acutance_blend_stop_relative_scale,
                     strength_curve_frequencies=profile.matched_ori_acutance_strength_curve_relative_scales,
                     strength_curve_values=profile.matched_ori_acutance_strength_curve_values,
-                    correction_delta_power=profile.matched_ori_acutance_correction_delta_power,
+                    correction_delta_power=(
+                        profile.matched_ori_acutance_curve_correction_delta_power
+                        if profile.matched_ori_acutance_curve_correction_delta_power is not None
+                        else profile.matched_ori_acutance_correction_delta_power
+                    ),
                 )
                 curve = [
                     point.__class__(
@@ -651,7 +657,11 @@ def summarize_profile(
                         profile.matched_ori_acutance_preset_strength_curve_values
                         or profile.matched_ori_acutance_strength_curve_values
                     ),
-                    correction_delta_power=profile.matched_ori_acutance_correction_delta_power,
+                    correction_delta_power=(
+                        profile.matched_ori_acutance_preset_correction_delta_power
+                        if profile.matched_ori_acutance_preset_correction_delta_power is not None
+                        else profile.matched_ori_acutance_correction_delta_power
+                    ),
                 )
                 acutance = {
                     preset.name: float(value)
@@ -718,6 +728,8 @@ def summarize_profile(
             "matched_ori_acutance_strength_curve_relative_scales": profile.matched_ori_acutance_strength_curve_relative_scales,
             "matched_ori_acutance_strength_curve_values": profile.matched_ori_acutance_strength_curve_values,
             "matched_ori_acutance_correction_delta_power": profile.matched_ori_acutance_correction_delta_power,
+            "matched_ori_acutance_curve_correction_delta_power": profile.matched_ori_acutance_curve_correction_delta_power,
+            "matched_ori_acutance_preset_correction_delta_power": profile.matched_ori_acutance_preset_correction_delta_power,
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
             "frequency_scale": profile.frequency_scale,
