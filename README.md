@@ -175,6 +175,8 @@
   - issue `#29` 的第三十四個 quality-side follow-up，將新的 global Quality Loss fit 再加上一個 phone-only preset override 後，同時保住 overall 改善並把 phone Quality Loss MAE 從 `0.38082` 拉回到 `0.16934`
 - [docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_allpreset_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_allpreset_followup.md)
   - issue `#29` 的第三十五個 quality-side follow-up，將同一個 fixed-ceiling Quality Loss family 擴成 all-preset overrides 後，在完全保住 phone Quality Loss 改善的前提下，再把 overall Quality Loss MAE 從 `1.80933` 明顯降到 `1.44753`
+- [docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_polynomial_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_polynomial_followup.md)
+  - issue `#29` 的第三十六個 quality-side follow-up，將 Quality Loss mapping 從固定 quadratic 推進到 variable-degree polynomial family 後，確認 quartic all-preset fit 可以再把 overall Quality Loss MAE 從 `1.44753` 壓到 `1.30895`
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

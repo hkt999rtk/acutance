@@ -111,6 +111,18 @@ class DeadLeavesMtfCompensationTest(unittest.TestCase):
             quality['5.5" Phone Display Quality Loss'],
         )
 
+    def test_quality_loss_presets_support_higher_order_coefficients(self) -> None:
+        quality = quality_loss_presets_from_acutance(
+            {'5.5" Phone Display Acutance': 0.8},
+            om_ceiling=0.8851,
+            coefficients=(0.0, 10.0, 0.0, 0.0),
+        )
+        objective_metric = 0.0851
+        self.assertAlmostEqual(
+            quality['5.5" Phone Display Quality Loss'],
+            10.0 * (objective_metric**2),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

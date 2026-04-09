@@ -1801,18 +1801,20 @@ def quality_loss_from_acutance(
     acutance: float,
     *,
     om_ceiling: float = 0.8851,
-    coefficients: tuple[float, float, float] = QUALITY_LOSS_OM_COEFFICIENTS,
+    coefficients: tuple[float, ...] = QUALITY_LOSS_OM_COEFFICIENTS,
 ) -> float:
     objective_metric = max(0.0, float(om_ceiling) - float(acutance))
-    a2, a1, a0 = coefficients
-    return float(a2 * objective_metric * objective_metric + a1 * objective_metric + a0)
+    result = 0.0
+    for coefficient in coefficients:
+        result = result * objective_metric + float(coefficient)
+    return float(result)
 
 
 def quality_loss_presets_from_acutance(
     acutance_presets: dict[str, float],
     *,
     om_ceiling: float = 0.8851,
-    coefficients: tuple[float, float, float] = QUALITY_LOSS_OM_COEFFICIENTS,
+    coefficients: tuple[float, ...] = QUALITY_LOSS_OM_COEFFICIENTS,
     preset_overrides: dict[str, dict[str, object]] | None = None,
 ) -> dict[str, float]:
     override_map = preset_overrides or {}
