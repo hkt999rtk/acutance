@@ -125,6 +125,8 @@
   - issue `#29` 的第九個 acutance-side follow-up，測試 low/high piecewise strength 後結果比 `0.85` scalar 更差，排除了最簡單的雙頻帶 shape 假設
 - [docs/imatest_parity_reference_anchor_acutance_only_mid_dip_followup.md](docs/imatest_parity_reference_anchor_acutance_only_mid_dip_followup.md)
   - issue `#29` 的第十個 acutance-side follow-up，使用 mid-band dip strength curve 後，成為目前 acutance-only family 中最好的折衷分支，同時改善 preset / Quality Loss 並保留 fixed reported-MTF branch
+- [docs/imatest_parity_reference_anchor_acutance_only_shoulder_trim_followup.md](docs/imatest_parity_reference_anchor_acutance_only_shoulder_trim_followup.md)
+  - issue `#29` 的第十一個 acutance-side follow-up，驗證 mid-dip 周邊的 shoulder-trim strength curves 後都沒有超過目前 mid-dip 分支，顯示這個 local tuning neighborhood 已接近飽和
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

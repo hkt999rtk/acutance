@@ -1,0 +1,60 @@
+{
+  "baseline_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_mid_dip_profile.json",
+  "baseline_overall": {
+    "curve_mae_mean": 0.04306441973920293,
+    "acutance_focus_preset_mae_mean": 0.04947448587586449,
+    "overall_quality_loss_mae_mean": 2.731869278273033,
+    "phone_acutance_mae": 0.014469243052711292,
+    "phone_quality_loss_mae": 0.3077102210096678
+  },
+  "candidates": [
+    {
+      "strength_curve_values": [
+        0.92,
+        0.92,
+        0.82,
+        0.95,
+        1.0
+      ],
+      "overall": {
+        "curve_mae_mean": 0.04323996877427089,
+        "acutance_focus_preset_mae_mean": 0.051087648947573915,
+        "overall_quality_loss_mae_mean": 2.777377588814294,
+        "phone_acutance_mae": 0.019816935782104514,
+        "phone_quality_loss_mae": 0.3860694886538908
+      }
+    },
+    {
+      "strength_curve_values": [
+        0.96,
+        0.96,
+        0.8,
+        0.98,
+        1.0
+      ],
+      "overall": {
+        "curve_mae_mean": 0.043163600852107874,
+        "acutance_focus_preset_mae_mean": 0.05016797056522711,
+        "overall_quality_loss_mae_mean": 2.750819643107486,
+        "phone_acutance_mae": 0.016944569415779757,
+        "phone_quality_loss_mae": 0.34300114176328445
+      }
+    },
+    {
+      "strength_curve_values": [
+        0.98,
+        0.98,
+        0.8,
+        0.98,
+        1.0
+      ],
+      "overall": {
+        "curve_mae_mean": 0.04311951523804058,
+        "acutance_focus_preset_mae_mean": 0.04976910148632098,
+        "overall_quality_loss_mae_mean": 2.7395229193144166,
+        "phone_acutance_mae": 0.015629639279283736,
+        "phone_quality_loss_mae": 0.3238337300039247
+      }
+    }
+  ]
+}
