@@ -44,6 +44,8 @@ class Profile:
     name: str
     calibration_file: str
     gamma: float = 1.0
+    linearization_mode: str = "power"
+    linearization_toe: float = 0.0
     bayer_pattern: str = BayerPattern.RGGB.value
     bayer_mode: str = BayerMode.DEMOSAIC_RED.value
     roi_source: str = "fixed"
@@ -193,7 +195,12 @@ def profile_payload(
             bayer_pattern=BayerPattern(profile.bayer_pattern),
             mode=BayerMode(profile.bayer_mode),
         )
-        image = normalize_for_analysis(plane, gamma=profile.gamma)
+        image = normalize_for_analysis(
+            plane,
+            gamma=profile.gamma,
+            mode=profile.linearization_mode,
+            toe=profile.linearization_toe,
+        )
         roi = choose_roi(profile, reference, image)
         estimate = estimate_dead_leaves_mtf(
             image,
@@ -309,6 +316,8 @@ def profile_payload(
         "profile_path": str(profile_path),
         "analysis_pipeline": {
             "gamma": profile.gamma,
+            "linearization_mode": profile.linearization_mode,
+            "linearization_toe": profile.linearization_toe,
             "bayer_pattern": profile.bayer_pattern,
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,

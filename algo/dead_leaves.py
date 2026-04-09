@@ -202,6 +202,8 @@ class RawLinearization:
     black_percentile: float = 0.1
     white_percentile: float = 99.9
     gamma: float = 1.0
+    mode: str = "power"
+    toe: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -324,6 +326,15 @@ def linearize_raw(
     )
     scale = max(white - black, 1.0)
     norm = np.clip((raw - black) / scale, 0.0, 1.0)
+    if config.mode == "power":
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode != "toe_power":
+        raise ValueError(f"Unknown linearization mode: {config.mode}")
+    if config.toe < 0.0:
+        raise ValueError("toe must be non-negative")
+    norm = (norm + float(config.toe)) / (1.0 + float(config.toe))
     if config.gamma != 1.0:
         norm = np.power(norm, config.gamma)
     return norm
@@ -333,6 +344,8 @@ def normalize_for_analysis(
     raw: np.ndarray,
     *,
     gamma: float = 1.0,
+    mode: str = "power",
+    toe: float = 0.0,
     black_level: float | None = None,
     white_level: float | None = None,
     black_percentile: float = 0.1,
@@ -346,6 +359,8 @@ def normalize_for_analysis(
             black_percentile=black_percentile,
             white_percentile=white_percentile,
             gamma=gamma,
+            mode=mode,
+            toe=toe,
         ),
     )
 

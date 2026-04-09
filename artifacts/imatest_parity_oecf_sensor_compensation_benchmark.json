@@ -1,0 +1,185 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "linearization_mode": "power",
+        "linearization_toe": 0.0,
+        "mtf_compensation_mode": "none",
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed",
+        "sensor_fill_factor": 1.0,
+        "texture_support_scale": true
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.024415279782147005,
+        "0.25": 0.036200794551410516,
+        "0.4": 0.051955356171291815,
+        "0.65": 0.07593101917977911,
+        "0.8": 0.09432304500624408,
+        "ori": 0.11616581239637441
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 2.155766955881967,
+        "0.25": 1.958742089396091,
+        "0.4": 2.3799061921998192,
+        "0.65": 3.6678385490831023,
+        "0.8": 5.022580382677324,
+        "ori": 6.434117985639397
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.06480082219356806,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.0809088107634989,
+          "Computer Monitor Acutance": 0.09880527019685227,
+          "Large Print Acutance": 0.04124123430686845,
+          "Small Print Acutance": 0.04029207092839639,
+          "UHDTV Display Acutance": 0.06275672477222424
+        },
+        "curve_mae_mean": 0.06058857825983403,
+        "overall_quality_loss_mae_mean": 3.3135947775032895,
+        "quality_loss_focus_preset_mae_mean": 3.3135947775032895,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.9808771228915724,
+          "Computer Monitor Quality Loss": 7.560450714736341,
+          "Large Print Quality Loss": 2.4840753185535296,
+          "Small Print Quality Loss": 2.0535847715492546,
+          "UHDTV Display Quality Loss": 3.4889859597857535
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_parity_profile.json"
+    },
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "linearization_mode": "power",
+        "linearization_toe": 0.0,
+        "mtf_compensation_mode": "sensor_aperture_sinc",
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed",
+        "sensor_fill_factor": 1.5,
+        "texture_support_scale": true
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.02355448238706277,
+        "0.25": 0.032076524383645555,
+        "0.4": 0.04744296411444386,
+        "0.65": 0.06697550433083226,
+        "0.8": 0.08581607965977495,
+        "ori": 0.10743237703508329
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 2.721782657138241,
+        "0.25": 2.347627975001806,
+        "0.4": 2.4623842221150483,
+        "0.65": 3.414398711783507,
+        "0.8": 4.6679958101612185,
+        "ori": 5.959030074277854
+      },
+      "delta_vs_first_profile": {
+        "acutance_focus_preset_mae_mean": 0.004009450469782169,
+        "curve_mae_mean": -0.0053697800142570515,
+        "overall_quality_loss_mae_mean": 0.06370623398610897,
+        "quality_loss_focus_preset_mae_mean": 0.06370623398610897
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.06881027266335023,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.08986500427272617,
+          "Computer Monitor Acutance": 0.09242762415599673,
+          "Large Print Acutance": 0.047077104212964196,
+          "Small Print Acutance": 0.04876489581681106,
+          "UHDTV Display Acutance": 0.065916734858253
+        },
+        "curve_mae_mean": 0.05521879824557698,
+        "overall_quality_loss_mae_mean": 3.3773010114893984,
+        "quality_loss_focus_preset_mae_mean": 3.3773010114893984,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 1.0057575756886163,
+          "Computer Monitor Quality Loss": 7.028695330700911,
+          "Large Print Quality Loss": 2.771492965596056,
+          "Small Print Quality Loss": 2.4274196510628294,
+          "UHDTV Display Quality Loss": 3.6531395343985826
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_profile.json"
+    },
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "mtf_compensation_mode": "sensor_aperture_sinc",
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "fixed",
+        "sensor_fill_factor": 1.5,
+        "texture_support_scale": true
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.025590098081884605,
+        "0.25": 0.02638800224462083,
+        "0.4": 0.03207096511307011,
+        "0.65": 0.043283038762697706,
+        "0.8": 0.05404338577412961,
+        "ori": 0.061770158635461245
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 3.5644395744629565,
+        "0.25": 3.0339765933703786,
+        "0.4": 2.7247928189467547,
+        "0.65": 2.551177924572496,
+        "0.8": 2.9064377640574817,
+        "ori": 3.1053407497574415
+      },
+      "delta_vs_first_profile": {
+        "acutance_focus_preset_mae_mean": 0.0034259239961146326,
+        "curve_mae_mean": -0.022464768277277114,
+        "overall_quality_loss_mae_mean": -0.3020135599027811,
+        "quality_loss_focus_preset_mae_mean": -0.3020135599027811
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.06822674618968269,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.09789918411641521,
+          "Computer Monitor Acutance": 0.06306069727882178,
+          "Large Print Acutance": 0.05145210787661407,
+          "Small Print Acutance": 0.06855789597187138,
+          "UHDTV Display Acutance": 0.060163845704691056
+        },
+        "curve_mae_mean": 0.03812380998255692,
+        "overall_quality_loss_mae_mean": 3.0115812176005083,
+        "quality_loss_focus_preset_mae_mean": 3.0115812176005083,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 1.017326355397962,
+          "Computer Monitor Quality Loss": 4.542846389472581,
+          "Large Print Quality Loss": 2.888991724589605,
+          "Small Print Quality Loss": 3.319420543978809,
+          "UHDTV Display Quality Loss": 3.2893210745635835
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_profile.json"
+    }
+  ]
+}

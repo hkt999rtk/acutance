@@ -117,6 +117,8 @@ def analyze_one(
     acutance_profile = profile["acutance_profile"]
     report = profile.get("report", {})
     analysis_gamma = float(shared.get("analysis_gamma", shared["gamma"]))
+    linearization_mode = str(shared.get("linearization_mode", "power"))
+    linearization_toe = float(shared.get("linearization_toe", 0.0))
     report_gamma = float(report.get("gamma", shared["gamma"]))
     report_color_channel = str(
         report.get("color_channel", _color_channel_label(str(shared["bayer_mode"])))
@@ -132,6 +134,8 @@ def analyze_one(
     image = normalize_for_analysis(
         plane,
         gamma=analysis_gamma,
+        mode=linearization_mode,
+        toe=linearization_toe,
     )
 
     detected = detect_texture_roi(image)
@@ -294,6 +298,8 @@ def analyze_one(
         "acutance_presets": acutance_presets_result,
         "quality_loss_presets": quality_loss_presets,
         "analysis_gamma": analysis_gamma,
+        "linearization_mode": linearization_mode,
+        "linearization_toe": linearization_toe,
         "report_gamma": report_gamma,
         "color_channel": report_color_channel,
         "max_detected_frequency_cpp": float(np.max(scaled_frequencies)),

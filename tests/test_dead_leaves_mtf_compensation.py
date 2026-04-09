@@ -4,10 +4,34 @@ import unittest
 
 import numpy as np
 
-from algo.dead_leaves import apply_mtf_compensation, estimate_mtf_compensation_curve
+from algo.dead_leaves import (
+    RawLinearization,
+    apply_mtf_compensation,
+    estimate_mtf_compensation_curve,
+    linearize_raw,
+)
 
 
 class DeadLeavesMtfCompensationTest(unittest.TestCase):
+    def test_toe_power_linearization_lifts_dark_values_before_gamma(self) -> None:
+        raw = np.array([0.0, 100.0, 1000.0], dtype=np.float32)
+        base = linearize_raw(
+            raw,
+            config=RawLinearization(black_level=0.0, white_level=1000.0, gamma=0.5),
+        )
+        toe = linearize_raw(
+            raw,
+            config=RawLinearization(
+                black_level=0.0,
+                white_level=1000.0,
+                gamma=0.5,
+                mode="toe_power",
+                toe=0.12,
+            ),
+        )
+        self.assertGreater(toe[1], base[1])
+        self.assertAlmostEqual(toe[-1], 1.0)
+
     def test_sensor_aperture_compensation_leaves_dc_unchanged(self) -> None:
         frequencies = np.array([0.0, 0.1, 0.25, 0.5], dtype=np.float64)
         compensation = estimate_mtf_compensation_curve(
