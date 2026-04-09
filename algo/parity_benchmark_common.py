@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 from typing import Sequence
 
+import cv2
 import numpy as np
 
 from .dead_leaves import AcutancePoint
@@ -31,6 +32,153 @@ def build_ori_reference_map(dataset_root: Path) -> dict[str, tuple[Path, Path]]:
         if raw_path.exists():
             mapping[key] = (csv_path, raw_path)
     return mapping
+
+
+def center_crop_to_common_shape(
+    reference_patch: np.ndarray,
+    observed_patch: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    reference = np.asarray(reference_patch, dtype=np.float64)
+    observed = np.asarray(observed_patch, dtype=np.float64)
+    target_height = min(reference.shape[0], observed.shape[0])
+    target_width = min(reference.shape[1], observed.shape[1])
+    if target_height <= 0 or target_width <= 0:
+        raise ValueError("reference and observed patches must both be non-empty")
+
+    def crop_center(patch: np.ndarray) -> np.ndarray:
+        top = max((patch.shape[0] - target_height) // 2, 0)
+        left = max((patch.shape[1] - target_width) // 2, 0)
+        return patch[top : top + target_height, left : left + target_width]
+
+    return crop_center(reference), crop_center(observed)
+
+
+def align_patch_phase_correlation(
+    reference_patch: np.ndarray,
+    observed_patch: np.ndarray,
+) -> tuple[np.ndarray, tuple[float, float], float]:
+    reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
+    window = np.outer(
+        np.hanning(reference.shape[0]),
+        np.hanning(reference.shape[1]),
+    ).astype(np.float32)
+    shift, response = cv2.phaseCorrelate(
+        reference.astype(np.float32),
+        observed.astype(np.float32),
+        window,
+    )
+    transform = np.array(
+        [
+            [1.0, 0.0, -float(shift[0])],
+            [0.0, 1.0, -float(shift[1])],
+        ],
+        dtype=np.float32,
+    )
+    aligned = cv2.warpAffine(
+        observed.astype(np.float32),
+        transform,
+        (reference.shape[1], reference.shape[0]),
+        flags=cv2.INTER_LINEAR,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+    return aligned.astype(np.float64), (float(shift[0]), float(shift[1])), float(response)
+
+
+def _radial_bin_average(
+    values2d: np.ndarray,
+    *,
+    bin_centers: np.ndarray,
+    valid_mask: np.ndarray | None = None,
+) -> np.ndarray:
+    centers = np.asarray(bin_centers, dtype=np.float64)
+    values = np.asarray(values2d, dtype=np.float64)
+    fy = np.fft.fftshift(np.fft.fftfreq(values.shape[0], d=1.0))
+    fx = np.fft.fftshift(np.fft.fftfreq(values.shape[1], d=1.0))
+    yy, xx = np.meshgrid(fy, fx, indexing="ij")
+    radius = np.sqrt(xx * xx + yy * yy)
+
+    edges = np.empty(centers.size + 1, dtype=np.float64)
+    edges[0] = 0.0
+    edges[-1] = 0.5
+    if centers.size > 1:
+        edges[1:-1] = 0.5 * (centers[:-1] + centers[1:])
+    else:
+        edges[1:-1] = centers[0]
+
+    mask = radius <= 0.5
+    if valid_mask is not None:
+        mask &= np.asarray(valid_mask, dtype=bool)
+    radius = radius[mask]
+    sample_values = values[mask]
+
+    averaged = np.ones(centers.size, dtype=np.float64)
+    counts = np.zeros(centers.size, dtype=np.int64)
+    if radius.size == 0:
+        return averaged
+
+    sums = np.zeros(centers.size, dtype=np.float64)
+    bin_ids = np.digitize(radius, edges) - 1
+    valid = (bin_ids >= 0) & (bin_ids < centers.size)
+    for idx, value in zip(bin_ids[valid], sample_values[valid]):
+        sums[idx] += float(value)
+        counts[idx] += 1
+    nonzero = counts > 0
+    averaged[nonzero] = sums[nonzero] / counts[nonzero]
+    return averaged
+
+
+def derive_intrinsic_transfer_curve(
+    reference_patch: np.ndarray,
+    observed_patch: np.ndarray,
+    *,
+    bin_centers: np.ndarray,
+    normalization_band: tuple[float, float],
+    normalization_mode: str,
+    clip_lo: float,
+    clip_hi: float,
+    registration_mode: str = "phase_correlation",
+) -> np.ndarray:
+    reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
+    if registration_mode == "phase_correlation":
+        observed_aligned, _, _ = align_patch_phase_correlation(reference, observed)
+    elif registration_mode == "none":
+        observed_aligned = observed
+    else:
+        raise ValueError(f"Unsupported intrinsic registration mode: {registration_mode}")
+
+    reference = reference - float(np.mean(reference))
+    observed_aligned = observed_aligned - float(np.mean(observed_aligned))
+    window = np.outer(
+        np.hanning(reference.shape[0]),
+        np.hanning(reference.shape[1]),
+    )
+    reference_spectrum = np.fft.fftshift(np.fft.fft2(reference * window))
+    observed_spectrum = np.fft.fftshift(np.fft.fft2(observed_aligned * window))
+    reference_power = np.abs(reference_spectrum) ** 2
+    transfer_2d = np.abs(observed_spectrum * np.conj(reference_spectrum)) / np.maximum(
+        reference_power,
+        EPS,
+    )
+    support = reference_power[reference_power > EPS]
+    power_floor = max(float(np.percentile(support, 10)) * 0.1, EPS) if support.size else EPS
+    transfer_curve = _radial_bin_average(
+        np.clip(transfer_2d, clip_lo, clip_hi),
+        bin_centers=np.asarray(bin_centers, dtype=np.float64),
+        valid_mask=reference_power >= power_floor,
+    )
+    lo, hi = normalization_band
+    band = (
+        (np.asarray(bin_centers, dtype=np.float64) >= float(lo))
+        & (np.asarray(bin_centers, dtype=np.float64) <= float(hi))
+    )
+    if np.any(band):
+        if normalization_mode == "mean":
+            anchor = float(np.mean(transfer_curve[band]))
+        else:
+            anchor = float(np.max(transfer_curve[band]))
+        if anchor > EPS:
+            transfer_curve = transfer_curve / anchor
+    return np.clip(transfer_curve, clip_lo, clip_hi)
 
 
 def derive_reference_correction_curve(
