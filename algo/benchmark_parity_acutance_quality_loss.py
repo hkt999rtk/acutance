@@ -36,9 +36,11 @@ from .dead_leaves import (
     refine_roi_to_texture_support,
 )
 from .parity_benchmark_common import (
+    apply_quantile_transfer_curve,
     apply_reference_correction_curve,
     build_ori_reference_map,
     capture_key_from_stem,
+    derive_quantile_transfer_curve,
     clip_reference_correction_curve,
     derive_reference_acutance_correction_curve,
     derive_reference_correction_curve,
@@ -68,6 +70,9 @@ class Profile:
     gamma: float = 1.0
     linearization_mode: str = "power"
     linearization_toe: float = 0.0
+    matched_ori_oecf_reference: bool = False
+    matched_ori_oecf_strength: float = 1.0
+    matched_ori_oecf_quantiles: tuple[float, ...] = (0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0)
     bayer_pattern: str = BayerPattern.RGGB.value
     bayer_mode: str = BayerMode.DEMOSAIC_RED.value
     roi_source: str = "fixed"
@@ -285,9 +290,15 @@ def summarize_profile(
     include_quality_loss_records: bool = False,
 ) -> dict[str, object]:
     calibration = load_ideal_psd_calibration(profile.calibration_file)
-    ori_reference_map = (
-        build_ori_reference_map(dataset_root) if profile.matched_ori_reference_anchor else {}
+    use_ori_reference = any(
+        (
+            profile.matched_ori_oecf_reference,
+            profile.matched_ori_reference_anchor,
+            profile.matched_ori_acutance_reference_anchor,
+        )
     )
+    ori_reference_map = build_ori_reference_map(dataset_root) if use_ori_reference else {}
+    oecf_curve_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     acutance_correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     presets = build_acutance_presets(profile.acutance_preset_overrides)
@@ -318,6 +329,40 @@ def summarize_profile(
             toe=profile.linearization_toe,
         )
         roi = choose_roi(profile, reference, image)
+        capture_key = capture_key_from_stem(raw_path.stem)
+        if profile.matched_ori_oecf_reference and capture_key in ori_reference_map:
+            if capture_key not in oecf_curve_cache:
+                ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
+                ori_reference = parse_imatest_random_csv(ori_csv_path)
+                ori_raw = load_raw_u16(ori_raw_path, width, height)
+                ori_plane = extract_analysis_plane(
+                    ori_raw,
+                    bayer_pattern=BayerPattern(profile.bayer_pattern),
+                    mode=BayerMode(profile.bayer_mode),
+                )
+                ori_image = normalize_for_analysis(
+                    ori_plane,
+                    gamma=profile.gamma,
+                    mode=profile.linearization_mode,
+                    toe=profile.linearization_toe,
+                )
+                ori_roi = choose_roi(profile, ori_reference, ori_image)
+                source_values, target_values = derive_quantile_transfer_curve(
+                    image[roi.top : roi.bottom + 1, roi.left : roi.right + 1],
+                    ori_image[
+                        ori_roi.top : ori_roi.bottom + 1,
+                        ori_roi.left : ori_roi.right + 1,
+                    ],
+                    quantiles=profile.matched_ori_oecf_quantiles,
+                )
+                oecf_curve_cache[capture_key] = (source_values, target_values)
+            source_values, target_values = oecf_curve_cache[capture_key]
+            image = apply_quantile_transfer_curve(
+                image,
+                source_values,
+                target_values,
+                strength=profile.matched_ori_oecf_strength,
+            ).astype(np.float32)
         estimate = estimate_dead_leaves_mtf(
             image,
             num_bins=len(IMATEST_REFERENCE_BINS),
@@ -371,7 +416,6 @@ def summarize_profile(
             max_gain=profile.compensation_max_gain,
         )
         if profile.matched_ori_reference_anchor:
-            capture_key = capture_key_from_stem(raw_path.stem)
             if capture_key in ori_reference_map:
                 if capture_key not in correction_cache:
                     ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
@@ -498,7 +542,6 @@ def summarize_profile(
             presets=presets,
         )
         if profile.matched_ori_acutance_reference_anchor:
-            capture_key = capture_key_from_stem(raw_path.stem)
             if capture_key in ori_reference_map:
                 if capture_key not in acutance_correction_cache:
                     ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
@@ -797,6 +840,9 @@ def summarize_profile(
             "gamma": profile.gamma,
             "linearization_mode": profile.linearization_mode,
             "linearization_toe": profile.linearization_toe,
+            "matched_ori_oecf_reference": profile.matched_ori_oecf_reference,
+            "matched_ori_oecf_strength": profile.matched_ori_oecf_strength,
+            "matched_ori_oecf_quantiles": profile.matched_ori_oecf_quantiles,
             "bayer_pattern": profile.bayer_pattern,
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,

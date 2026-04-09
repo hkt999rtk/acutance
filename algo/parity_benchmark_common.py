@@ -33,6 +33,73 @@ def build_ori_reference_map(dataset_root: Path) -> dict[str, tuple[Path, Path]]:
     return mapping
 
 
+def derive_quantile_transfer_curve(
+    source_image: np.ndarray,
+    target_image: np.ndarray,
+    *,
+    quantiles: Sequence[float],
+) -> tuple[np.ndarray, np.ndarray]:
+    sample_quantiles = np.asarray(quantiles, dtype=np.float64)
+    if sample_quantiles.ndim != 1 or sample_quantiles.size < 2:
+        raise ValueError("quantiles must contain at least two samples")
+    if np.any(sample_quantiles < 0.0) or np.any(sample_quantiles > 1.0):
+        raise ValueError("quantiles must stay within [0, 1]")
+    if np.any(np.diff(sample_quantiles) < 0.0):
+        raise ValueError("quantiles must be sorted ascending")
+
+    source_values = np.quantile(np.asarray(source_image, dtype=np.float64), sample_quantiles)
+    target_values = np.quantile(np.asarray(target_image, dtype=np.float64), sample_quantiles)
+    source_values = np.maximum.accumulate(np.clip(source_values, 0.0, 1.0))
+    target_values = np.maximum.accumulate(np.clip(target_values, 0.0, 1.0))
+
+    collapsed_source = [float(source_values[0])]
+    collapsed_target = [float(target_values[0])]
+    for source_value, target_value in zip(source_values[1:], target_values[1:]):
+        if source_value <= collapsed_source[-1] + 1e-9:
+            collapsed_target[-1] = max(collapsed_target[-1], float(target_value))
+        else:
+            collapsed_source.append(float(source_value))
+            collapsed_target.append(float(target_value))
+
+    if collapsed_source[0] > 0.0:
+        collapsed_source.insert(0, 0.0)
+        collapsed_target.insert(0, 0.0)
+    else:
+        collapsed_source[0] = 0.0
+        collapsed_target[0] = 0.0
+    if collapsed_source[-1] < 1.0:
+        collapsed_source.append(1.0)
+        collapsed_target.append(1.0)
+    else:
+        collapsed_source[-1] = 1.0
+        collapsed_target[-1] = 1.0
+
+    return (
+        np.asarray(collapsed_source, dtype=np.float64),
+        np.asarray(collapsed_target, dtype=np.float64),
+    )
+
+
+def apply_quantile_transfer_curve(
+    image: np.ndarray,
+    source_values: np.ndarray,
+    target_values: np.ndarray,
+    *,
+    strength: float = 1.0,
+) -> np.ndarray:
+    base = np.asarray(image, dtype=np.float64)
+    mapped = np.interp(
+        base,
+        np.asarray(source_values, dtype=np.float64),
+        np.asarray(target_values, dtype=np.float64),
+        left=float(target_values[0]),
+        right=float(target_values[-1]),
+    )
+    if strength != 1.0:
+        mapped = base + (mapped - base) * float(strength)
+    return np.clip(mapped, 0.0, 1.0)
+
+
 def derive_reference_correction_curve(
     reference_frequencies: np.ndarray,
     reference_mtf: np.ndarray,
