@@ -1813,14 +1813,24 @@ def quality_loss_presets_from_acutance(
     *,
     om_ceiling: float = 0.8851,
     coefficients: tuple[float, float, float] = QUALITY_LOSS_OM_COEFFICIENTS,
+    preset_overrides: dict[str, dict[str, object]] | None = None,
 ) -> dict[str, float]:
+    override_map = preset_overrides or {}
     return {
-        name.replace("Acutance", "Quality Loss"): quality_loss_from_acutance(
+        quality_loss_name: quality_loss_from_acutance(
             value,
-            om_ceiling=om_ceiling,
-            coefficients=coefficients,
+            om_ceiling=float(
+                override_map.get(quality_loss_name, {}).get("om_ceiling", om_ceiling)
+            ),
+            coefficients=tuple(
+                float(item)
+                for item in override_map.get(quality_loss_name, {}).get(
+                    "coefficients", coefficients
+                )
+            ),
         )
         for name, value in acutance_presets.items()
+        for quality_loss_name in [name.replace("Acutance", "Quality Loss")]
     }
 
 

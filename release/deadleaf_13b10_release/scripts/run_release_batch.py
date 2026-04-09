@@ -282,7 +282,18 @@ def analyze_one(
         pixels_along_picture_height=result.roi.height,
         presets=acutance_presets,
     )
-    quality_loss_presets = quality_loss_presets_from_acutance(acutance_presets_result)
+    quality_loss_presets = quality_loss_presets_from_acutance(
+        acutance_presets_result,
+        om_ceiling=float(acutance_profile.get("quality_loss_om_ceiling", 0.8851)),
+        coefficients=tuple(
+            float(value)
+            for value in acutance_profile.get(
+                "quality_loss_coefficients",
+                (64.99250542, 9.37974246, 0.72233291),
+            )
+        ),
+        preset_overrides=acutance_profile.get("quality_loss_preset_overrides"),
+    )
 
     return {
         "raw_path": raw_path,

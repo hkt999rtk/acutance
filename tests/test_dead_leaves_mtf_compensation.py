@@ -9,6 +9,7 @@ from algo.dead_leaves import (
     apply_mtf_compensation,
     estimate_mtf_compensation_curve,
     linearize_raw,
+    quality_loss_presets_from_acutance,
 )
 
 
@@ -91,6 +92,24 @@ class DeadLeavesMtfCompensationTest(unittest.TestCase):
         )
         np.testing.assert_allclose(corrected, mtf * compensation)
         self.assertGreater(corrected[-1], mtf[-1])
+
+    def test_quality_loss_presets_support_named_overrides(self) -> None:
+        quality = quality_loss_presets_from_acutance(
+            {'5.5" Phone Display Acutance': 0.8, "Computer Monitor Acutance": 0.4},
+            om_ceiling=0.8851,
+            coefficients=(64.99250542, 9.37974246, 0.72233291),
+            preset_overrides={
+                '5.5" Phone Display Quality Loss': {
+                    "om_ceiling": 0.8851,
+                    "coefficients": [10.0, 0.0, 0.0],
+                }
+            },
+        )
+        self.assertAlmostEqual(quality['5.5" Phone Display Quality Loss'], 10.0 * (0.0851**2))
+        self.assertNotEqual(
+            quality["Computer Monitor Quality Loss"],
+            quality['5.5" Phone Display Quality Loss'],
+        )
 
 
 if __name__ == "__main__":

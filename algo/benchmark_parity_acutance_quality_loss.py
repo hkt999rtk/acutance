@@ -155,6 +155,7 @@ class Profile:
     mtf_shape_correction_high_weight: float = 0.25
     quality_loss_om_ceiling: float = 0.8851
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
+    quality_loss_preset_overrides: dict[str, dict[str, object]] | None = None
     acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
@@ -716,6 +717,7 @@ def summarize_profile(
             acutance,
             om_ceiling=profile.quality_loss_om_ceiling,
             coefficients=tuple(profile.quality_loss_coefficients),
+            preset_overrides=profile.quality_loss_preset_overrides,
         )
         quality_abs_errors = {}
         for name, value in quality_loss.items():
@@ -789,6 +791,9 @@ def summarize_profile(
             "matched_ori_acutance_preset_correction_delta_power_values": profile.matched_ori_acutance_preset_correction_delta_power_values,
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
+            "quality_loss_om_ceiling": profile.quality_loss_om_ceiling,
+            "quality_loss_coefficients": profile.quality_loss_coefficients,
+            "quality_loss_preset_overrides": profile.quality_loss_preset_overrides,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,
