@@ -135,6 +135,8 @@
   - issue `#29` 的第十四個 acutance-side follow-up，將 direct Acutance-curve anchor 只在 high-scale phone region 弱化後，同時保住大部分 curve gain 並明顯收回 Phone preset regression，成為目前最好的 overall compromise branch
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_phoneaware_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_phoneaware_followup.md)
   - issue `#29` 的第十五個 acutance-side follow-up，將 phone-aware shaping 拆成 preset-only path 後，保留 direct Acutance-curve branch 的較強 curve fit，同時維持 phone-aware preset 改善，成為目前最好的 overall branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_preset_phoneaware_curve070_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_phoneaware_curve070_followup.md)
+  - issue `#29` 的第十六個 acutance-side follow-up，驗證 preset-only 結構下 curve-side strength 的 bounded scalar search 後，將最佳 local scalar 從 `0.75` 收斂到 `0.70`，在不改變 preset 指標的前提下再縮小一點剩餘 curve gap
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
