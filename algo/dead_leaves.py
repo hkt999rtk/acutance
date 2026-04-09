@@ -202,6 +202,8 @@ class RawLinearization:
     black_percentile: float = 0.1
     white_percentile: float = 99.9
     gamma: float = 1.0
+    mode: str = "power"
+    toe: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -324,15 +326,44 @@ def linearize_raw(
     )
     scale = max(white - black, 1.0)
     norm = np.clip((raw - black) / scale, 0.0, 1.0)
-    if config.gamma != 1.0:
-        norm = np.power(norm, config.gamma)
-    return norm
+    if config.mode == "power":
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode == "toe_power":
+        if config.toe < 0.0:
+            raise ValueError("toe must be non-negative")
+        norm = (norm + float(config.toe)) / (1.0 + float(config.toe))
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode == "srgb":
+        norm = np.where(
+            norm <= 0.04045,
+            norm / 12.92,
+            np.power((norm + 0.055) / 1.055, 2.4),
+        )
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode == "rec709":
+        norm = np.where(
+            norm < 0.081,
+            norm / 4.5,
+            np.power((norm + 0.099) / 1.099, 1.0 / 0.45),
+        )
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    raise ValueError(f"Unknown linearization mode: {config.mode}")
 
 
 def normalize_for_analysis(
     raw: np.ndarray,
     *,
     gamma: float = 1.0,
+    mode: str = "power",
+    toe: float = 0.0,
     black_level: float | None = None,
     white_level: float | None = None,
     black_percentile: float = 0.1,
@@ -346,6 +377,8 @@ def normalize_for_analysis(
             black_percentile=black_percentile,
             white_percentile=white_percentile,
             gamma=gamma,
+            mode=mode,
+            toe=toe,
         ),
     )
 
@@ -1278,6 +1311,58 @@ def apply_frequency_scale(
     return np.asarray(frequencies_cpp, dtype=np.float64) * float(scale)
 
 
+def _sinc_pi(values: np.ndarray) -> np.ndarray:
+    data = np.asarray(values, dtype=np.float64)
+    output = np.ones_like(data)
+    nonzero = np.abs(data) > EPS
+    output[nonzero] = np.sin(np.pi * data[nonzero]) / (np.pi * data[nonzero])
+    return output
+
+
+def estimate_mtf_compensation_curve(
+    frequencies_cpp: np.ndarray,
+    *,
+    mode: str = "none",
+    sensor_fill_factor: float = 1.0,
+    denominator_clip: float = 0.25,
+    max_gain: float = 3.0,
+) -> np.ndarray:
+    frequencies = np.asarray(frequencies_cpp, dtype=np.float64)
+    if mode == "none":
+        return np.ones_like(frequencies)
+    if mode != "sensor_aperture_sinc":
+        raise ValueError(f"Unknown MTF compensation mode: {mode}")
+    if sensor_fill_factor <= 0.0:
+        raise ValueError("sensor_fill_factor must be positive")
+    if denominator_clip <= 0.0:
+        raise ValueError("denominator_clip must be positive")
+    if max_gain < 1.0:
+        raise ValueError("max_gain must be at least 1.0")
+
+    sensor_mtf = _sinc_pi(sensor_fill_factor * frequencies)
+    compensation = 1.0 / np.clip(sensor_mtf, denominator_clip, None)
+    return np.clip(compensation, 1.0, max_gain)
+
+
+def apply_mtf_compensation(
+    mtf: np.ndarray,
+    frequencies_cpp: np.ndarray,
+    *,
+    mode: str = "none",
+    sensor_fill_factor: float = 1.0,
+    denominator_clip: float = 0.25,
+    max_gain: float = 3.0,
+) -> tuple[np.ndarray, np.ndarray]:
+    compensation = estimate_mtf_compensation_curve(
+        frequencies_cpp,
+        mode=mode,
+        sensor_fill_factor=sensor_fill_factor,
+        denominator_clip=denominator_clip,
+        max_gain=max_gain,
+    )
+    return np.asarray(mtf, dtype=np.float64) * compensation, compensation
+
+
 def apply_high_frequency_guard(
     signal_psd: np.ndarray,
     frequencies_cpp: np.ndarray,
@@ -1716,26 +1801,38 @@ def quality_loss_from_acutance(
     acutance: float,
     *,
     om_ceiling: float = 0.8851,
-    coefficients: tuple[float, float, float] = QUALITY_LOSS_OM_COEFFICIENTS,
+    coefficients: tuple[float, ...] = QUALITY_LOSS_OM_COEFFICIENTS,
 ) -> float:
     objective_metric = max(0.0, float(om_ceiling) - float(acutance))
-    a2, a1, a0 = coefficients
-    return float(a2 * objective_metric * objective_metric + a1 * objective_metric + a0)
+    result = 0.0
+    for coefficient in coefficients:
+        result = result * objective_metric + float(coefficient)
+    return float(result)
 
 
 def quality_loss_presets_from_acutance(
     acutance_presets: dict[str, float],
     *,
     om_ceiling: float = 0.8851,
-    coefficients: tuple[float, float, float] = QUALITY_LOSS_OM_COEFFICIENTS,
+    coefficients: tuple[float, ...] = QUALITY_LOSS_OM_COEFFICIENTS,
+    preset_overrides: dict[str, dict[str, object]] | None = None,
 ) -> dict[str, float]:
+    override_map = preset_overrides or {}
     return {
-        name.replace("Acutance", "Quality Loss"): quality_loss_from_acutance(
+        quality_loss_name: quality_loss_from_acutance(
             value,
-            om_ceiling=om_ceiling,
-            coefficients=coefficients,
+            om_ceiling=float(
+                override_map.get(quality_loss_name, {}).get("om_ceiling", om_ceiling)
+            ),
+            coefficients=tuple(
+                float(item)
+                for item in override_map.get(quality_loss_name, {}).get(
+                    "coefficients", coefficients
+                )
+            ),
         )
         for name, value in acutance_presets.items()
+        for quality_loss_name in [name.replace("Acutance", "Quality Loss")]
     }
 
 

@@ -1,0 +1,34 @@
+{
+  "baseline_label": "phone185_baseline",
+  "best_overall_tradeoff_label": "phone185_baseline",
+  "note": "Preset-side scale-shaped low-clip floors at 0.98 and 1.00 are exact no-ops on top of the current phone185 branch, so this local family does not currently bind.",
+  "profiles": [
+    {
+      "label": "phone185_baseline",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone185_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone185_lo098",
+      "profile_path": "/tmp/acutance_cliplo_probe/phone185_lo098.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone185_lo100",
+      "profile_path": "/tmp/acutance_cliplo_probe/phone185_lo100.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    }
+  ]
+}

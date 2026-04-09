@@ -74,6 +74,20 @@ python3 scripts/run_release_batch.py \
   --profile config/imatest_parity_profile.release.json
 ```
 
+`Gamma = 0.5` literal-analysis plus sensor-compensation follow-up：
+
+```bash
+python3 scripts/run_release_batch.py \
+  --profile config/imatest_parity_sensor_comp_profile.release.json
+```
+
+`Gamma = 0.5` literal-analysis plus sensor-compensation and toe-linearization follow-up：
+
+```bash
+python3 scripts/run_release_batch.py \
+  --profile config/imatest_parity_sensor_comp_toe_profile.release.json
+```
+
 舊的 linear/gray 版本如果要保留做比較，請改用：
 
 ```bash
@@ -95,7 +109,7 @@ python3 scripts/run_release_batch.py \
 
 - 這個 release 會直接呼叫 `algo.dead_leaves` 核心函式做分析
 - profile 裡的路徑都寫成 release root 相對路徑，方便整包移動
-- 目前有四類 profile：
+- 目前有六類 profile：
   - `parity_fit_profile.release.json`
     - 現在的 release 預設與 primary target profile
     - 報告欄位對標 golden sample：`Gamma=0.5`, `Color channel=R`
@@ -116,6 +130,17 @@ python3 scripts/run_release_batch.py \
       - 現有 shape correction reuse 沒有 material improvement
       - 直接改用觀測 ROI 反而更差
     - 因此在後續擬合真正改善前，這個 profile 目前仍應視為 reference-only hypothesis
+  - `imatest_parity_sensor_comp_profile.release.json`
+    - issue `#29` 的第一個 source-backed compensation follow-up profile
+    - 保留 literal observable-parity 路徑：`gamma=0.5 + demosaic_red`
+    - 額外加上一個簡化的 `sensor_aperture_sinc` compensation
+    - 目前 benchmark 顯示它能改善 literal parity 的 MTF residual 與 curve MAE
+    - 但它還沒有改善整體 preset Acutance / Quality Loss，所以仍應視為 reference-only experiment
+  - `imatest_parity_sensor_comp_toe_profile.release.json`
+    - issue `#29` 的第二個 multi-family follow-up profile
+    - 在 literal parity + sensor compensation 之上，再加入 `toe_power` 線性化 proxy
+    - 目前 benchmark 顯示它能把 literal parity 的 `curve_mae_mean` 與 `overall_quality_loss_mae_mean` 再往前推進
+    - 但 focus preset Acutance MAE 仍未整體改善，因此仍應視為 reference-only experiment
   - `legacy_linear_profile.release.json`
     - 舊的 linear/gray baseline，保留做比較
 - `Gamma, 0.5` 這個報告欄位目前屬於 observable target condition。

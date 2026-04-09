@@ -1,0 +1,34 @@
+{
+  "baseline_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0915_profile.json",
+  "baseline_curve_mae_mean": 0.036946160408259675,
+  "baseline_acutance_focus_preset_mae_mean": 0.04249131400289711,
+  "baseline_overall_quality_loss_mae_mean": 1.2221434105099775,
+  "search_family": "curve_side_midscale_clip_hi_notch",
+  "probes": [
+    {
+      "profile": "/tmp/curve_midclip_deepest5_search/curve_midclip_notch_09125.json",
+      "curve_midclip_value": 0.9125,
+      "curve_mae_mean": 0.03693378202632848,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    },
+    {
+      "profile": "/tmp/curve_midclip_deepest5_search/curve_midclip_notch_09100.json",
+      "curve_midclip_value": 0.91,
+      "curve_mae_mean": 0.0369218710788762,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    },
+    {
+      "profile": "/tmp/curve_midclip_deepest5_search/curve_midclip_notch_09050.json",
+      "curve_midclip_value": 0.905,
+      "curve_mae_mean": 0.03689916211204442,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    }
+  ],
+  "winner_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0905_profile.json",
+  "winner_curve_mae_mean": 0.03689916211204442,
+  "winner_acutance_focus_preset_mae_mean": 0.04249131400289711,
+  "winner_overall_quality_loss_mae_mean": 1.2221434105099775
+}

@@ -1,0 +1,120 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_preset_strength_curve_relative_scales": [
+          0.0,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "matched_ori_acutance_preset_strength_curve_values": [
+          1.0,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "matched_ori_acutance_reference_anchor": true,
+        "matched_ori_acutance_strength_curve_relative_scales": [
+          0.0,
+          0.2,
+          0.8,
+          1.6,
+          2.5
+        ],
+        "matched_ori_acutance_strength_curve_values": [
+          0.7,
+          0.69,
+          0.64,
+          0.62,
+          0.6
+        ],
+        "matched_ori_anchor_mode": "acutance_only",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_reference_anchor": true,
+        "matched_ori_strength_curve_frequencies": [
+          0.0,
+          0.12,
+          0.22,
+          0.35,
+          0.5
+        ],
+        "matched_ori_strength_curve_values": [
+          1.0,
+          1.0,
+          0.82,
+          0.95,
+          1.0
+        ],
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "sensor_aperture_sinc",
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.5,
+        "texture_support_scale": true
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.04762300431722375,
+        "0.25": 0.037929924865522525,
+        "0.4": 0.030352794760533167,
+        "0.65": 0.03604456170846873,
+        "0.8": 0.037475816132552645,
+        "ori": 0.04142411412710949
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 3.4962979423323315,
+        "0.25": 2.7067828208849862,
+        "0.4": 2.022482629788243,
+        "0.65": 1.7531314221692553,
+        "0.8": 1.6800700098455583,
+        "ori": 1.9819437467676577
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.04374952963495118,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.019192301239287522,
+          "Computer Monitor Acutance": 0.053120505477057024,
+          "Large Print Acutance": 0.05208080355512802,
+          "Small Print Acutance": 0.04599163714292905,
+          "UHDTV Display Acutance": 0.048362400760354245
+        },
+        "curve_mae_mean": 0.03842317559872424,
+        "overall_quality_loss_mae_mean": 2.354634197463915,
+        "quality_loss_focus_preset_mae_mean": 2.354634197463915,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.379064086344142,
+          "Computer Monitor Quality Loss": 3.7137176246085253,
+          "Large Print Quality Loss": 2.844092108355405,
+          "Small Print Quality Loss": 2.2211376583508367,
+          "UHDTV Display Quality Loss": 2.6151595096606663
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_anchor_preset_phoneaware_curve_shape_gentle_down_profile.json"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "baseline_label": "phone125",
+  "best_overall_tradeoff_label": "phone135",
+  "note": "phone135 is the strongest overall trade-off in this bounded neighborhood; phone130_tapered edges lower on overall_quality_loss_mae_mean alone but is worse on focus preset and both phone metrics.",
+  "profiles": [
+    {
+      "label": "phone125",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone125_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04270783685806058,
+      "overall_quality_loss_mae_mean": 2.3348754052844805,
+      "phone_acutance_mae": 0.014884766164773957,
+      "phone_quality_loss_mae": 0.3088111966029671
+    },
+    {
+      "label": "phone130",
+      "profile_path": "/var/folders/2j/_l2k_1p91g7_8zbbzhppndl40000gn/T/preset_delta_curve_phone130.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04266573453735998,
+      "overall_quality_loss_mae_mean": 2.3345267027835126,
+      "phone_acutance_mae": 0.014674254561270954,
+      "phone_quality_loss_mae": 0.3070676840981263
+    },
+    {
+      "label": "phone135",
+      "profile_path": "/var/folders/2j/_l2k_1p91g7_8zbbzhppndl40000gn/T/preset_delta_curve_phone135.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.042633258409276474,
+      "overall_quality_loss_mae_mean": 2.3342115025505485,
+      "phone_acutance_mae": 0.014511873920853454,
+      "phone_quality_loss_mae": 0.3054916829333074
+    },
+    {
+      "label": "phone130_tapered",
+      "profile_path": "/var/folders/2j/_l2k_1p91g7_8zbbzhppndl40000gn/T/preset_delta_curve_phone130_tapered.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04278907148752679,
+      "overall_quality_loss_mae_mean": 2.3341218999789155,
+      "phone_acutance_mae": 0.01527311449175828,
+      "phone_quality_loss_mae": 0.3132774278978118
+    }
+  ]
+}

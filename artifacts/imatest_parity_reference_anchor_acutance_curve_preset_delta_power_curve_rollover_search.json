@@ -1,0 +1,43 @@
+{
+  "baseline_label": "phone170",
+  "best_overall_tradeoff_label": "phone185",
+  "note": "The uniform phone-region branch improves slightly at 1.85, but 2.00 and 2.25 both regress, so this local neighborhood now shows a bounded rollover.",
+  "profiles": [
+    {
+      "label": "phone170",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone170_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249617109636481,
+      "overall_quality_loss_mae_mean": 2.3331552427294966,
+      "phone_acutance_mae": 0.01382643735629514,
+      "phone_quality_loss_mae": 0.3002103838280473
+    },
+    {
+      "label": "phone185",
+      "profile_path": "/tmp/acutance_phone_probe3/phone185.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone200",
+      "profile_path": "/tmp/acutance_phone_probe3/phone200.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.0424998688440427,
+      "overall_quality_loss_mae_mean": 2.3332518553984656,
+      "phone_acutance_mae": 0.013844926094684556,
+      "phone_quality_loss_mae": 0.3006934471728922
+    },
+    {
+      "label": "phone225",
+      "profile_path": "/tmp/acutance_phone_probe3/phone225.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04254467061974593,
+      "overall_quality_loss_mae_mean": 2.3336724516049676,
+      "phone_acutance_mae": 0.014068934973200737,
+      "phone_quality_loss_mae": 0.30279642820540315
+    }
+  ]
+}

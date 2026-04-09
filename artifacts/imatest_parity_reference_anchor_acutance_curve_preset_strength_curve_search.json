@@ -1,0 +1,61 @@
+{
+  "baseline_label": "phone185_baseline",
+  "best_overall_tradeoff_label": "phone185_baseline",
+  "note": "Preset-side phone-region strength-curve reductions improve phone Acutance slightly but consistently worsen phone Quality Loss, so this local family does not beat the current phone185 baseline overall.",
+  "profiles": [
+    {
+      "label": "phone185_baseline",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone185_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone185_strength043",
+      "profile_path": "/tmp/acutance_strength_probe/phone185_strength043.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.042490386748884744,
+      "overall_quality_loss_mae_mean": 2.3331065136497435,
+      "phone_acutance_mae": 0.01379751561889479,
+      "phone_quality_loss_mae": 0.2999667384292836
+    },
+    {
+      "label": "phone185_strength042",
+      "profile_path": "/tmp/acutance_strength_probe/phone185_strength042.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04248992312187856,
+      "overall_quality_loss_mae_mean": 2.333116171541345,
+      "phone_acutance_mae": 0.013795197483863908,
+      "phone_quality_loss_mae": 0.30001502788728884
+    },
+    {
+      "label": "phone185_strength042_mid088",
+      "profile_path": "/tmp/acutance_strength_probe/phone185_strength042_mid088.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04248994010973833,
+      "overall_quality_loss_mae_mean": 2.333115817455397,
+      "phone_acutance_mae": 0.013795282423162738,
+      "phone_quality_loss_mae": 0.30001325745754925
+    },
+    {
+      "label": "phone185_strength040",
+      "profile_path": "/tmp/acutance_strength_probe/phone185_strength040.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04248899586786621,
+      "overall_quality_loss_mae_mean": 2.333135522850624,
+      "phone_acutance_mae": 0.013790561213802104,
+      "phone_quality_loss_mae": 0.3001117844336833
+    },
+    {
+      "label": "phone185_strength035",
+      "profile_path": "/tmp/acutance_strength_probe/phone185_strength035.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.042490750698581936,
+      "overall_quality_loss_mae_mean": 2.33318410835927,
+      "phone_acutance_mae": 0.01379933536738076,
+      "phone_quality_loss_mae": 0.3003547119769131
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "baseline_label": "phone185_qualityfit_global",
+  "best_overall_tradeoff_label": "phone185_qualityfit_phoneoverride",
+  "note": "A phone-only Quality Loss preset override on top of the new global quality-fit branch recovers the earlier phone-specific regression while improving the overall Quality Loss mean further. The Acutance and curve branches stay fixed.",
+  "profiles": [
+    {
+      "label": "phone185_qualityfit_global",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.8516263679398723,
+      "phone_quality_loss_mae": 0.3808152419382321
+    },
+    {
+      "label": "phone185_qualityfit_phoneoverride",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_phoneoverride_profile.json",
+      "quality_loss_preset_overrides": {
+        "5.5\" Phone Display Quality Loss": {
+          "om_ceiling": 0.8851,
+          "coefficients": [
+            144.07521576080453,
+            7.994837720569423,
+            0.7144590420603076
+          ]
+        }
+      },
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.809331503566628,
+      "phone_quality_loss_mae": 0.1693409200720112
+    }
+  ]
+}

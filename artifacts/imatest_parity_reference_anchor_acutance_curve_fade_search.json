@@ -1,0 +1,45 @@
+{
+  "baseline_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_anchor_profile.json",
+  "baseline_overall": {
+    "curve_mae_mean": 0.03849376007338774,
+    "acutance_focus_preset_mae_mean": 0.04596590092316209,
+    "overall_quality_loss_mae_mean": 2.415787509462804,
+    "phone_acutance_mae": 0.029217482046087595,
+    "phone_quality_loss_mae": 0.571798184058823
+  },
+  "candidates": [
+    {
+      "matched_ori_acutance_blend_start_relative_scale": 2.0,
+      "matched_ori_acutance_blend_stop_relative_scale": 5.8,
+      "overall": {
+        "curve_mae_mean": 0.042865503373814555,
+        "acutance_focus_preset_mae_mean": 0.051763331761933394,
+        "overall_quality_loss_mae_mean": 2.7560534854209324,
+        "phone_acutance_mae": 0.029107867550477833,
+        "phone_quality_loss_mae": 0.56963020965403
+      }
+    },
+    {
+      "matched_ori_acutance_blend_start_relative_scale": 2.3,
+      "matched_ori_acutance_blend_stop_relative_scale": 5.8,
+      "overall": {
+        "curve_mae_mean": 0.04302430342588303,
+        "acutance_focus_preset_mae_mean": 0.05217527007291576,
+        "overall_quality_loss_mae_mean": 2.774165762350681,
+        "phone_acutance_mae": 0.029098472022282745,
+        "phone_quality_loss_mae": 0.5694444774176114
+      }
+    },
+    {
+      "matched_ori_acutance_blend_start_relative_scale": 2.5,
+      "matched_ori_acutance_blend_stop_relative_scale": 5.8,
+      "overall": {
+        "curve_mae_mean": 0.04306441973920293,
+        "acutance_focus_preset_mae_mean": 0.052327278615942906,
+        "overall_quality_loss_mae_mean": 2.781004912698405,
+        "phone_acutance_mae": 0.029091259293567272,
+        "phone_quality_loss_mae": 0.5693019051802246
+      }
+    }
+  ]
+}

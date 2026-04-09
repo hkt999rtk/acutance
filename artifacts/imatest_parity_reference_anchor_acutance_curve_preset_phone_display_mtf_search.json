@@ -1,0 +1,43 @@
+{
+  "baseline_label": "phone185_baseline",
+  "best_overall_tradeoff_label": "phone185_baseline",
+  "note": "Phone preset display-MTF overrides at 16, 20, and 22 cpd are strongly negative on top of the current phone185 branch, so this preset-definition family is not a viable local improvement path.",
+  "profiles": [
+    {
+      "label": "phone185_baseline",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone185_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_acutance_mae": 0.013802151888956607,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone185_display22",
+      "profile_path": "/tmp/acutance_phone_display_probe/phone185_display22.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.060895486868816205,
+      "overall_quality_loss_mae_mean": 2.7958406696514624,
+      "phone_acutance_mae": 0.1058230162185521,
+      "phone_quality_loss_mae": 2.6136375184378755
+    },
+    {
+      "label": "phone185_display20",
+      "profile_path": "/tmp/acutance_phone_display_probe/phone185_display20.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.06378362172911634,
+      "overall_quality_loss_mae_mean": 2.8899012383120564,
+      "phone_acutance_mae": 0.12026369052005273,
+      "phone_quality_loss_mae": 3.0839403617408445
+    },
+    {
+      "label": "phone185_display16",
+      "profile_path": "/tmp/acutance_phone_display_probe/phone185_display16.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.07208932806568495,
+      "overall_quality_loss_mae_mean": 3.191286410274418,
+      "phone_acutance_mae": 0.16179222220289585,
+      "phone_quality_loss_mae": 4.590866221552654
+    }
+  ]
+}

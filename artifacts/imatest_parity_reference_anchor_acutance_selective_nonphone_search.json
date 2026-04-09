@@ -1,0 +1,130 @@
+{
+  "baseline_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_profile.json",
+  "baseline_overall": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.2221434105099775,
+    "acutance_preset_mae": {
+      "5.5\" Phone Display Acutance": 0.013802151888956607,
+      "Computer Monitor Acutance": 0.052691955741307875,
+      "UHDTV Display Acutance": 0.047940762746452356,
+      "Small Print Acutance": 0.04670043959486586,
+      "Large Print Acutance": 0.05132126004290283
+    }
+  },
+  "family": {
+    "field": "matched_ori_acutance_preset_strength_curve_values",
+    "description": "Selective preset-side non-phone attenuation families on top of the current sextic best branch.",
+    "candidates": [
+      {
+        "name": "monitor_notch_085",
+        "relative_scales": [
+          0.0,
+          1.15,
+          1.31,
+          1.5,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "values": [
+          1.0,
+          1.0,
+          0.85,
+          1.0,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "overall": {
+          "curve_mae_mean": 0.0377686460358099,
+          "acutance_focus_preset_mae_mean": 0.04257035116660207,
+          "overall_quality_loss_mae_mean": 1.2522593523105794,
+          "acutance_preset_mae": {
+            "5.5\" Phone Display Acutance": 0.013802151888956607,
+            "Computer Monitor Acutance": 0.05308714155983272,
+            "UHDTV Display Acutance": 0.047940762746452356,
+            "Small Print Acutance": 0.04670043959486586,
+            "Large Print Acutance": 0.05132126004290283
+          }
+        }
+      },
+      {
+        "name": "print_tv_plateau_090",
+        "relative_scales": [
+          0.0,
+          1.6,
+          1.9,
+          2.6,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "values": [
+          1.0,
+          1.0,
+          0.9,
+          0.9,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "overall": {
+          "curve_mae_mean": 0.0377686460358099,
+          "acutance_focus_preset_mae_mean": 0.04265905809440228,
+          "overall_quality_loss_mae_mean": 1.2088192072332558,
+          "acutance_preset_mae": {
+            "5.5\" Phone Display Acutance": 0.013802151888956607,
+            "Computer Monitor Acutance": 0.052691955741307875,
+            "UHDTV Display Acutance": 0.04767534647953372,
+            "Small Print Acutance": 0.04777644539443272,
+            "Large Print Acutance": 0.05134939096778044
+          }
+        }
+      },
+      {
+        "name": "split_monitor_print_095_090",
+        "relative_scales": [
+          0.0,
+          1.15,
+          1.31,
+          1.5,
+          1.9,
+          2.6,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "values": [
+          1.0,
+          1.0,
+          0.95,
+          1.0,
+          0.9,
+          0.9,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "overall": {
+          "curve_mae_mean": 0.0377686460358099,
+          "acutance_focus_preset_mae_mean": 0.04265620341370075,
+          "overall_quality_loss_mae_mean": 1.2145205128256913,
+          "acutance_preset_mae": {
+            "5.5\" Phone Display Acutance": 0.013802151888956607,
+            "Computer Monitor Acutance": 0.052677682337800256,
+            "UHDTV Display Acutance": 0.04767534647953372,
+            "Small Print Acutance": 0.04777644539443272,
+            "Large Print Acutance": 0.05134939096778044
+          }
+        }
+      }
+    ]
+  }
+}

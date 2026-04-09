@@ -1,0 +1,49 @@
+{
+  "baseline_curve_mae_mean": 0.03735709483654955,
+  "baseline_acutance_focus_preset_mae_mean": 0.04249131400289711,
+  "baseline_overall_quality_loss_mae_mean": 1.2221434105099775,
+  "probes": [
+    {
+      "name": "curve_midclip_notch_09725",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        0.9725,
+        0.9725,
+        1.05,
+        1.06
+      ],
+      "curve_mae_mean": 0.03733637356486138,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    },
+    {
+      "name": "curve_midclip_notch_09700",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        0.97,
+        0.97,
+        1.05,
+        1.06
+      ],
+      "curve_mae_mean": 0.037315781699553796,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    },
+    {
+      "name": "curve_midclip_notch_09650",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        0.965,
+        0.965,
+        1.05,
+        1.06
+      ],
+      "curve_mae_mean": 0.03727607701408652,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.2221434105099775
+    }
+  ]
+}

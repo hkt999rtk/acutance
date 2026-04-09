@@ -1,0 +1,43 @@
+{
+  "baseline_label": "phone135",
+  "best_overall_tradeoff_label": "phone150",
+  "note": "The uniform phone-region branch keeps improving through 1.50 with no visible rollback in the tracked preset or quality metrics.",
+  "profiles": [
+    {
+      "label": "phone135",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone135_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.042633258409276474,
+      "overall_quality_loss_mae_mean": 2.3342115025505485,
+      "phone_acutance_mae": 0.014511873920853454,
+      "phone_quality_loss_mae": 0.3054916829333074
+    },
+    {
+      "label": "phone140",
+      "profile_path": "/tmp/acutance_phone_probe/phone140.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04260492181054033,
+      "overall_quality_loss_mae_mean": 2.333928011770234,
+      "phone_acutance_mae": 0.014370190927172729,
+      "phone_quality_loss_mae": 0.3040742290317328
+    },
+    {
+      "label": "phone145",
+      "profile_path": "/tmp/acutance_phone_probe/phone145.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04258018727668218,
+      "overall_quality_loss_mae_mean": 2.333719479736356,
+      "phone_acutance_mae": 0.014246518257881976,
+      "phone_quality_loss_mae": 0.30303156886234395
+    },
+    {
+      "label": "phone150",
+      "profile_path": "/tmp/acutance_phone_probe/phone150.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.042557940800450715,
+      "overall_quality_loss_mae_mean": 2.333583813572305,
+      "phone_acutance_mae": 0.014135285876724663,
+      "phone_quality_loss_mae": 0.30235323804209013
+    }
+  ]
+}

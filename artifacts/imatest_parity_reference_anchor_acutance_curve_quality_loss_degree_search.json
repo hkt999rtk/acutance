@@ -1,0 +1,20 @@
+{
+  "all_preset_quartic": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.308948112193972,
+    "phone_quality_loss_mae": 0.16473263299337818
+  },
+  "all_preset_quintic": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.2893515650335885,
+    "phone_quality_loss_mae": 0.145528333538186
+  },
+  "all_preset_sextic": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.2221434105099775,
+    "phone_quality_loss_mae": 0.14297762642651196
+  }
+}

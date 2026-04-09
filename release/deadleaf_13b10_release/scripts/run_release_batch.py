@@ -23,6 +23,7 @@ from algo.dead_leaves import (
     acutance_curve_from_mtf,
     acutance_presets_from_mtf,
     apply_frequency_scale,
+    apply_mtf_compensation,
     apply_mtf_shape_correction,
     compute_mtf_metrics,
     estimate_dead_leaves_mtf,
@@ -116,6 +117,8 @@ def analyze_one(
     acutance_profile = profile["acutance_profile"]
     report = profile.get("report", {})
     analysis_gamma = float(shared.get("analysis_gamma", shared["gamma"]))
+    linearization_mode = str(shared.get("linearization_mode", "power"))
+    linearization_toe = float(shared.get("linearization_toe", 0.0))
     report_gamma = float(report.get("gamma", shared["gamma"]))
     report_color_channel = str(
         report.get("color_channel", _color_channel_label(str(shared["bayer_mode"])))
@@ -131,6 +134,8 @@ def analyze_one(
     image = normalize_for_analysis(
         plane,
         gamma=analysis_gamma,
+        mode=linearization_mode,
+        toe=linearization_toe,
     )
 
     detected = detect_texture_roi(image)
@@ -189,7 +194,14 @@ def analyze_one(
     scaled_frequencies = apply_frequency_scale(result.frequencies_cpp, scale=effective_frequency_scale)
 
     corrected_mtf, _ = apply_mtf_shape_correction(
-        result.mtf,
+        apply_mtf_compensation(
+            result.mtf,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
@@ -205,7 +217,14 @@ def analyze_one(
         high_weight=float(acutance_profile["mtf_shape_correction_high_weight"]),
     )
     corrected_mtf_with_noise, _ = apply_mtf_shape_correction(
-        result.mtf_with_noise,
+        apply_mtf_compensation(
+            result.mtf_with_noise,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
@@ -221,7 +240,14 @@ def analyze_one(
         high_weight=float(acutance_profile["mtf_shape_correction_high_weight"]),
     )
     corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
-        result.mtf_for_acutance,
+        apply_mtf_compensation(
+            result.mtf_for_acutance,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
@@ -256,7 +282,18 @@ def analyze_one(
         pixels_along_picture_height=result.roi.height,
         presets=acutance_presets,
     )
-    quality_loss_presets = quality_loss_presets_from_acutance(acutance_presets_result)
+    quality_loss_presets = quality_loss_presets_from_acutance(
+        acutance_presets_result,
+        om_ceiling=float(acutance_profile.get("quality_loss_om_ceiling", 0.8851)),
+        coefficients=tuple(
+            float(value)
+            for value in acutance_profile.get(
+                "quality_loss_coefficients",
+                (64.99250542, 9.37974246, 0.72233291),
+            )
+        ),
+        preset_overrides=acutance_profile.get("quality_loss_preset_overrides"),
+    )
 
     return {
         "raw_path": raw_path,
@@ -272,6 +309,8 @@ def analyze_one(
         "acutance_presets": acutance_presets_result,
         "quality_loss_presets": quality_loss_presets,
         "analysis_gamma": analysis_gamma,
+        "linearization_mode": linearization_mode,
+        "linearization_toe": linearization_toe,
         "report_gamma": report_gamma,
         "color_channel": report_color_channel,
         "max_detected_frequency_cpp": float(np.max(scaled_frequencies)),
