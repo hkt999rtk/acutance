@@ -165,6 +165,8 @@
   - issue `#29` 的第二十九個 acutance-side follow-up，將同一個 uniform phone-region `delta_power` curve family 往外推到 `1.85 / 2.00 / 2.25` 後，第一次看見 bounded rollover，當前局部最佳點落在 `1.85`
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_clip_lo_shape_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_clip_lo_shape_followup.md)
   - issue `#29` 的第三十個 acutance-side follow-up，加入 preset-side `clip_lo` relative-scale shape 支援並驗證 phone-region `0.98 / 1.00` low-floor probes 後，確認這個 family 在目前最佳 `phone185` 分支上是 exact no-op
+- [docs/imatest_parity_reference_anchor_acutance_curve_preset_strength_curve_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_strength_curve_followup.md)
+  - issue `#29` 的第三十一個 acutance-side follow-up，沿著目前 `phone185` 分支的 preset-side phone-region strength curve 做 bounded retune 後，確認這個 family 只會在 phone Acutance 與 phone Quality Loss 之間做小幅 trade，沒有超過目前最佳分支
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
