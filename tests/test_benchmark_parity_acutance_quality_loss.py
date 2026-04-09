@@ -116,6 +116,17 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(corrected, [1.0625, 0.9375])
 
+    def test_reference_correction_curve_supports_delta_power_curve(self) -> None:
+        corrected = apply_reference_correction_curve(
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.ones(2, dtype=np.float64),
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.array([1.25, 1.25], dtype=np.float64),
+            correction_delta_power_positions=[0.0, 0.15, 0.25],
+            correction_delta_power_values=[1.0, 1.0, 2.0],
+        )
+        np.testing.assert_allclose(corrected, [1.25, 1.125])
+
     def test_clip_reference_correction_curve_supports_variable_hi_curve(self) -> None:
         clipped = clip_reference_correction_curve(
             np.array([0.0, 0.5, 1.0], dtype=np.float64),
@@ -208,6 +219,8 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_acutance_correction_delta_power=1.4,
             matched_ori_acutance_curve_correction_delta_power=1.1,
             matched_ori_acutance_preset_correction_delta_power=1.2,
+            matched_ori_acutance_preset_correction_delta_power_relative_scales=(0.0, 4.5, 5.8),
+            matched_ori_acutance_preset_correction_delta_power_values=(1.0, 1.05, 1.15),
             matched_ori_acutance_preset_strength_curve_relative_scales=(0.0, 4.5, 5.8),
             matched_ori_acutance_preset_strength_curve_values=(1.0, 0.85, 0.45),
         )
@@ -238,6 +251,14 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(profile.matched_ori_acutance_correction_delta_power, 1.4)
         self.assertEqual(profile.matched_ori_acutance_curve_correction_delta_power, 1.1)
         self.assertEqual(profile.matched_ori_acutance_preset_correction_delta_power, 1.2)
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_correction_delta_power_relative_scales,
+            (0.0, 4.5, 5.8),
+        )
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_correction_delta_power_values,
+            (1.0, 1.05, 1.15),
+        )
         self.assertEqual(
             profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             (0.0, 4.5, 5.8),

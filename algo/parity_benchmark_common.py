@@ -73,6 +73,8 @@ def apply_reference_correction_curve(
     strength_curve_frequencies: Sequence[float] | None = None,
     strength_curve_values: Sequence[float] | None = None,
     correction_delta_power: float = 1.0,
+    correction_delta_power_positions: Sequence[float] | None = None,
+    correction_delta_power_values: Sequence[float] | None = None,
 ) -> np.ndarray:
     sample_frequencies = np.asarray(frequencies, dtype=np.float64)
     correction = np.interp(
@@ -116,10 +118,20 @@ def apply_reference_correction_curve(
             )
         strength_curve = lo + (hi - lo) * strength_mix
     correction_delta = correction - 1.0
-    if correction_delta_power != 1.0:
+    if correction_delta_power_positions and correction_delta_power_values:
+        delta_power_curve = np.interp(
+            sample_frequencies,
+            np.asarray(correction_delta_power_positions, dtype=np.float64),
+            np.asarray(correction_delta_power_values, dtype=np.float64),
+            left=float(correction_delta_power_values[0]),
+            right=float(correction_delta_power_values[-1]),
+        )
+    else:
+        delta_power_curve = np.full_like(sample_frequencies, float(correction_delta_power))
+    if not np.allclose(delta_power_curve, 1.0):
         correction_delta = np.sign(correction_delta) * np.power(
             np.abs(correction_delta),
-            correction_delta_power,
+            delta_power_curve,
         )
     shaped_correction = 1.0 + correction_delta * strength_curve * blend
     return np.asarray(mtf, dtype=np.float64) * shaped_correction

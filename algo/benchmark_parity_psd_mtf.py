@@ -96,6 +96,8 @@ class Profile:
     matched_ori_acutance_correction_delta_power: float = 1.0
     matched_ori_acutance_curve_correction_delta_power: float | None = None
     matched_ori_acutance_preset_correction_delta_power: float | None = None
+    matched_ori_acutance_preset_correction_delta_power_relative_scales: tuple[float, ...] | None = None
+    matched_ori_acutance_preset_correction_delta_power_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
     frequency_scale: float = 1.0
@@ -564,6 +566,8 @@ def profile_payload(
             "matched_ori_acutance_correction_delta_power": profile.matched_ori_acutance_correction_delta_power,
             "matched_ori_acutance_curve_correction_delta_power": profile.matched_ori_acutance_curve_correction_delta_power,
             "matched_ori_acutance_preset_correction_delta_power": profile.matched_ori_acutance_preset_correction_delta_power,
+            "matched_ori_acutance_preset_correction_delta_power_relative_scales": profile.matched_ori_acutance_preset_correction_delta_power_relative_scales,
+            "matched_ori_acutance_preset_correction_delta_power_values": profile.matched_ori_acutance_preset_correction_delta_power_values,
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
             "frequency_scale": profile.frequency_scale,
