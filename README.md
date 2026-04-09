@@ -181,6 +181,8 @@
   - issue `#29` 的第三十七個 quality-side follow-up，沿著同一個 polynomial family 再做 quintic / sextic bounded search 後，確認 sextic all-preset fit 可以把 overall Quality Loss MAE 進一步壓到 `1.22214`，使 Quality Loss gate 不再是當前 best branch 的 blocker
 - [docs/imatest_parity_reference_anchor_acutance_record_export_followup.md](docs/imatest_parity_reference_anchor_acutance_record_export_followup.md)
   - issue `#29` 的第三十八個 upstream diagnostic follow-up，加入 per-sample Acutance record export 並整理當前 best branch 的殘餘 miss，確認剩餘 blocker 已從 phone 轉成 non-phone / mid-scale 的系統性 Acutance overprediction
+- [docs/imatest_parity_reference_anchor_acutance_nonphone_strength_followup.md](docs/imatest_parity_reference_anchor_acutance_nonphone_strength_followup.md)
+  - issue `#29` 的第三十九個 upstream Acutance follow-up，將 preset-side correction 改成 bounded non-phone plateau attenuation 後，確認這個 family 會讓 monitor / print 更差，因此屬於 bounded negative result
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
