@@ -1,0 +1,68 @@
+{
+  "base_curve_delta095_preset_delta105": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04328116234825108,
+    "overall_quality_loss_mae_mean": 2.3435205835086657,
+    "phone_acutance_mae": 0.01775139361572649,
+    "phone_quality_loss_mae": 0.3520370877238902
+  },
+  "preset_delta_curve_phone110": {
+    "matched_ori_acutance_preset_correction_delta_power_relative_scales": [
+      0.0,
+      4.5,
+      5.8,
+      6.2
+    ],
+    "matched_ori_acutance_preset_correction_delta_power_values": [
+      1.05,
+      1.05,
+      1.1,
+      1.1
+    ],
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04305689736465129,
+    "overall_quality_loss_mae_mean": 2.3395402919740733,
+    "phone_acutance_mae": 0.016630068697727537,
+    "phone_quality_loss_mae": 0.3321356300509297
+  },
+  "preset_delta_curve_phone115": {
+    "matched_ori_acutance_preset_correction_delta_power_relative_scales": [
+      0.0,
+      4.5,
+      5.8,
+      6.2
+    ],
+    "matched_ori_acutance_preset_correction_delta_power_values": [
+      1.05,
+      1.05,
+      1.15,
+      1.15
+    ],
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04289745040938613,
+    "overall_quality_loss_mae_mean": 2.337203581668607,
+    "phone_acutance_mae": 0.01583283392140175,
+    "phone_quality_loss_mae": 0.32045207852359864
+  },
+  "preset_delta_curve_phone110_tapered": {
+    "matched_ori_acutance_preset_correction_delta_power_relative_scales": [
+      0.0,
+      3.0,
+      4.5,
+      5.8,
+      6.2
+    ],
+    "matched_ori_acutance_preset_correction_delta_power_values": [
+      1.02,
+      1.03,
+      1.05,
+      1.1,
+      1.1
+    ],
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04306046232872064,
+    "overall_quality_loss_mae_mean": 2.3378935404095396,
+    "phone_acutance_mae": 0.016630068697727537,
+    "phone_quality_loss_mae": 0.3321356300509297
+  }
+}
