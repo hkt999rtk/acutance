@@ -1,0 +1,86 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_anchor_mode": "acutance_only",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_reference_anchor": true,
+        "matched_ori_strength_curve_frequencies": [
+          0.0,
+          0.12,
+          0.22,
+          0.35,
+          0.5
+        ],
+        "matched_ori_strength_curve_values": [
+          1.0,
+          1.0,
+          0.82,
+          0.95,
+          1.0
+        ],
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "sensor_aperture_sinc",
+        "mtf_shape_correction_mode": "none",
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.5,
+        "texture_support_scale": true
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.045132331541343135,
+        "0.25": 0.03837972282290488,
+        "0.4": 0.03424583283108843,
+        "0.65": 0.04020915188141205,
+        "0.8": 0.049664991465143526,
+        "ori": 0.055589288189657284
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 3.60294699997058,
+        "0.25": 2.930177389275676,
+        "0.4": 2.4059301310145598,
+        "0.65": 2.2733966182640524,
+        "0.8": 2.348870474123503,
+        "ori": 2.4694461756976427
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.04947448587586449,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.014469243052711292,
+          "Computer Monitor Acutance": 0.06145640899956405,
+          "Large Print Acutance": 0.05374582109239643,
+          "Small Print Acutance": 0.061691355516267324,
+          "UHDTV Display Acutance": 0.056009600718383366
+        },
+        "curve_mae_mean": 0.04306441973920293,
+        "overall_quality_loss_mae_mean": 2.731869278273033,
+        "quality_loss_focus_preset_mae_mean": 2.731869278273033,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 0.3077102210096678,
+          "Computer Monitor Quality Loss": 4.3688442376027155,
+          "Large Print Quality Loss": 2.965692502497061,
+          "Small Print Quality Loss": 2.9629961430546916,
+          "UHDTV Display Quality Loss": 3.0541032872010296
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_mid_dip_profile.json"
+    }
+  ]
+}

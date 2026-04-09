@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
+from typing import Sequence
 
 import numpy as np
 
@@ -67,6 +68,8 @@ def apply_reference_correction_curve(
     strength_high: float | None = None,
     strength_ramp_start_cpp: float = 0.0,
     strength_ramp_stop_cpp: float = 0.0,
+    strength_curve_frequencies: Sequence[float] | None = None,
+    strength_curve_values: Sequence[float] | None = None,
 ) -> np.ndarray:
     sample_frequencies = np.asarray(frequencies, dtype=np.float64)
     correction = np.interp(
@@ -86,7 +89,15 @@ def apply_reference_correction_curve(
             0.0,
             1.0,
         )
-    if strength_low is None and strength_high is None:
+    if strength_curve_frequencies and strength_curve_values:
+        strength_curve = np.interp(
+            sample_frequencies,
+            np.asarray(strength_curve_frequencies, dtype=np.float64),
+            np.asarray(strength_curve_values, dtype=np.float64),
+            left=float(strength_curve_values[0]),
+            right=float(strength_curve_values[-1]),
+        )
+    elif strength_low is None and strength_high is None:
         strength_curve = np.full_like(sample_frequencies, float(strength))
     else:
         lo = float(strength if strength_low is None else strength_low)

@@ -75,6 +75,8 @@ class Profile:
     matched_ori_strength_high: float | None = None
     matched_ori_strength_ramp_start_cpp: float = 0.0
     matched_ori_strength_ramp_stop_cpp: float = 0.0
+    matched_ori_strength_curve_frequencies: tuple[float, ...] | None = None
+    matched_ori_strength_curve_values: tuple[float, ...] | None = None
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -432,6 +434,8 @@ def profile_payload(
                     strength_high=profile.matched_ori_strength_high,
                     strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
                     strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
+                    strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
+                    strength_curve_values=profile.matched_ori_strength_curve_values,
                 )
                 compensated_mtf_for_acutance = apply_reference_correction_curve(
                     scaled_frequencies,
@@ -445,6 +449,8 @@ def profile_payload(
                     strength_high=profile.matched_ori_strength_high,
                     strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
                     strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
+                    strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
+                    strength_curve_values=profile.matched_ori_strength_curve_values,
                 )
         metrics = compute_mtf_metrics(scaled_frequencies, compensated_mtf)
         mtf50_errors.append(
@@ -516,6 +522,8 @@ def profile_payload(
             "matched_ori_strength_high": profile.matched_ori_strength_high,
             "matched_ori_strength_ramp_start_cpp": profile.matched_ori_strength_ramp_start_cpp,
             "matched_ori_strength_ramp_stop_cpp": profile.matched_ori_strength_ramp_stop_cpp,
+            "matched_ori_strength_curve_frequencies": profile.matched_ori_strength_curve_frequencies,
+            "matched_ori_strength_curve_values": profile.matched_ori_strength_curve_values,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,
