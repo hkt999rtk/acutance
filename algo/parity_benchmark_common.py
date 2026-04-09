@@ -6,6 +6,8 @@ from typing import Sequence
 
 import numpy as np
 
+from .dead_leaves import AcutancePoint
+
 
 EPS = 1e-12
 CAPTURE_KEY_RE = re.compile(r"(OV13b10_AG[^_]+_ET[^_]+_deadleaf_12M_[^_]+)")
@@ -114,3 +116,36 @@ def apply_reference_correction_curve(
         strength_curve = lo + (hi - lo) * strength_mix
     shaped_correction = 1.0 + (correction - 1.0) * strength_curve * blend
     return np.asarray(mtf, dtype=np.float64) * shaped_correction
+
+
+def derive_reference_acutance_correction_curve(
+    reference_curve: Sequence[AcutancePoint],
+    estimate_curve: Sequence[AcutancePoint],
+    *,
+    clip_lo: float,
+    clip_hi: float,
+) -> tuple[np.ndarray, np.ndarray]:
+    ref_map = {
+        (point.print_height_cm, point.viewing_distance_cm): point.acutance
+        for point in reference_curve
+    }
+    sample_positions: list[float] = []
+    correction_values: list[float] = []
+    for point in estimate_curve:
+        key = (point.print_height_cm, point.viewing_distance_cm)
+        if key not in ref_map:
+            continue
+        sample_positions.append(point.viewing_distance_cm / max(point.print_height_cm, EPS))
+        correction_values.append(
+            float(
+                np.clip(
+                    ref_map[key] / max(point.acutance, EPS),
+                    clip_lo,
+                    clip_hi,
+                )
+            )
+        )
+    return (
+        np.asarray(sample_positions, dtype=np.float64),
+        np.asarray(correction_values, dtype=np.float64),
+    )

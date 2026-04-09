@@ -12,9 +12,12 @@ from algo.benchmark_parity_acutance_quality_loss import (
     choose_roi,
     mean_named_metrics,
 )
-from algo.dead_leaves import RoiBounds
-from algo.parity_benchmark_common import derive_reference_correction_curve
-from algo.parity_benchmark_common import apply_reference_correction_curve
+from algo.dead_leaves import AcutancePoint, RoiBounds
+from algo.parity_benchmark_common import (
+    apply_reference_correction_curve,
+    derive_reference_acutance_correction_curve,
+    derive_reference_correction_curve,
+)
 from algo.benchmark_parity_psd_mtf import Profile as PsdProfile
 
 
@@ -102,6 +105,22 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(corrected, [1.875, 1.5, 2.0])
 
+    def test_reference_acutance_correction_curve_uses_relative_viewing_scale(self) -> None:
+        positions, correction = derive_reference_acutance_correction_curve(
+            [
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=0.5),
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=20.0, acutance=1.0),
+            ],
+            [
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=0.25),
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=20.0, acutance=4.0),
+            ],
+            clip_lo=0.5,
+            clip_hi=1.5,
+        )
+        np.testing.assert_allclose(positions, [0.25, 0.5])
+        np.testing.assert_allclose(correction, [1.5, 0.5])
+
     def test_psd_profile_allows_acutance_only_anchor_mode(self) -> None:
         profile = PsdProfile(
             name="test",
@@ -110,6 +129,16 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_anchor_mode="acutance_only",
         )
         self.assertEqual(profile.matched_ori_anchor_mode, "acutance_only")
+
+    def test_psd_profile_allows_acutance_curve_anchor_fields(self) -> None:
+        profile = PsdProfile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            matched_ori_acutance_reference_anchor=True,
+            matched_ori_acutance_correction_strength=0.75,
+        )
+        self.assertTrue(profile.matched_ori_acutance_reference_anchor)
+        self.assertEqual(profile.matched_ori_acutance_correction_strength, 0.75)
 
 
 if __name__ == "__main__":

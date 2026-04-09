@@ -39,6 +39,7 @@ from .parity_benchmark_common import (
     apply_reference_correction_curve,
     build_ori_reference_map,
     capture_key_from_stem,
+    derive_reference_acutance_correction_curve,
     derive_reference_correction_curve,
 )
 
@@ -90,6 +91,10 @@ class Profile:
     matched_ori_strength_ramp_stop_cpp: float = 0.0
     matched_ori_strength_curve_frequencies: tuple[float, ...] | None = None
     matched_ori_strength_curve_values: tuple[float, ...] | None = None
+    matched_ori_acutance_reference_anchor: bool = False
+    matched_ori_acutance_correction_clip_lo: float = 0.9
+    matched_ori_acutance_correction_clip_hi: float = 1.1
+    matched_ori_acutance_correction_strength: float = 1.0
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -247,6 +252,7 @@ def summarize_profile(
         build_ori_reference_map(dataset_root) if profile.matched_ori_reference_anchor else {}
     )
     correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    acutance_correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     presets = build_acutance_presets(profile.acutance_preset_overrides)
     csv_paths = sorted(dataset_root.glob("**/Results/*_R_Random.csv"))
     curve_mae: list[float] = []
@@ -446,18 +452,158 @@ def summarize_profile(
             viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
             pixels_along_picture_height=estimate.roi.height,
         )
-        curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
-        if curve_cmp.get("count", 0):
-            curve_mae.append(float(curve_cmp["mae"]))
-            by_mixup_curve_mae.setdefault(classify_csv(csv_path, dataset_root), []).append(
-                float(curve_cmp["mae"])
-            )
         acutance = acutance_presets_from_mtf(
             scaled_frequencies,
             corrected_mtf_for_acutance,
             pixels_along_picture_height=estimate.roi.height,
             presets=presets,
         )
+        if profile.matched_ori_acutance_reference_anchor:
+            capture_key = capture_key_from_stem(raw_path.stem)
+            if capture_key in ori_reference_map:
+                if capture_key not in acutance_correction_cache:
+                    ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
+                    ori_reference = parse_imatest_random_csv(ori_csv_path)
+                    ori_raw = load_raw_u16(ori_raw_path, width, height)
+                    ori_plane = extract_analysis_plane(
+                        ori_raw,
+                        bayer_pattern=BayerPattern(profile.bayer_pattern),
+                        mode=BayerMode(profile.bayer_mode),
+                    )
+                    ori_image = normalize_for_analysis(
+                        ori_plane,
+                        gamma=profile.gamma,
+                        mode=profile.linearization_mode,
+                        toe=profile.linearization_toe,
+                    )
+                    ori_roi = choose_roi(profile, ori_reference, ori_image)
+                    ori_estimate = estimate_dead_leaves_mtf(
+                        ori_image,
+                        num_bins=len(IMATEST_REFERENCE_BINS),
+                        ideal_psd_mode="calibrated_log",
+                        ideal_psd_calibration=calibration,
+                        bin_centers=IMATEST_REFERENCE_BINS,
+                        roi_override=ori_roi,
+                        normalization_band=(profile.normalization_band_lo, profile.normalization_band_hi),
+                        normalization_mode=profile.normalization_mode,
+                        acutance_reference_band=(profile.acutance_band_lo, profile.acutance_band_hi),
+                        acutance_reference_mode=profile.acutance_band_mode,
+                        signal_psd_correction_gain=profile.signal_psd_correction_gain,
+                        signal_psd_correction_start_cpp=profile.signal_psd_correction_start_cpp,
+                        signal_psd_correction_peak_cpp=profile.signal_psd_correction_peak_cpp,
+                        signal_psd_correction_stop_cpp=profile.signal_psd_correction_stop_cpp,
+                        noise_psd_model=profile.noise_psd_model,
+                        noise_psd_log_polynomial_degree=profile.noise_psd_log_polynomial_degree,
+                        noise_psd_scale=profile.noise_psd_scale,
+                        noise_psd_scale_for_acutance=profile.noise_psd_scale_for_acutance,
+                        acutance_noise_scale_model=profile.acutance_noise_scale_mode,
+                        acutance_noise_share_band=(
+                            profile.acutance_noise_share_band_lo,
+                            profile.acutance_noise_share_band_hi,
+                        ),
+                        acutance_noise_share_scale_coefficients=tuple(
+                            profile.acutance_noise_share_scale_coefficients
+                        ),
+                        high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
+                        high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
+                    )
+                    ori_frequency_scale = profile.frequency_scale
+                    if profile.texture_support_scale:
+                        ori_crop = ori_image[
+                            ori_estimate.roi.top : ori_estimate.roi.bottom + 1,
+                            ori_estimate.roi.left : ori_estimate.roi.right + 1,
+                        ]
+                        ori_frequency_scale *= estimate_texture_support_scale(
+                            ori_crop,
+                            percentile=45.0,
+                        ).frequency_scale
+                    ori_scaled_frequencies = apply_frequency_scale(
+                        ori_estimate.frequencies_cpp,
+                        scale=ori_frequency_scale,
+                    )
+                    ori_compensated_mtf_for_acutance, _ = apply_mtf_compensation(
+                        ori_estimate.mtf_for_acutance,
+                        ori_scaled_frequencies,
+                        mode=profile.mtf_compensation_mode,
+                        sensor_fill_factor=profile.sensor_fill_factor,
+                        denominator_clip=profile.compensation_denominator_clip,
+                        max_gain=profile.compensation_max_gain,
+                    )
+                    ori_corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
+                        ori_compensated_mtf_for_acutance,
+                        ori_scaled_frequencies,
+                        mode=profile.mtf_shape_correction_mode,
+                        high_frequency_noise_share=ori_estimate.acutance_high_frequency_noise_share,
+                        gain=profile.mtf_shape_correction_gain,
+                        share_gate_lo=profile.mtf_shape_correction_share_gate_lo,
+                        share_gate_hi=profile.mtf_shape_correction_share_gate_hi,
+                        mid_start_cpp=profile.mtf_shape_correction_mid_start_cpp,
+                        mid_peak_cpp=profile.mtf_shape_correction_mid_peak_cpp,
+                        mid_stop_cpp=profile.mtf_shape_correction_mid_stop_cpp,
+                        high_start_cpp=profile.mtf_shape_correction_high_start_cpp,
+                        high_peak_cpp=profile.mtf_shape_correction_high_peak_cpp,
+                        high_stop_cpp=profile.mtf_shape_correction_high_stop_cpp,
+                        high_weight=profile.mtf_shape_correction_high_weight,
+                    )
+                    ori_curve = acutance_curve_from_mtf(
+                        ori_scaled_frequencies,
+                        ori_corrected_mtf_for_acutance,
+                        picture_height_cm=40.0,
+                        viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
+                        pixels_along_picture_height=ori_estimate.roi.height,
+                    )
+                    acutance_correction_cache[capture_key] = (
+                        derive_reference_acutance_correction_curve(
+                            ori_reference.acutance_table,
+                            ori_curve,
+                            clip_lo=profile.matched_ori_acutance_correction_clip_lo,
+                            clip_hi=profile.matched_ori_acutance_correction_clip_hi,
+                        )
+                    )
+                correction_positions, correction_curve = acutance_correction_cache[capture_key]
+                curve_positions = np.asarray(
+                    [
+                        point.viewing_distance_cm / max(point.print_height_cm, 1e-12)
+                        for point in curve
+                    ],
+                    dtype=np.float64,
+                )
+                corrected_curve_values = apply_reference_correction_curve(
+                    curve_positions,
+                    np.asarray([point.acutance for point in curve], dtype=np.float64),
+                    correction_positions,
+                    correction_curve,
+                    strength=profile.matched_ori_acutance_correction_strength,
+                )
+                curve = [
+                    point.__class__(
+                        print_height_cm=point.print_height_cm,
+                        viewing_distance_cm=point.viewing_distance_cm,
+                        acutance=float(value),
+                    )
+                    for point, value in zip(curve, corrected_curve_values)
+                ]
+                preset_positions = np.asarray(
+                    [preset.viewing_distance_cm / preset.picture_height_cm for preset in presets],
+                    dtype=np.float64,
+                )
+                corrected_preset_values = apply_reference_correction_curve(
+                    preset_positions,
+                    np.asarray([acutance[preset.name] for preset in presets], dtype=np.float64),
+                    correction_positions,
+                    correction_curve,
+                    strength=profile.matched_ori_acutance_correction_strength,
+                )
+                acutance = {
+                    preset.name: float(value)
+                    for preset, value in zip(presets, corrected_preset_values)
+                }
+        curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
+        if curve_cmp.get("count", 0):
+            curve_mae.append(float(curve_cmp["mae"]))
+            by_mixup_curve_mae.setdefault(classify_csv(csv_path, dataset_root), []).append(
+                float(curve_cmp["mae"])
+            )
         acutance_cmp = compare_acutance_presets(acutance, reference.reported_acutance)
         for name, values in acutance_cmp.items():
             acutance_preset_errors.setdefault(name, []).append(float(values["abs_error"]))
@@ -498,6 +644,10 @@ def summarize_profile(
             "matched_ori_strength_ramp_stop_cpp": profile.matched_ori_strength_ramp_stop_cpp,
             "matched_ori_strength_curve_frequencies": profile.matched_ori_strength_curve_frequencies,
             "matched_ori_strength_curve_values": profile.matched_ori_strength_curve_values,
+            "matched_ori_acutance_reference_anchor": profile.matched_ori_acutance_reference_anchor,
+            "matched_ori_acutance_correction_clip_lo": profile.matched_ori_acutance_correction_clip_lo,
+            "matched_ori_acutance_correction_clip_hi": profile.matched_ori_acutance_correction_clip_hi,
+            "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,

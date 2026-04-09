@@ -77,6 +77,10 @@ class Profile:
     matched_ori_strength_ramp_stop_cpp: float = 0.0
     matched_ori_strength_curve_frequencies: tuple[float, ...] | None = None
     matched_ori_strength_curve_values: tuple[float, ...] | None = None
+    matched_ori_acutance_reference_anchor: bool = False
+    matched_ori_acutance_correction_clip_lo: float = 0.9
+    matched_ori_acutance_correction_clip_hi: float = 1.1
+    matched_ori_acutance_correction_strength: float = 1.0
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -524,6 +528,10 @@ def profile_payload(
             "matched_ori_strength_ramp_stop_cpp": profile.matched_ori_strength_ramp_stop_cpp,
             "matched_ori_strength_curve_frequencies": profile.matched_ori_strength_curve_frequencies,
             "matched_ori_strength_curve_values": profile.matched_ori_strength_curve_values,
+            "matched_ori_acutance_reference_anchor": profile.matched_ori_acutance_reference_anchor,
+            "matched_ori_acutance_correction_clip_lo": profile.matched_ori_acutance_correction_clip_lo,
+            "matched_ori_acutance_correction_clip_hi": profile.matched_ori_acutance_correction_clip_hi,
+            "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,
