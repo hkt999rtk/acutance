@@ -1,0 +1,97 @@
+{
+  "base_curve_delta095": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142
+  },
+  "preset_dp095": {
+    "matched_ori_acutance_preset_correction_delta_power": 0.95,
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04479362723846902,
+    "overall_quality_loss_mae_mean": 2.3948923249192,
+    "phone_acutance_mae": 0.021055961027173258,
+    "phone_quality_loss_mae": 0.4136287248181164,
+    "acutance_preset_mae": {
+      "5.5\" Phone Display Acutance": 0.021055961027173258,
+      "Computer Monitor Acutance": 0.053809667570631034,
+      "Large Print Acutance": 0.053832129837454966,
+      "Small Print Acutance": 0.04603417868739834,
+      "UHDTV Display Acutance": 0.0492361990696875
+    },
+    "quality_loss_preset_mae": {
+      "5.5\" Phone Display Quality Loss": 0.4136287248181164,
+      "Computer Monitor Quality Loss": 3.7520572600013593,
+      "Large Print Quality Loss": 2.939019611896124,
+      "Small Print Quality Loss": 2.2220198465372896,
+      "UHDTV Display Quality Loss": 2.6477361813431104
+    }
+  },
+  "preset_dp105": {
+    "matched_ori_acutance_preset_correction_delta_power": 1.05,
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04328116234825108,
+    "overall_quality_loss_mae_mean": 2.3435205835086657,
+    "phone_acutance_mae": 0.01775139361572649,
+    "phone_quality_loss_mae": 0.3520370877238902,
+    "acutance_preset_mae": {
+      "5.5\" Phone Display Acutance": 0.01775139361572649,
+      "Computer Monitor Acutance": 0.052691955741307875,
+      "Large Print Acutance": 0.05132126004290283,
+      "Small Print Acutance": 0.04670043959486586,
+      "UHDTV Display Acutance": 0.047940762746452356
+    },
+    "quality_loss_preset_mae": {
+      "5.5\" Phone Display Quality Loss": 0.3520370877238902,
+      "Computer Monitor Quality Loss": 3.6996756413451997,
+      "Large Print Quality Loss": 2.8034356075498463,
+      "Small Print Quality Loss": 2.2547386610252538,
+      "UHDTV Display Quality Loss": 2.607715919899136
+    }
+  },
+  "preset_dp110": {
+    "matched_ori_acutance_preset_correction_delta_power": 1.1,
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04330221995180604,
+    "overall_quality_loss_mae_mean": 2.357049448595705,
+    "phone_acutance_mae": 0.016618221839432876,
+    "phone_quality_loss_mae": 0.33194935183050067,
+    "acutance_preset_mae": {
+      "5.5\" Phone Display Acutance": 0.016618221839432876,
+      "Computer Monitor Acutance": 0.05283055620785648,
+      "Large Print Acutance": 0.05135632885490933,
+      "Small Print Acutance": 0.047981697969510684,
+      "UHDTV Display Acutance": 0.04772429488732086
+    },
+    "quality_loss_preset_mae": {
+      "5.5\" Phone Display Quality Loss": 0.33194935183050067,
+      "Computer Monitor Quality Loss": 3.7155553127215883,
+      "Large Print Quality Loss": 2.8115367711370274,
+      "Small Print Quality Loss": 2.3153651915425852,
+      "UHDTV Display Quality Loss": 2.6108406157468216
+    }
+  },
+  "preset_dp115": {
+    "matched_ori_acutance_preset_correction_delta_power": 1.15,
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.0435422637360278,
+    "overall_quality_loss_mae_mean": 2.3820473914765996,
+    "phone_acutance_mae": 0.015815312180790117,
+    "phone_quality_loss_mae": 0.3202416649137357,
+    "acutance_preset_mae": {
+      "5.5\" Phone Display Acutance": 0.015815312180790117,
+      "Computer Monitor Acutance": 0.05335127761181992,
+      "Large Print Acutance": 0.051590154158854575,
+      "Small Print Acutance": 0.04920176833253167,
+      "UHDTV Display Acutance": 0.047752806396142725
+    },
+    "quality_loss_preset_mae": {
+      "5.5\" Phone Display Quality Loss": 0.3202416649137357,
+      "Computer Monitor Quality Loss": 3.762673920428779,
+      "Large Print Quality Loss": 2.831515271970736,
+      "Small Print Quality Loss": 2.3729706529898076,
+      "UHDTV Display Quality Loss": 2.622835447079938
+    }
+  }
+}
