@@ -155,6 +155,8 @@
   - issue `#29` 的第二十四個 acutance-side follow-up，將 preset-side nonlinear `delta_power` 做成 relative-scale shape 後，發現 phone-region `1.15` 可以在完全保留目前最佳 curve branch 的前提下，再把 focus-preset Acutance、overall Quality Loss、與 Phone preset 往前推一小步
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_refine_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_refine_followup.md)
   - issue `#29` 的第二十五個 acutance-side follow-up，沿著同一個 preset-side `delta_power` curve neighborhood 再往上探到 phone-region `1.25` 後，發現它比 `1.15` 與 `1.20` 都更好，且仍完全保留目前最佳 curve branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_extend_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_extend_followup.md)
+  - issue `#29` 的第二十六個 acutance-side follow-up，沿著同一個 preset-side `delta_power` curve neighborhood 再往上延伸到 phone-region `1.35` 後，發現它比 `1.25` 與 `1.30` 都更好，且仍完全保留目前最佳 curve branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
