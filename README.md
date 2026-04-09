@@ -129,6 +129,8 @@
   - issue `#29` 的第十一個 acutance-side follow-up，驗證 mid-dip 周邊的 shoulder-trim strength curves 後都沒有超過目前 mid-dip 分支，顯示這個 local tuning neighborhood 已接近飽和
 - [docs/imatest_parity_reference_anchor_acutance_curve_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_followup.md)
   - issue `#29` 的第十二個 acutance-side follow-up，將 matched `ori` correction 直接移到 observable Acutance curve domain 後，幾乎收回剩餘 curve gap 並明顯改善 overall Quality Loss，但也重新帶回部分 Phone preset 誤差
+- [docs/imatest_parity_reference_anchor_acutance_curve_fade_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_fade_followup.md)
+  - issue `#29` 的第十三個 acutance-side follow-up，驗證 direct Acutance-curve anchor 在 observable curve range 之外做 fade-out 後仍無法有效收回 Phone preset regression，排除了最直接的 boundary taper 解法
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

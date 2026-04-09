@@ -81,6 +81,8 @@ class Profile:
     matched_ori_acutance_correction_clip_lo: float = 0.9
     matched_ori_acutance_correction_clip_hi: float = 1.1
     matched_ori_acutance_correction_strength: float = 1.0
+    matched_ori_acutance_blend_start_relative_scale: float = 0.0
+    matched_ori_acutance_blend_stop_relative_scale: float = 0.0
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -532,6 +534,8 @@ def profile_payload(
             "matched_ori_acutance_correction_clip_lo": profile.matched_ori_acutance_correction_clip_lo,
             "matched_ori_acutance_correction_clip_hi": profile.matched_ori_acutance_correction_clip_hi,
             "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
+            "matched_ori_acutance_blend_start_relative_scale": profile.matched_ori_acutance_blend_start_relative_scale,
+            "matched_ori_acutance_blend_stop_relative_scale": profile.matched_ori_acutance_blend_stop_relative_scale,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,

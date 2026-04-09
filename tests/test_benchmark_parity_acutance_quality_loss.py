@@ -136,9 +136,13 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             calibration_file="algo/deadleaf_13b10_psd_calibration.json",
             matched_ori_acutance_reference_anchor=True,
             matched_ori_acutance_correction_strength=0.75,
+            matched_ori_acutance_blend_start_relative_scale=2.5,
+            matched_ori_acutance_blend_stop_relative_scale=5.5,
         )
         self.assertTrue(profile.matched_ori_acutance_reference_anchor)
         self.assertEqual(profile.matched_ori_acutance_correction_strength, 0.75)
+        self.assertEqual(profile.matched_ori_acutance_blend_start_relative_scale, 2.5)
+        self.assertEqual(profile.matched_ori_acutance_blend_stop_relative_scale, 5.5)
 
 
 if __name__ == "__main__":
