@@ -1,0 +1,104 @@
+{
+  "base_curveclip104": {
+    "curve_mae_mean": 0.03806777068146424,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.045406747666125694,
+      "0.25": 0.036681246185515104,
+      "0.4": 0.029414899755251776,
+      "0.65": 0.033898237404461865,
+      "0.8": 0.039725582562929254,
+      "ori": 0.04432251707053692
+    }
+  },
+  "curve_clip_shape_tail_relax_106": {
+    "curve_mae_mean": 0.03806777068146424,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.045406747666125694,
+      "0.25": 0.036681246185515104,
+      "0.4": 0.029414899755251776,
+      "0.65": 0.033898237404461865,
+      "0.8": 0.039725582562929254,
+      "ori": 0.04432251707053692
+    },
+    "matched_ori_acutance_curve_correction_clip_hi_relative_scales": [
+      0.0,
+      0.25,
+      0.8,
+      1.6,
+      2.5
+    ],
+    "matched_ori_acutance_curve_correction_clip_hi_values": [
+      1.04,
+      1.04,
+      1.04,
+      1.05,
+      1.06
+    ]
+  },
+  "curve_clip_shape_low_tight_tail_relax_106": {
+    "curve_mae_mean": 0.03803289687776197,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.04533414097048802,
+      "0.25": 0.03662466611888426,
+      "0.4": 0.029378824960660688,
+      "0.65": 0.03385969254467648,
+      "0.8": 0.039732701477683666,
+      "ori": 0.044328609177509956
+    },
+    "matched_ori_acutance_curve_correction_clip_hi_relative_scales": [
+      0.0,
+      0.25,
+      0.8,
+      1.6,
+      2.5
+    ],
+    "matched_ori_acutance_curve_correction_clip_hi_values": [
+      1.02,
+      1.03,
+      1.04,
+      1.05,
+      1.06
+    ]
+  },
+  "curve_clip_shape_low_tight_tail_relax_108": {
+    "curve_mae_mean": 0.03803289687776197,
+    "acutance_focus_preset_mae_mean": 0.04374952963495118,
+    "overall_quality_loss_mae_mean": 2.354634197463915,
+    "phone_acutance_mae": 0.019192301239287522,
+    "phone_quality_loss_mae": 0.379064086344142,
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.04533414097048802,
+      "0.25": 0.03662466611888426,
+      "0.4": 0.029378824960660688,
+      "0.65": 0.03385969254467648,
+      "0.8": 0.039732701477683666,
+      "ori": 0.044328609177509956
+    },
+    "matched_ori_acutance_curve_correction_clip_hi_relative_scales": [
+      0.0,
+      0.25,
+      0.8,
+      1.6,
+      2.5
+    ],
+    "matched_ori_acutance_curve_correction_clip_hi_values": [
+      1.02,
+      1.03,
+      1.04,
+      1.06,
+      1.08
+    ]
+  }
+}
