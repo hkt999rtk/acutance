@@ -169,6 +169,8 @@
   - issue `#29` 的第三十一個 acutance-side follow-up，沿著目前 `phone185` 分支的 preset-side phone-region strength curve 做 bounded retune 後，確認這個 family 只會在 phone Acutance 與 phone Quality Loss 之間做小幅 trade，沒有超過目前最佳分支
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_phone_display_mtf_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_phone_display_mtf_followup.md)
   - issue `#29` 的第三十二個 acutance-side follow-up，驗證 phone preset definition 上加入 `display_mtf_c50_cpd` family 後發現它會明顯惡化 phone 與 overall 指標，排除這條 preset-definition 解釋路徑
+- [docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_fit_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_quality_loss_fit_followup.md)
+  - issue `#29` 的第三十三個 quality-side follow-up，加入 per-sample Quality Loss record export 並在目前 `phone185` 分支上重擬 global quadratic 後，首次把 overall Quality Loss MAE 從 `2.33309` 明顯降到 `1.85163`
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

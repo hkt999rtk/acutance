@@ -1,0 +1,43 @@
+{
+  "baseline_label": "phone185_baseline",
+  "best_overall_tradeoff_label": "phone185_qualityfit_fixedceiling",
+  "note": "A branch-specific global quadratic Quality Loss remap materially improves overall Quality Loss on top of the current phone185 Acutance branch. Freeing the OM ceiling is numerically unnecessary here; the fixed-ceiling fit reaches the same benchmark result.",
+  "profiles": [
+    {
+      "label": "phone185_baseline",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_delta_curve_phone185_profile.json",
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 2.333087233392619,
+      "phone_quality_loss_mae": 0.2998703371436586
+    },
+    {
+      "label": "phone185_qualityfit_fixedceiling",
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_profile.json",
+      "quality_loss_om_ceiling": 0.8851,
+      "quality_loss_coefficients": [
+        37.240228358776136,
+        26.54550669779819,
+        0.4538662637619741
+      ],
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.8516263679398723,
+      "phone_quality_loss_mae": 0.3808152419382321
+    },
+    {
+      "label": "phone185_qualityfit_freeceiling",
+      "profile_path": "/tmp/phone185_qualityfit_profile.json",
+      "quality_loss_om_ceiling": 0.9819695909222319,
+      "quality_loss_coefficients": [
+        37.24022835877618,
+        19.33061532386791,
+        -1.7681343229066284
+      ],
+      "curve_mae_mean": 0.0377686460358099,
+      "acutance_focus_preset_mae_mean": 0.04249131400289711,
+      "overall_quality_loss_mae_mean": 1.8516263679398712,
+      "phone_quality_loss_mae": 0.38081524193822813
+    }
+  ]
+}

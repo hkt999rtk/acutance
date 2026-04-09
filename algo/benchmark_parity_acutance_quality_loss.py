@@ -174,6 +174,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--width", type=int, default=4032)
     parser.add_argument("--height", type=int, default=3024)
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--include-quality-loss-records",
+        action="store_true",
+        help="Include per-sample Acutance and Quality Loss records in the output payload.",
+    )
     return parser
 
 
@@ -270,6 +275,7 @@ def summarize_profile(
     profile: Profile,
     width: int,
     height: int,
+    include_quality_loss_records: bool = False,
 ) -> dict[str, object]:
     calibration = load_ideal_psd_calibration(profile.calibration_file)
     ori_reference_map = (
@@ -284,6 +290,7 @@ def summarize_profile(
     quality_loss_errors: dict[str, list[float]] = {}
     by_mixup_curve_mae: dict[str, list[float]] = {}
     by_mixup_quality_loss_mae: dict[str, list[float]] = {}
+    quality_loss_records: list[dict[str, object]] = []
 
     for csv_path in csv_paths:
         raw_path = csv_path.parent.parent / csv_path.name.replace("_R_Random.csv", ".raw")
@@ -715,11 +722,25 @@ def summarize_profile(
             abs_error = abs(float(value) - float(reference.reported_quality_loss[name]))
             quality_loss_errors.setdefault(name, []).append(abs_error)
             quality_abs_errors[name] = abs_error
+            if include_quality_loss_records:
+                quality_loss_records.append(
+                    {
+                        "capture_key": capture_key_from_stem(raw_path.stem),
+                        "csv_path": str(csv_path),
+                        "mixup": classify_csv(csv_path, dataset_root),
+                        "preset_name": name,
+                        "reported_quality_loss": float(reference.reported_quality_loss[name]),
+                        "predicted_quality_loss": float(value),
+                        "predicted_acutance": float(
+                            acutance[name.replace("Quality Loss", "Acutance")]
+                        ),
+                    }
+                )
         by_mixup_quality_loss_mae.setdefault(classify_csv(csv_path, dataset_root), []).append(
             float(np.mean(list(quality_abs_errors.values())))
         )
 
-    return {
+    result = {
         "profile_path": str(profile_path),
         "analysis_pipeline": {
             "gamma": profile.gamma,
@@ -807,6 +828,9 @@ def summarize_profile(
             for key, values in sorted(by_mixup_quality_loss_mae.items())
         },
     }
+    if include_quality_loss_records:
+        result["quality_loss_records"] = quality_loss_records
+    return result
 
 
 def main() -> int:
@@ -819,6 +843,7 @@ def main() -> int:
             profile=profile,
             width=args.width,
             height=args.height,
+            include_quality_loss_records=args.include_quality_loss_records,
         )
         for path, profile in zip(args.profiles, profiles)
     ]
