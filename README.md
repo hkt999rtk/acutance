@@ -131,6 +131,8 @@
   - issue `#29` 的第十二個 acutance-side follow-up，將 matched `ori` correction 直接移到 observable Acutance curve domain 後，幾乎收回剩餘 curve gap 並明顯改善 overall Quality Loss，但也重新帶回部分 Phone preset 誤差
 - [docs/imatest_parity_reference_anchor_acutance_curve_fade_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_fade_followup.md)
   - issue `#29` 的第十三個 acutance-side follow-up，驗證 direct Acutance-curve anchor 在 observable curve range 之外做 fade-out 後仍無法有效收回 Phone preset regression，排除了最直接的 boundary taper 解法
+- [docs/imatest_parity_reference_anchor_acutance_curve_phoneaware_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_phoneaware_followup.md)
+  - issue `#29` 的第十四個 acutance-side follow-up，將 direct Acutance-curve anchor 只在 high-scale phone region 弱化後，同時保住大部分 curve gain 並明顯收回 Phone preset regression，成為目前最好的 overall compromise branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
