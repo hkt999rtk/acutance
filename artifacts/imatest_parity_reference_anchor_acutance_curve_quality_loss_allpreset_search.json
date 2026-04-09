@@ -1,0 +1,23 @@
+{
+  "baseline_global_quality_fit": {
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_profile.json",
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.8516263679398723,
+    "phone_quality_loss_mae": 0.3808152419382321
+  },
+  "phone_only_override": {
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_phoneoverride_profile.json",
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.809331503566628,
+    "phone_quality_loss_mae": 0.1693409200720112
+  },
+  "all_preset_overrides": {
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_profile.json",
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.4475311709319314,
+    "phone_quality_loss_mae": 0.1693409200720112
+  }
+}
