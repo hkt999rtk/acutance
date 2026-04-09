@@ -59,12 +59,28 @@ def apply_reference_correction_curve(
     mtf: np.ndarray,
     correction_frequencies: np.ndarray,
     correction_curve: np.ndarray,
+    *,
+    strength: float = 1.0,
+    blend_start_cpp: float = 0.0,
+    blend_stop_cpp: float = 0.0,
 ) -> np.ndarray:
+    sample_frequencies = np.asarray(frequencies, dtype=np.float64)
     correction = np.interp(
-        np.asarray(frequencies, dtype=np.float64),
+        sample_frequencies,
         np.asarray(correction_frequencies, dtype=np.float64),
         np.asarray(correction_curve, dtype=np.float64),
         left=float(correction_curve[0]),
         right=float(correction_curve[-1]),
     )
-    return np.asarray(mtf, dtype=np.float64) * correction
+    if blend_stop_cpp <= 0.0 and blend_start_cpp <= 0.0:
+        blend = np.ones_like(sample_frequencies)
+    elif blend_stop_cpp <= blend_start_cpp:
+        blend = (sample_frequencies >= blend_start_cpp).astype(np.float64)
+    else:
+        blend = np.clip(
+            (sample_frequencies - blend_start_cpp) / (blend_stop_cpp - blend_start_cpp),
+            0.0,
+            1.0,
+        )
+    shaped_correction = 1.0 + (correction - 1.0) * float(strength) * blend
+    return np.asarray(mtf, dtype=np.float64) * shaped_correction

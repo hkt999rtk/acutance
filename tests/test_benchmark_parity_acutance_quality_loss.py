@@ -14,6 +14,7 @@ from algo.benchmark_parity_acutance_quality_loss import (
 )
 from algo.dead_leaves import RoiBounds
 from algo.parity_benchmark_common import derive_reference_correction_curve
+from algo.parity_benchmark_common import apply_reference_correction_curve
 
 
 class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
@@ -62,6 +63,18 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             clip_hi=1.25,
         )
         np.testing.assert_allclose(correction, [1.25, 0.75])
+
+    def test_reference_correction_curve_can_be_blended_by_frequency(self) -> None:
+        corrected = apply_reference_correction_curve(
+            np.array([0.05, 0.2, 0.4], dtype=np.float64),
+            np.ones(3, dtype=np.float64),
+            np.array([0.05, 0.2, 0.4], dtype=np.float64),
+            np.array([2.0, 2.0, 2.0], dtype=np.float64),
+            strength=0.5,
+            blend_start_cpp=0.1,
+            blend_stop_cpp=0.3,
+        )
+        np.testing.assert_allclose(corrected, [1.0, 1.25, 1.5])
 
 
 if __name__ == "__main__":

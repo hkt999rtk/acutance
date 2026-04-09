@@ -115,6 +115,8 @@
   - issue `#29` 的第四個 registration follow-up，使用 reference-guided ROI refinement 後，toe-plus-sensor 分支在 curve、preset Acutance、與 overall Quality Loss 都有小幅進一步改善
 - [docs/imatest_parity_reference_anchor_followup.md](docs/imatest_parity_reference_anchor_followup.md)
   - issue `#29` 的第五個 intrinsic/reference-family follow-up，使用 matched `ori` reference anchor 後，preset Acutance 與 overall Quality Loss 明顯改善，但 curve fidelity 反而變差，顯示這個 family 有潛力但目前仍過強
+- [docs/imatest_parity_reference_anchor_ramped_followup.md](docs/imatest_parity_reference_anchor_ramped_followup.md)
+  - issue `#29` 的第六個 reference-anchor follow-up，將 matched `ori` anchor 改成 half-strength ramp 後，大致收回 curve 損失，但 preset Acutance 與 overall Quality Loss 的改善也一起消失，排除了簡單頻率 ramp 就能解 trade-off 的假設
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

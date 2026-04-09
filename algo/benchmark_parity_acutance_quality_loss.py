@@ -80,6 +80,9 @@ class Profile:
     matched_ori_reference_anchor: bool = False
     matched_ori_correction_clip_lo: float = 0.5
     matched_ori_correction_clip_hi: float = 2.0
+    matched_ori_correction_strength: float = 1.0
+    matched_ori_blend_start_cpp: float = 0.0
+    matched_ori_blend_stop_cpp: float = 0.0
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -403,6 +406,9 @@ def summarize_profile(
                     compensated_mtf_for_acutance,
                     correction_frequencies,
                     correction_curve,
+                    strength=profile.matched_ori_correction_strength,
+                    blend_start_cpp=profile.matched_ori_blend_start_cpp,
+                    blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
                 )
         corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
             compensated_mtf_for_acutance,
@@ -469,6 +475,9 @@ def summarize_profile(
             "matched_ori_reference_anchor": profile.matched_ori_reference_anchor,
             "matched_ori_correction_clip_lo": profile.matched_ori_correction_clip_lo,
             "matched_ori_correction_clip_hi": profile.matched_ori_correction_clip_hi,
+            "matched_ori_correction_strength": profile.matched_ori_correction_strength,
+            "matched_ori_blend_start_cpp": profile.matched_ori_blend_start_cpp,
+            "matched_ori_blend_stop_cpp": profile.matched_ori_blend_stop_cpp,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,
