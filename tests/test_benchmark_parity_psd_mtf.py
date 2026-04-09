@@ -8,6 +8,7 @@ import numpy as np
 
 from algo.benchmark_parity_psd_mtf import Profile, band_error_summary, choose_roi, resample_curve
 from algo.dead_leaves import RoiBounds
+from algo.parity_benchmark_common import capture_key_from_stem
 
 
 class BenchmarkParityPsdMtfTest(unittest.TestCase):
@@ -36,6 +37,12 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
             actual = choose_roi(profile, reference, image)
         self.assertEqual(actual, expected)
         self.assertEqual(refine.call_args.kwargs["seed_roi"], reference.lrtb)
+
+    def test_capture_key_from_stem_strips_denoise_suffix(self) -> None:
+        self.assertEqual(
+            capture_key_from_stem("OV13b10_AG8_ET5500_deadleaf_12M_40_denoised_A_model_mixup04"),
+            "OV13b10_AG8_ET5500_deadleaf_12M_40",
+        )
 
 
 if __name__ == "__main__":

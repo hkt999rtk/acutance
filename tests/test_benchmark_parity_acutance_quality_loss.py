@@ -13,6 +13,7 @@ from algo.benchmark_parity_acutance_quality_loss import (
     mean_named_metrics,
 )
 from algo.dead_leaves import RoiBounds
+from algo.parity_benchmark_common import derive_reference_correction_curve
 
 
 class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
@@ -50,6 +51,17 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             actual = choose_roi(profile, reference, image)
         self.assertEqual(actual, expected)
         self.assertEqual(refine.call_args.kwargs["seed_roi"], reference.lrtb)
+
+    def test_reference_correction_curve_is_clipped(self) -> None:
+        correction = derive_reference_correction_curve(
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.array([2.0, 0.1], dtype=np.float64),
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.array([0.5, 0.5], dtype=np.float64),
+            clip_lo=0.75,
+            clip_hi=1.25,
+        )
+        np.testing.assert_allclose(correction, [1.25, 0.75])
 
 
 if __name__ == "__main__":
