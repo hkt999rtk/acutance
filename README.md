@@ -185,6 +185,8 @@
   - issue `#29` 的第三十九個 upstream Acutance follow-up，將 preset-side correction 改成 bounded non-phone plateau attenuation 後，確認這個 family 會讓 monitor / print 更差，因此屬於 bounded negative result
 - [docs/imatest_parity_reference_anchor_acutance_selective_nonphone_followup.md](docs/imatest_parity_reference_anchor_acutance_selective_nonphone_followup.md)
   - issue `#29` 的第四十個 upstream Acutance follow-up，將 non-phone family 再拆成 monitor 與 print/TV 的 selective branches 後，確認它們只能在 focus-preset Acutance 與 overall Quality Loss 間做小幅 trade，仍未超過目前 best branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_midclip_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_midclip_followup.md)
+  - issue `#29` 的第四十一個 upstream Acutance follow-up，將 curve-side `clip_hi` 在 mid-scale region 做 bounded notch 後，確認這個 family 可以在完全不動 preset 與 Quality Loss 分支的前提下，再把 `curve_mae_mean` 往下壓一小步
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

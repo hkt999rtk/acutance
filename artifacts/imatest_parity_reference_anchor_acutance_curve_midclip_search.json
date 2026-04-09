@@ -1,0 +1,70 @@
+{
+  "baseline_profile": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_profile.json",
+  "baseline_overall": {
+    "curve_mae_mean": 0.0377686460358099,
+    "acutance_focus_preset_mae_mean": 0.04249131400289711,
+    "overall_quality_loss_mae_mean": 1.2221434105099775
+  },
+  "family": {
+    "field": "matched_ori_acutance_curve_correction_clip_hi_values",
+    "relative_scales": [
+      0.0,
+      0.25,
+      0.6,
+      0.8,
+      1.6,
+      2.5
+    ],
+    "description": "Bounded curve-side mid-scale clip-hi notch search tied to the exported mid-distance residual."
+  },
+  "probes": [
+    {
+      "name": "curve_midclip_notch_1025",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        1.025,
+        1.025,
+        1.05,
+        1.06
+      ],
+      "overall": {
+        "curve_mae_mean": 0.03771769979220595,
+        "acutance_focus_preset_mae_mean": 0.04249131400289711,
+        "overall_quality_loss_mae_mean": 1.2221434105099775
+      }
+    },
+    {
+      "name": "curve_midclip_notch_1020",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        1.02,
+        1.02,
+        1.05,
+        1.06
+      ],
+      "overall": {
+        "curve_mae_mean": 0.03769416617123146,
+        "acutance_focus_preset_mae_mean": 0.04249131400289711,
+        "overall_quality_loss_mae_mean": 1.2221434105099775
+      }
+    },
+    {
+      "name": "curve_midclip_notch_1015",
+      "clip_hi_values": [
+        1.02,
+        1.03,
+        1.015,
+        1.015,
+        1.05,
+        1.06
+      ],
+      "overall": {
+        "curve_mae_mean": 0.037666484634852046,
+        "acutance_focus_preset_mae_mean": 0.04249131400289711,
+        "overall_quality_loss_mae_mean": 1.2221434105099775
+      }
+    }
+  ]
+}
