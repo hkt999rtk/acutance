@@ -59,6 +59,37 @@
 
 是目前已知、必須對標的 observable conditions。
 
+## 量化驗收口徑
+
+`README.md` 這裡寫的「相同或近似」，不能只停留在描述性說法，否則無法判定 done。
+
+依 repo 目前已經採用的 benchmark 口徑，至少要同時量化這三層誤差：
+
+- 全曲線誤差：`curve_mae_mean`
+- preset 誤差：5 個 Acutance preset 的 MAE
+- 衍生指標誤差：`overall_quality_loss_mae_mean`
+
+對目前 release-facing parity 線，`近似` 的可執行驗收門檻定義為：
+
+- `curve_mae_mean <= 0.020`
+- Acutance focus-preset `MAE mean <= 0.030`
+- `overall_quality_loss_mae_mean <= 1.30`
+- 非 `5.5" Phone` 的單項 Acutance preset MAE 都要 `<= 0.030`
+- `5.5" Phone` 因為目前仍是已知殘餘問題，要嘛單獨達到 `<= 0.050`，要嘛明確列成 follow-up，不算主線 blocking gate
+
+這組數字不是主觀指定，而是對齊 repo 目前已驗證的 parity-fit 基線：
+
+- `curve_mae_mean = 0.01970`
+- Acutance focus-preset `MAE mean = 0.02911`
+- `overall_quality_loss_mae_mean = 1.27621`
+
+但這裡要明確區分兩件事：
+
+- 上述門檻是目前 release 線可執行的驗收口徑
+- 它不等於 issue `#4` 的最終 true observable parity 完成定義
+
+對 issue `#4` 那條 true observable parity 路線，repo 目前還沒有正式定義一組最終絕對門檻；現況仍只能以「相對 2026-04-08 parity baseline 有 material improvement」作為工作目標，因為該路線當前 baseline 仍遠高於上述 release 門檻。
+
 ## 目前重要結論
 
 目前已經確認：
