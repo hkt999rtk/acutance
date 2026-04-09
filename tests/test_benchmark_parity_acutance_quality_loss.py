@@ -15,6 +15,7 @@ from algo.benchmark_parity_acutance_quality_loss import (
 from algo.dead_leaves import RoiBounds
 from algo.parity_benchmark_common import derive_reference_correction_curve
 from algo.parity_benchmark_common import apply_reference_correction_curve
+from algo.benchmark_parity_psd_mtf import Profile as PsdProfile
 
 
 class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
@@ -75,6 +76,15 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             blend_stop_cpp=0.3,
         )
         np.testing.assert_allclose(corrected, [1.0, 1.25, 1.5])
+
+    def test_psd_profile_allows_acutance_only_anchor_mode(self) -> None:
+        profile = PsdProfile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            matched_ori_reference_anchor=True,
+            matched_ori_anchor_mode="acutance_only",
+        )
+        self.assertEqual(profile.matched_ori_anchor_mode, "acutance_only")
 
 
 if __name__ == "__main__":

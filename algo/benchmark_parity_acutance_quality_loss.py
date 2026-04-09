@@ -78,6 +78,7 @@ class Profile:
     roi_refine_step: int = 2
     roi_refine_area_tolerance: float = 0.98
     matched_ori_reference_anchor: bool = False
+    matched_ori_anchor_mode: str = "all"
     matched_ori_correction_clip_lo: float = 0.5
     matched_ori_correction_clip_hi: float = 2.0
     matched_ori_correction_strength: float = 1.0
@@ -473,6 +474,7 @@ def summarize_profile(
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
             "matched_ori_reference_anchor": profile.matched_ori_reference_anchor,
+            "matched_ori_anchor_mode": profile.matched_ori_anchor_mode,
             "matched_ori_correction_clip_lo": profile.matched_ori_correction_clip_lo,
             "matched_ori_correction_clip_hi": profile.matched_ori_correction_clip_hi,
             "matched_ori_correction_strength": profile.matched_ori_correction_strength,

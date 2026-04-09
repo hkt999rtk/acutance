@@ -65,6 +65,7 @@ class Profile:
     roi_refine_step: int = 2
     roi_refine_area_tolerance: float = 0.98
     matched_ori_reference_anchor: bool = False
+    matched_ori_anchor_mode: str = "all"
     matched_ori_correction_clip_lo: float = 0.5
     matched_ori_correction_clip_hi: float = 2.0
     matched_ori_correction_strength: float = 1.0
@@ -224,7 +225,7 @@ def profile_payload(
     ori_reference_map = (
         build_ori_reference_map(dataset_root) if profile.matched_ori_reference_anchor else {}
     )
-    correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    correction_cache: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
     csv_paths = sorted(dataset_root.glob("**/Results/*_R_Random.csv"))
     curve_mae: list[float] = []
     preset_errors: dict[str, list[float]] = {}
@@ -384,6 +385,14 @@ def profile_payload(
                         denominator_clip=profile.compensation_denominator_clip,
                         max_gain=profile.compensation_max_gain,
                     )
+                    ori_compensated_mtf_for_acutance, _ = apply_mtf_compensation(
+                        ori_estimate.mtf_for_acutance,
+                        ori_scaled_frequencies,
+                        mode=profile.mtf_compensation_mode,
+                        sensor_fill_factor=profile.sensor_fill_factor,
+                        denominator_clip=profile.compensation_denominator_clip,
+                        max_gain=profile.compensation_max_gain,
+                    )
                     correction_cache[capture_key] = (
                         ori_reference.frequencies_cpp.copy(),
                         derive_reference_correction_curve(
@@ -394,22 +403,33 @@ def profile_payload(
                             clip_lo=profile.matched_ori_correction_clip_lo,
                             clip_hi=profile.matched_ori_correction_clip_hi,
                         ),
+                        derive_reference_correction_curve(
+                            ori_reference.frequencies_cpp,
+                            ori_reference.mtf,
+                            ori_scaled_frequencies,
+                            ori_compensated_mtf_for_acutance,
+                            clip_lo=profile.matched_ori_correction_clip_lo,
+                            clip_hi=profile.matched_ori_correction_clip_hi,
+                        ),
                     )
-                correction_frequencies, correction_curve = correction_cache[capture_key]
-                compensated_mtf = apply_reference_correction_curve(
-                    scaled_frequencies,
-                    compensated_mtf,
-                    correction_frequencies,
-                    correction_curve,
-                    strength=profile.matched_ori_correction_strength,
-                    blend_start_cpp=profile.matched_ori_blend_start_cpp,
-                    blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
-                )
+                correction_frequencies, correction_curve, acutance_correction_curve = correction_cache[
+                    capture_key
+                ]
+                if profile.matched_ori_anchor_mode != "acutance_only":
+                    compensated_mtf = apply_reference_correction_curve(
+                        scaled_frequencies,
+                        compensated_mtf,
+                        correction_frequencies,
+                        correction_curve,
+                        strength=profile.matched_ori_correction_strength,
+                        blend_start_cpp=profile.matched_ori_blend_start_cpp,
+                        blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
+                    )
                 compensated_mtf_for_acutance = apply_reference_correction_curve(
                     scaled_frequencies,
                     compensated_mtf_for_acutance,
                     correction_frequencies,
-                    correction_curve,
+                    acutance_correction_curve,
                     strength=profile.matched_ori_correction_strength,
                     blend_start_cpp=profile.matched_ori_blend_start_cpp,
                     blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
@@ -474,6 +494,7 @@ def profile_payload(
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
             "matched_ori_reference_anchor": profile.matched_ori_reference_anchor,
+            "matched_ori_anchor_mode": profile.matched_ori_anchor_mode,
             "matched_ori_correction_clip_lo": profile.matched_ori_correction_clip_lo,
             "matched_ori_correction_clip_hi": profile.matched_ori_correction_clip_hi,
             "matched_ori_correction_strength": profile.matched_ori_correction_strength,
