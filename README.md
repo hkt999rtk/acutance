@@ -189,6 +189,8 @@
   - issue `#29` 的第四十一個 upstream Acutance follow-up，將 curve-side `clip_hi` 在 mid-scale region 做 bounded notch 後，確認這個 family 可以在完全不動 preset 與 Quality Loss 分支的前提下，再把 `curve_mae_mean` 往下壓一小步
 - [docs/imatest_parity_reference_anchor_acutance_curve_midclip_extend_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_midclip_extend_followup.md)
   - issue `#29` 的第四十二個 upstream Acutance follow-up，沿著同一個 curve-side mid-scale notch family 再往下延伸到 `1.005` 後，確認這個 family 仍持續單調改善，並再次更新目前 best branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_midclip_outer_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_midclip_outer_followup.md)
+  - issue `#29` 的第四十三個 upstream Acutance follow-up，將同一個 curve-side mid-scale notch family 再往外探到 `0.995` 後，確認它依然持續單調改善，並再次更新目前 best branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
