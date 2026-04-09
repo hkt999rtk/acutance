@@ -180,6 +180,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Include per-sample Acutance and Quality Loss records in the output payload.",
     )
+    parser.add_argument(
+        "--include-acutance-records",
+        action="store_true",
+        help="Include per-sample Acutance curve and preset records in the output payload.",
+    )
     return parser
 
 
@@ -276,6 +281,7 @@ def summarize_profile(
     profile: Profile,
     width: int,
     height: int,
+    include_acutance_records: bool = False,
     include_quality_loss_records: bool = False,
 ) -> dict[str, object]:
     calibration = load_ideal_psd_calibration(profile.calibration_file)
@@ -291,6 +297,7 @@ def summarize_profile(
     quality_loss_errors: dict[str, list[float]] = {}
     by_mixup_curve_mae: dict[str, list[float]] = {}
     by_mixup_quality_loss_mae: dict[str, list[float]] = {}
+    acutance_records: list[dict[str, object]] = []
     quality_loss_records: list[dict[str, object]] = []
 
     for csv_path in csv_paths:
@@ -709,9 +716,51 @@ def summarize_profile(
             by_mixup_curve_mae.setdefault(classify_csv(csv_path, dataset_root), []).append(
                 float(curve_cmp["mae"])
             )
+        if include_acutance_records:
+            ref_curve_map = {
+                (point.print_height_cm, point.viewing_distance_cm): float(point.acutance)
+                for point in reference.acutance_table
+            }
+            for point in curve:
+                key = (point.print_height_cm, point.viewing_distance_cm)
+                if key not in ref_curve_map:
+                    continue
+                predicted = float(point.acutance)
+                reported = ref_curve_map[key]
+                acutance_records.append(
+                    {
+                        "record_type": "curve",
+                        "capture_key": capture_key_from_stem(raw_path.stem),
+                        "csv_path": str(csv_path),
+                        "mixup": classify_csv(csv_path, dataset_root),
+                        "print_height_cm": float(point.print_height_cm),
+                        "viewing_distance_cm": float(point.viewing_distance_cm),
+                        "predicted_acutance": predicted,
+                        "reported_acutance": reported,
+                        "signed_error": predicted - reported,
+                        "abs_error": abs(predicted - reported),
+                    }
+                )
         acutance_cmp = compare_acutance_presets(acutance, reference.reported_acutance)
         for name, values in acutance_cmp.items():
             acutance_preset_errors.setdefault(name, []).append(float(values["abs_error"]))
+            if include_acutance_records:
+                preset = next(preset for preset in presets if preset.name == name)
+                acutance_records.append(
+                    {
+                        "record_type": "preset",
+                        "capture_key": capture_key_from_stem(raw_path.stem),
+                        "csv_path": str(csv_path),
+                        "mixup": classify_csv(csv_path, dataset_root),
+                        "preset_name": name,
+                        "picture_height_cm": float(preset.picture_height_cm),
+                        "viewing_distance_cm": float(preset.viewing_distance_cm),
+                        "predicted_acutance": float(values["estimate"]),
+                        "reported_acutance": float(values["reference"]),
+                        "signed_error": float(values["estimate"]) - float(values["reference"]),
+                        "abs_error": float(values["abs_error"]),
+                    }
+                )
 
         quality_loss = quality_loss_presets_from_acutance(
             acutance,
@@ -833,6 +882,8 @@ def summarize_profile(
             for key, values in sorted(by_mixup_quality_loss_mae.items())
         },
     }
+    if include_acutance_records:
+        result["acutance_records"] = acutance_records
     if include_quality_loss_records:
         result["quality_loss_records"] = quality_loss_records
     return result
@@ -848,6 +899,7 @@ def main() -> int:
             profile=profile,
             width=args.width,
             height=args.height,
+            include_acutance_records=args.include_acutance_records,
             include_quality_loss_records=args.include_quality_loss_records,
         )
         for path, profile in zip(args.profiles, profiles)

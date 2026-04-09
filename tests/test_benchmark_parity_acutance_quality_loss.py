@@ -9,6 +9,7 @@ import numpy as np
 from algo.benchmark_parity_acutance_quality_loss import (
     Profile,
     build_acutance_presets,
+    build_parser,
     choose_roi,
     mean_named_metrics,
 )
@@ -23,6 +24,18 @@ from algo.benchmark_parity_psd_mtf import Profile as PsdProfile
 
 
 class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
+    def test_build_parser_supports_acutance_and_quality_record_flags(self) -> None:
+        args = build_parser().parse_args(
+            [
+                "dataset",
+                "profile.json",
+                "--include-acutance-records",
+                "--include-quality-loss-records",
+            ]
+        )
+        self.assertTrue(args.include_acutance_records)
+        self.assertTrue(args.include_quality_loss_records)
+
     def test_mean_named_metrics_averages_named_series(self) -> None:
         values = {
             "a": [1.0, 3.0],
