@@ -183,6 +183,8 @@
   - issue `#29` 的第三十八個 upstream diagnostic follow-up，加入 per-sample Acutance record export 並整理當前 best branch 的殘餘 miss，確認剩餘 blocker 已從 phone 轉成 non-phone / mid-scale 的系統性 Acutance overprediction
 - [docs/imatest_parity_reference_anchor_acutance_nonphone_strength_followup.md](docs/imatest_parity_reference_anchor_acutance_nonphone_strength_followup.md)
   - issue `#29` 的第三十九個 upstream Acutance follow-up，將 preset-side correction 改成 bounded non-phone plateau attenuation 後，確認這個 family 會讓 monitor / print 更差，因此屬於 bounded negative result
+- [docs/imatest_parity_reference_anchor_acutance_selective_nonphone_followup.md](docs/imatest_parity_reference_anchor_acutance_selective_nonphone_followup.md)
+  - issue `#29` 的第四十個 upstream Acutance follow-up，將 non-phone family 再拆成 monitor 與 print/TV 的 selective branches 後，確認它們只能在 focus-preset Acutance 與 overall Quality Loss 間做小幅 trade，仍未超過目前 best branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
