@@ -330,14 +330,32 @@ def linearize_raw(
         if config.gamma != 1.0:
             norm = np.power(norm, config.gamma)
         return norm
-    if config.mode != "toe_power":
-        raise ValueError(f"Unknown linearization mode: {config.mode}")
-    if config.toe < 0.0:
-        raise ValueError("toe must be non-negative")
-    norm = (norm + float(config.toe)) / (1.0 + float(config.toe))
-    if config.gamma != 1.0:
-        norm = np.power(norm, config.gamma)
-    return norm
+    if config.mode == "toe_power":
+        if config.toe < 0.0:
+            raise ValueError("toe must be non-negative")
+        norm = (norm + float(config.toe)) / (1.0 + float(config.toe))
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode == "srgb":
+        norm = np.where(
+            norm <= 0.04045,
+            norm / 12.92,
+            np.power((norm + 0.055) / 1.055, 2.4),
+        )
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    if config.mode == "rec709":
+        norm = np.where(
+            norm < 0.081,
+            norm / 4.5,
+            np.power((norm + 0.099) / 1.099, 1.0 / 0.45),
+        )
+        if config.gamma != 1.0:
+            norm = np.power(norm, config.gamma)
+        return norm
+    raise ValueError(f"Unknown linearization mode: {config.mode}")
 
 
 def normalize_for_analysis(

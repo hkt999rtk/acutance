@@ -32,6 +32,32 @@ class DeadLeavesMtfCompensationTest(unittest.TestCase):
         self.assertGreater(toe[1], base[1])
         self.assertAlmostEqual(toe[-1], 1.0)
 
+    def test_srgb_linearization_matches_standard_inverse_oetf(self) -> None:
+        raw = np.array([0.0, 4.045, 100.0], dtype=np.float32)
+        linear = linearize_raw(
+            raw,
+            config=RawLinearization(
+                black_level=0.0,
+                white_level=100.0,
+                mode="srgb",
+            ),
+        )
+        self.assertAlmostEqual(linear[1], 0.04045 / 12.92, places=6)
+        self.assertAlmostEqual(linear[-1], 1.0)
+
+    def test_rec709_linearization_matches_standard_inverse_oetf(self) -> None:
+        raw = np.array([0.0, 8.1, 100.0], dtype=np.float32)
+        linear = linearize_raw(
+            raw,
+            config=RawLinearization(
+                black_level=0.0,
+                white_level=100.0,
+                mode="rec709",
+            ),
+        )
+        self.assertAlmostEqual(linear[1], (8.1 / 100.0) / 4.5, places=3)
+        self.assertAlmostEqual(linear[-1], 1.0)
+
     def test_sensor_aperture_compensation_leaves_dc_unchanged(self) -> None:
         frequencies = np.array([0.0, 0.1, 0.25, 0.5], dtype=np.float64)
         compensation = estimate_mtf_compensation_curve(
