@@ -143,12 +143,23 @@ def clip_reference_correction_curve(
     *,
     clip_lo: float | None,
     clip_hi: float | None,
+    clip_lo_positions: Sequence[float] | None = None,
+    clip_lo_values: Sequence[float] | None = None,
     clip_hi_positions: Sequence[float] | None = None,
     clip_hi_values: Sequence[float] | None = None,
 ) -> np.ndarray:
     clipped = np.asarray(correction_curve, dtype=np.float64).copy()
     if clip_lo is not None:
         clipped = np.maximum(clipped, float(clip_lo))
+    if clip_lo_positions and clip_lo_values:
+        variable_lo = np.interp(
+            np.asarray(sample_positions, dtype=np.float64),
+            np.asarray(clip_lo_positions, dtype=np.float64),
+            np.asarray(clip_lo_values, dtype=np.float64),
+            left=float(clip_lo_values[0]),
+            right=float(clip_lo_values[-1]),
+        )
+        clipped = np.maximum(clipped, variable_lo)
     if clip_hi is not None:
         clipped = np.minimum(clipped, float(clip_hi))
     if clip_hi_positions and clip_hi_values:
