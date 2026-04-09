@@ -131,6 +131,22 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         np.testing.assert_allclose(positions, [0.25, 0.5])
         np.testing.assert_allclose(correction, [1.5, 0.5])
 
+    def test_reference_acutance_correction_curve_can_preserve_raw_ratio(self) -> None:
+        positions, correction = derive_reference_acutance_correction_curve(
+            [
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=0.5),
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=20.0, acutance=1.0),
+            ],
+            [
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=0.25),
+                AcutancePoint(print_height_cm=40.0, viewing_distance_cm=20.0, acutance=4.0),
+            ],
+            clip_lo=None,
+            clip_hi=None,
+        )
+        np.testing.assert_allclose(positions, [0.25, 0.5])
+        np.testing.assert_allclose(correction, [2.0, 0.25])
+
     def test_psd_profile_allows_acutance_only_anchor_mode(self) -> None:
         profile = PsdProfile(
             name="test",
@@ -145,6 +161,8 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             name="test",
             calibration_file="algo/deadleaf_13b10_psd_calibration.json",
             matched_ori_acutance_reference_anchor=True,
+            matched_ori_acutance_curve_correction_clip_hi=1.08,
+            matched_ori_acutance_preset_correction_clip_hi=1.10,
             matched_ori_acutance_correction_strength=0.75,
             matched_ori_acutance_blend_start_relative_scale=2.5,
             matched_ori_acutance_blend_stop_relative_scale=5.5,
@@ -155,6 +173,8 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_acutance_preset_strength_curve_values=(1.0, 0.85, 0.45),
         )
         self.assertTrue(profile.matched_ori_acutance_reference_anchor)
+        self.assertEqual(profile.matched_ori_acutance_curve_correction_clip_hi, 1.08)
+        self.assertEqual(profile.matched_ori_acutance_preset_correction_clip_hi, 1.10)
         self.assertEqual(profile.matched_ori_acutance_correction_strength, 0.75)
         self.assertEqual(profile.matched_ori_acutance_blend_start_relative_scale, 2.5)
         self.assertEqual(profile.matched_ori_acutance_blend_stop_relative_scale, 5.5)

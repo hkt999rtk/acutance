@@ -94,6 +94,10 @@ class Profile:
     matched_ori_acutance_reference_anchor: bool = False
     matched_ori_acutance_correction_clip_lo: float = 0.9
     matched_ori_acutance_correction_clip_hi: float = 1.1
+    matched_ori_acutance_curve_correction_clip_lo: float | None = None
+    matched_ori_acutance_curve_correction_clip_hi: float | None = None
+    matched_ori_acutance_preset_correction_clip_lo: float | None = None
+    matched_ori_acutance_preset_correction_clip_hi: float | None = None
     matched_ori_acutance_correction_strength: float = 1.0
     matched_ori_acutance_blend_start_relative_scale: float = 0.0
     matched_ori_acutance_blend_stop_relative_scale: float = 0.0
@@ -563,11 +567,24 @@ def summarize_profile(
                         derive_reference_acutance_correction_curve(
                             ori_reference.acutance_table,
                             ori_curve,
-                            clip_lo=profile.matched_ori_acutance_correction_clip_lo,
-                            clip_hi=profile.matched_ori_acutance_correction_clip_hi,
+                            clip_lo=None,
+                            clip_hi=None,
                         )
                     )
                 correction_positions, correction_curve = acutance_correction_cache[capture_key]
+                curve_correction_curve = np.clip(
+                    correction_curve,
+                    (
+                        profile.matched_ori_acutance_curve_correction_clip_lo
+                        if profile.matched_ori_acutance_curve_correction_clip_lo is not None
+                        else profile.matched_ori_acutance_correction_clip_lo
+                    ),
+                    (
+                        profile.matched_ori_acutance_curve_correction_clip_hi
+                        if profile.matched_ori_acutance_curve_correction_clip_hi is not None
+                        else profile.matched_ori_acutance_correction_clip_hi
+                    ),
+                )
                 curve_positions = np.asarray(
                     [
                         point.viewing_distance_cm / max(point.print_height_cm, 1e-12)
@@ -579,7 +596,7 @@ def summarize_profile(
                     curve_positions,
                     np.asarray([point.acutance for point in curve], dtype=np.float64),
                     correction_positions,
-                    correction_curve,
+                    curve_correction_curve,
                     strength=profile.matched_ori_acutance_correction_strength,
                     blend_start_cpp=profile.matched_ori_acutance_blend_start_relative_scale,
                     blend_stop_cpp=profile.matched_ori_acutance_blend_stop_relative_scale,
@@ -603,7 +620,19 @@ def summarize_profile(
                     preset_positions,
                     np.asarray([acutance[preset.name] for preset in presets], dtype=np.float64),
                     correction_positions,
-                    correction_curve,
+                    np.clip(
+                        correction_curve,
+                        (
+                            profile.matched_ori_acutance_preset_correction_clip_lo
+                            if profile.matched_ori_acutance_preset_correction_clip_lo is not None
+                            else profile.matched_ori_acutance_correction_clip_lo
+                        ),
+                        (
+                            profile.matched_ori_acutance_preset_correction_clip_hi
+                            if profile.matched_ori_acutance_preset_correction_clip_hi is not None
+                            else profile.matched_ori_acutance_correction_clip_hi
+                        ),
+                    ),
                     strength=profile.matched_ori_acutance_correction_strength,
                     blend_start_cpp=profile.matched_ori_acutance_blend_start_relative_scale,
                     blend_stop_cpp=profile.matched_ori_acutance_blend_stop_relative_scale,
@@ -670,6 +699,10 @@ def summarize_profile(
             "matched_ori_acutance_reference_anchor": profile.matched_ori_acutance_reference_anchor,
             "matched_ori_acutance_correction_clip_lo": profile.matched_ori_acutance_correction_clip_lo,
             "matched_ori_acutance_correction_clip_hi": profile.matched_ori_acutance_correction_clip_hi,
+            "matched_ori_acutance_curve_correction_clip_lo": profile.matched_ori_acutance_curve_correction_clip_lo,
+            "matched_ori_acutance_curve_correction_clip_hi": profile.matched_ori_acutance_curve_correction_clip_hi,
+            "matched_ori_acutance_preset_correction_clip_lo": profile.matched_ori_acutance_preset_correction_clip_lo,
+            "matched_ori_acutance_preset_correction_clip_hi": profile.matched_ori_acutance_preset_correction_clip_hi,
             "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
             "matched_ori_acutance_blend_start_relative_scale": profile.matched_ori_acutance_blend_start_relative_scale,
             "matched_ori_acutance_blend_stop_relative_scale": profile.matched_ori_acutance_blend_stop_relative_scale,

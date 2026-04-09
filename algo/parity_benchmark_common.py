@@ -129,8 +129,8 @@ def derive_reference_acutance_correction_curve(
     reference_curve: Sequence[AcutancePoint],
     estimate_curve: Sequence[AcutancePoint],
     *,
-    clip_lo: float,
-    clip_hi: float,
+    clip_lo: float | None,
+    clip_hi: float | None,
 ) -> tuple[np.ndarray, np.ndarray]:
     ref_map = {
         (point.print_height_cm, point.viewing_distance_cm): point.acutance
@@ -143,15 +143,10 @@ def derive_reference_acutance_correction_curve(
         if key not in ref_map:
             continue
         sample_positions.append(point.viewing_distance_cm / max(point.print_height_cm, EPS))
-        correction_values.append(
-            float(
-                np.clip(
-                    ref_map[key] / max(point.acutance, EPS),
-                    clip_lo,
-                    clip_hi,
-                )
-            )
-        )
+        correction = ref_map[key] / max(point.acutance, EPS)
+        if clip_lo is not None and clip_hi is not None:
+            correction = float(np.clip(correction, clip_lo, clip_hi))
+        correction_values.append(float(correction))
     return (
         np.asarray(sample_positions, dtype=np.float64),
         np.asarray(correction_values, dtype=np.float64),

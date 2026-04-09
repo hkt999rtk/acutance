@@ -141,6 +141,8 @@
   - issue `#29` 的第十七個 acutance-side follow-up，根據 curve-side residual 的 relative-scale 形狀改用 gentle-down strength curve，在不改變 preset 指標的前提下再進一步縮小剩餘 curve gap，成為目前最好的 overall branch
 - [docs/imatest_parity_reference_anchor_acutance_curve_delta_power_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_delta_power_followup.md)
   - issue `#29` 的第十八個 acutance-side follow-up，驗證 direct Acutance correction delta 做 nonlinear compression 後雖然能進一步改善 Phone preset，但會明顯拉壞 curve，因此屬於 bounded negative result
+- [docs/imatest_parity_reference_anchor_acutance_curve_curve_clip_split_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_curve_clip_split_followup.md)
+  - issue `#29` 的第十九個 acutance-side follow-up，將 curve-side 與 preset-side 的 direct Acutance correction clip 分開後，能在完全不改變 preset 指標的前提下把 `curve_mae_mean` 進一步降到 `0.03806777`，成為目前最好的 overall branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
