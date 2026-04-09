@@ -23,6 +23,7 @@ from algo.dead_leaves import (
     acutance_curve_from_mtf,
     acutance_presets_from_mtf,
     apply_frequency_scale,
+    apply_mtf_compensation,
     apply_mtf_shape_correction,
     compute_mtf_metrics,
     estimate_dead_leaves_mtf,
@@ -189,7 +190,14 @@ def analyze_one(
     scaled_frequencies = apply_frequency_scale(result.frequencies_cpp, scale=effective_frequency_scale)
 
     corrected_mtf, _ = apply_mtf_shape_correction(
-        result.mtf,
+        apply_mtf_compensation(
+            result.mtf,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
@@ -205,7 +213,14 @@ def analyze_one(
         high_weight=float(acutance_profile["mtf_shape_correction_high_weight"]),
     )
     corrected_mtf_with_noise, _ = apply_mtf_shape_correction(
-        result.mtf_with_noise,
+        apply_mtf_compensation(
+            result.mtf_with_noise,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,
@@ -221,7 +236,14 @@ def analyze_one(
         high_weight=float(acutance_profile["mtf_shape_correction_high_weight"]),
     )
     corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
-        result.mtf_for_acutance,
+        apply_mtf_compensation(
+            result.mtf_for_acutance,
+            scaled_frequencies,
+            mode=str(shared.get("mtf_compensation_mode", "none")),
+            sensor_fill_factor=float(shared.get("sensor_fill_factor", 1.0)),
+            denominator_clip=float(shared.get("compensation_denominator_clip", 0.25)),
+            max_gain=float(shared.get("compensation_max_gain", 3.0)),
+        )[0],
         scaled_frequencies,
         mode=str(acutance_profile["mtf_shape_correction_mode"]),
         high_frequency_noise_share=result.acutance_high_frequency_noise_share,

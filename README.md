@@ -105,8 +105,10 @@
   - issue `#18` 的 Phone preset follow-up、Phone-only 幾何修正、以及保留 parity-fit curve 的驗證
 - [docs/amodel_gain_trend_experiment.md](docs/amodel_gain_trend_experiment.md)
   - issue `#20` 的 A-model gain-trend experiment、現有 release profiles 的趨勢比較、以及尚未解決的 gain-dependent mismatch
+- [docs/imatest_parity_sensor_compensation_followup.md](docs/imatest_parity_sensor_compensation_followup.md)
+  - issue `#29` 的第一個 source-backed sensor-compensation pass，顯示 literal parity 的 MTF / curve 可改善，但 end-to-end preset / Quality Loss 仍未完成
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
-  - issue `#13` 與 `#18` 的 release-facing parity-fit profile、預設 release 執行入口、以及保留的 reference/diagnostic profiles
+  - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
   - 演算法原型、數學流程、校準與 benchmark 記錄
   - 可交付的 release 包與批次執行方式

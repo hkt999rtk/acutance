@@ -16,11 +16,13 @@ from .dead_leaves import (
     acutance_curve_from_mtf,
     acutance_presets_from_mtf,
     apply_frequency_scale,
+    apply_mtf_compensation,
     compare_acutance_curves,
     compare_acutance_presets,
     compute_mtf_metrics,
     detect_texture_roi,
     estimate_dead_leaves_mtf,
+    estimate_texture_support_scale,
     extract_analysis_plane,
     interpolate_threshold,
     load_ideal_psd_calibration,
@@ -60,6 +62,23 @@ class Profile:
     signal_psd_correction_stop_cpp: float = 0.22
     noise_psd_model: str = "empirical"
     noise_psd_log_polynomial_degree: int = 2
+    noise_psd_scale: float = 1.0
+    noise_psd_scale_for_acutance: float | None = None
+    acutance_noise_scale_mode: str = "fixed"
+    acutance_noise_share_band_lo: float = 0.36
+    acutance_noise_share_band_hi: float = 0.5
+    acutance_noise_share_scale_coefficients: tuple[float, float, float] = (
+        521.08180962,
+        -26.62905791,
+        1.59615575,
+    )
+    high_frequency_guard_start_cpp: float | None = None
+    high_frequency_guard_stop_cpp: float = 0.5
+    texture_support_scale: bool = False
+    mtf_compensation_mode: str = "none"
+    sensor_fill_factor: float = 1.0
+    compensation_denominator_clip: float = 0.25
+    compensation_max_gain: float = 3.0
 
 
 def load_profile(path: Path) -> Profile:
@@ -193,12 +212,50 @@ def profile_payload(
             signal_psd_correction_stop_cpp=profile.signal_psd_correction_stop_cpp,
             noise_psd_model=profile.noise_psd_model,
             noise_psd_log_polynomial_degree=profile.noise_psd_log_polynomial_degree,
+            noise_psd_scale=profile.noise_psd_scale,
+            noise_psd_scale_for_acutance=profile.noise_psd_scale_for_acutance,
+            acutance_noise_scale_model=profile.acutance_noise_scale_mode,
+            acutance_noise_share_band=(
+                profile.acutance_noise_share_band_lo,
+                profile.acutance_noise_share_band_hi,
+            ),
+            acutance_noise_share_scale_coefficients=tuple(
+                profile.acutance_noise_share_scale_coefficients
+            ),
+            high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
+            high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
         )
+        effective_frequency_scale = profile.frequency_scale
+        if profile.texture_support_scale:
+            crop = image[
+                estimate.roi.top : estimate.roi.bottom + 1,
+                estimate.roi.left : estimate.roi.right + 1,
+            ]
+            effective_frequency_scale *= estimate_texture_support_scale(
+                crop,
+                percentile=45.0,
+            ).frequency_scale
         scaled_frequencies = apply_frequency_scale(
             estimate.frequencies_cpp,
-            scale=profile.frequency_scale,
+            scale=effective_frequency_scale,
         )
-        metrics = compute_mtf_metrics(scaled_frequencies, estimate.mtf)
+        compensated_mtf, _ = apply_mtf_compensation(
+            estimate.mtf,
+            scaled_frequencies,
+            mode=profile.mtf_compensation_mode,
+            sensor_fill_factor=profile.sensor_fill_factor,
+            denominator_clip=profile.compensation_denominator_clip,
+            max_gain=profile.compensation_max_gain,
+        )
+        compensated_mtf_for_acutance, _ = apply_mtf_compensation(
+            estimate.mtf_for_acutance,
+            scaled_frequencies,
+            mode=profile.mtf_compensation_mode,
+            sensor_fill_factor=profile.sensor_fill_factor,
+            denominator_clip=profile.compensation_denominator_clip,
+            max_gain=profile.compensation_max_gain,
+        )
+        metrics = compute_mtf_metrics(scaled_frequencies, compensated_mtf)
         mtf50_errors.append(
             abs(metrics.mtf50 - interpolate_threshold(reference.frequencies_cpp, reference.mtf, 0.5))
         )
@@ -211,7 +268,7 @@ def profile_payload(
 
         curve = acutance_curve_from_mtf(
             scaled_frequencies,
-            estimate.mtf_for_acutance,
+            compensated_mtf_for_acutance,
             picture_height_cm=40.0,
             viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
             pixels_along_picture_height=estimate.roi.height,
@@ -224,7 +281,7 @@ def profile_payload(
 
         presets = acutance_presets_from_mtf(
             scaled_frequencies,
-            estimate.mtf_for_acutance,
+            compensated_mtf_for_acutance,
             pixels_along_picture_height=estimate.roi.height,
         )
         preset_cmp = compare_acutance_presets(presets, reference.reported_acutance)
@@ -233,7 +290,7 @@ def profile_payload(
 
         estimate_on_reference = resample_curve(
             scaled_frequencies,
-            estimate.mtf,
+            compensated_mtf,
             reference.frequencies_cpp,
         )
         band_rows.append(
@@ -256,8 +313,11 @@ def profile_payload(
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
             "frequency_scale": profile.frequency_scale,
+            "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,
             "calibration_file": profile.calibration_file,
+            "mtf_compensation_mode": profile.mtf_compensation_mode,
+            "sensor_fill_factor": profile.sensor_fill_factor,
         },
         "overall": {
             "curve_mae_mean": float(np.mean(curve_mae)),

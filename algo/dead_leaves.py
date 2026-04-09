@@ -1278,6 +1278,58 @@ def apply_frequency_scale(
     return np.asarray(frequencies_cpp, dtype=np.float64) * float(scale)
 
 
+def _sinc_pi(values: np.ndarray) -> np.ndarray:
+    data = np.asarray(values, dtype=np.float64)
+    output = np.ones_like(data)
+    nonzero = np.abs(data) > EPS
+    output[nonzero] = np.sin(np.pi * data[nonzero]) / (np.pi * data[nonzero])
+    return output
+
+
+def estimate_mtf_compensation_curve(
+    frequencies_cpp: np.ndarray,
+    *,
+    mode: str = "none",
+    sensor_fill_factor: float = 1.0,
+    denominator_clip: float = 0.25,
+    max_gain: float = 3.0,
+) -> np.ndarray:
+    frequencies = np.asarray(frequencies_cpp, dtype=np.float64)
+    if mode == "none":
+        return np.ones_like(frequencies)
+    if mode != "sensor_aperture_sinc":
+        raise ValueError(f"Unknown MTF compensation mode: {mode}")
+    if sensor_fill_factor <= 0.0:
+        raise ValueError("sensor_fill_factor must be positive")
+    if denominator_clip <= 0.0:
+        raise ValueError("denominator_clip must be positive")
+    if max_gain < 1.0:
+        raise ValueError("max_gain must be at least 1.0")
+
+    sensor_mtf = _sinc_pi(sensor_fill_factor * frequencies)
+    compensation = 1.0 / np.clip(sensor_mtf, denominator_clip, None)
+    return np.clip(compensation, 1.0, max_gain)
+
+
+def apply_mtf_compensation(
+    mtf: np.ndarray,
+    frequencies_cpp: np.ndarray,
+    *,
+    mode: str = "none",
+    sensor_fill_factor: float = 1.0,
+    denominator_clip: float = 0.25,
+    max_gain: float = 3.0,
+) -> tuple[np.ndarray, np.ndarray]:
+    compensation = estimate_mtf_compensation_curve(
+        frequencies_cpp,
+        mode=mode,
+        sensor_fill_factor=sensor_fill_factor,
+        denominator_clip=denominator_clip,
+        max_gain=max_gain,
+    )
+    return np.asarray(mtf, dtype=np.float64) * compensation, compensation
+
+
 def apply_high_frequency_guard(
     signal_psd: np.ndarray,
     frequencies_cpp: np.ndarray,

@@ -21,10 +21,12 @@ from .dead_leaves import (
     acutance_curve_from_mtf,
     acutance_presets_from_mtf,
     apply_frequency_scale,
+    apply_mtf_compensation,
     apply_mtf_shape_correction,
     compare_acutance_curves,
     compare_acutance_presets,
     estimate_dead_leaves_mtf,
+    estimate_texture_support_scale,
     extract_analysis_plane,
     load_ideal_psd_calibration,
     load_raw_u16,
@@ -97,6 +99,11 @@ class Profile:
     quality_loss_om_ceiling: float = 0.8851
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
     acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
+    texture_support_scale: bool = False
+    mtf_compensation_mode: str = "none"
+    sensor_fill_factor: float = 1.0
+    compensation_denominator_clip: float = 0.25
+    compensation_max_gain: float = 3.0
 
 
 def load_profile(path: Path) -> Profile:
@@ -231,12 +238,30 @@ def summarize_profile(
             high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
             high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
         )
+        effective_frequency_scale = profile.frequency_scale
+        if profile.texture_support_scale:
+            crop = image[
+                estimate.roi.top : estimate.roi.bottom + 1,
+                estimate.roi.left : estimate.roi.right + 1,
+            ]
+            effective_frequency_scale *= estimate_texture_support_scale(
+                crop,
+                percentile=45.0,
+            ).frequency_scale
         scaled_frequencies = apply_frequency_scale(
             estimate.frequencies_cpp,
-            scale=profile.frequency_scale,
+            scale=effective_frequency_scale,
+        )
+        compensated_mtf_for_acutance, _ = apply_mtf_compensation(
+            estimate.mtf_for_acutance,
+            scaled_frequencies,
+            mode=profile.mtf_compensation_mode,
+            sensor_fill_factor=profile.sensor_fill_factor,
+            denominator_clip=profile.compensation_denominator_clip,
+            max_gain=profile.compensation_max_gain,
         )
         corrected_mtf_for_acutance, _ = apply_mtf_shape_correction(
-            estimate.mtf_for_acutance,
+            compensated_mtf_for_acutance,
             scaled_frequencies,
             mode=profile.mtf_shape_correction_mode,
             high_frequency_noise_share=estimate.acutance_high_frequency_noise_share,
@@ -296,10 +321,13 @@ def summarize_profile(
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
             "frequency_scale": profile.frequency_scale,
+            "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,
             "acutance_noise_scale_mode": profile.acutance_noise_scale_mode,
             "high_frequency_guard_start_cpp": profile.high_frequency_guard_start_cpp,
             "mtf_shape_correction_mode": profile.mtf_shape_correction_mode,
+            "mtf_compensation_mode": profile.mtf_compensation_mode,
+            "sensor_fill_factor": profile.sensor_fill_factor,
             "acutance_preset_overrides": profile.acutance_preset_overrides,
         },
         "overall": {
