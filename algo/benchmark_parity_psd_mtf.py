@@ -71,6 +71,10 @@ class Profile:
     matched_ori_correction_strength: float = 1.0
     matched_ori_blend_start_cpp: float = 0.0
     matched_ori_blend_stop_cpp: float = 0.0
+    matched_ori_strength_low: float | None = None
+    matched_ori_strength_high: float | None = None
+    matched_ori_strength_ramp_start_cpp: float = 0.0
+    matched_ori_strength_ramp_stop_cpp: float = 0.0
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -421,10 +425,14 @@ def profile_payload(
                         compensated_mtf,
                         correction_frequencies,
                         correction_curve,
-                        strength=profile.matched_ori_correction_strength,
-                        blend_start_cpp=profile.matched_ori_blend_start_cpp,
-                        blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
-                    )
+                    strength=profile.matched_ori_correction_strength,
+                    blend_start_cpp=profile.matched_ori_blend_start_cpp,
+                    blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
+                    strength_low=profile.matched_ori_strength_low,
+                    strength_high=profile.matched_ori_strength_high,
+                    strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
+                    strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
+                )
                 compensated_mtf_for_acutance = apply_reference_correction_curve(
                     scaled_frequencies,
                     compensated_mtf_for_acutance,
@@ -433,6 +441,10 @@ def profile_payload(
                     strength=profile.matched_ori_correction_strength,
                     blend_start_cpp=profile.matched_ori_blend_start_cpp,
                     blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
+                    strength_low=profile.matched_ori_strength_low,
+                    strength_high=profile.matched_ori_strength_high,
+                    strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
+                    strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
                 )
         metrics = compute_mtf_metrics(scaled_frequencies, compensated_mtf)
         mtf50_errors.append(
@@ -500,6 +512,10 @@ def profile_payload(
             "matched_ori_correction_strength": profile.matched_ori_correction_strength,
             "matched_ori_blend_start_cpp": profile.matched_ori_blend_start_cpp,
             "matched_ori_blend_stop_cpp": profile.matched_ori_blend_stop_cpp,
+            "matched_ori_strength_low": profile.matched_ori_strength_low,
+            "matched_ori_strength_high": profile.matched_ori_strength_high,
+            "matched_ori_strength_ramp_start_cpp": profile.matched_ori_strength_ramp_start_cpp,
+            "matched_ori_strength_ramp_stop_cpp": profile.matched_ori_strength_ramp_stop_cpp,
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,

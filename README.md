@@ -121,6 +121,8 @@
   - issue `#29` 的第七個 reference-anchor follow-up，將 matched `ori` anchor 限定在 acutance path 後，保住了 reference-refined 分支的 reported MTF residual，同時保留 full anchor 的 preset / Quality Loss 改善，顯示剩餘 gap 更集中在 Acutance-side correction family
 - [docs/imatest_parity_reference_anchor_acutance_only_strength_followup.md](docs/imatest_parity_reference_anchor_acutance_only_strength_followup.md)
   - issue `#29` 的第八個 acutance-side follow-up，將 `acutance_only` anchor 強度調到 `0.85` 後，Acutance curve residual 有小幅改善，同時仍保留大部分 preset / Quality Loss 改善，說明剩餘 miss 可在 acutance-side 再細化
+- [docs/imatest_parity_reference_anchor_acutance_only_piecewise_followup.md](docs/imatest_parity_reference_anchor_acutance_only_piecewise_followup.md)
+  - issue `#29` 的第九個 acutance-side follow-up，測試 low/high piecewise strength 後結果比 `0.85` scalar 更差，排除了最簡單的雙頻帶 shape 假設
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

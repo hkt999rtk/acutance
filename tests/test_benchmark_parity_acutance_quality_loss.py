@@ -77,6 +77,20 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(corrected, [1.0, 1.25, 1.5])
 
+    def test_reference_correction_curve_supports_piecewise_strength(self) -> None:
+        corrected = apply_reference_correction_curve(
+            np.array([0.05, 0.2, 0.4], dtype=np.float64),
+            np.ones(3, dtype=np.float64),
+            np.array([0.05, 0.2, 0.4], dtype=np.float64),
+            np.array([2.0, 2.0, 2.0], dtype=np.float64),
+            strength=1.0,
+            strength_low=0.5,
+            strength_high=1.0,
+            strength_ramp_start_cpp=0.1,
+            strength_ramp_stop_cpp=0.3,
+        )
+        np.testing.assert_allclose(corrected, [1.5, 1.75, 2.0])
+
     def test_psd_profile_allows_acutance_only_anchor_mode(self) -> None:
         profile = PsdProfile(
             name="test",

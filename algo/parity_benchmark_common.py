@@ -63,6 +63,10 @@ def apply_reference_correction_curve(
     strength: float = 1.0,
     blend_start_cpp: float = 0.0,
     blend_stop_cpp: float = 0.0,
+    strength_low: float | None = None,
+    strength_high: float | None = None,
+    strength_ramp_start_cpp: float = 0.0,
+    strength_ramp_stop_cpp: float = 0.0,
 ) -> np.ndarray:
     sample_frequencies = np.asarray(frequencies, dtype=np.float64)
     correction = np.interp(
@@ -82,5 +86,20 @@ def apply_reference_correction_curve(
             0.0,
             1.0,
         )
-    shaped_correction = 1.0 + (correction - 1.0) * float(strength) * blend
+    if strength_low is None and strength_high is None:
+        strength_curve = np.full_like(sample_frequencies, float(strength))
+    else:
+        lo = float(strength if strength_low is None else strength_low)
+        hi = float(strength if strength_high is None else strength_high)
+        if strength_ramp_stop_cpp <= strength_ramp_start_cpp:
+            strength_mix = (sample_frequencies >= strength_ramp_start_cpp).astype(np.float64)
+        else:
+            strength_mix = np.clip(
+                (sample_frequencies - strength_ramp_start_cpp)
+                / (strength_ramp_stop_cpp - strength_ramp_start_cpp),
+                0.0,
+                1.0,
+            )
+        strength_curve = lo + (hi - lo) * strength_mix
+    shaped_correction = 1.0 + (correction - 1.0) * strength_curve * blend
     return np.asarray(mtf, dtype=np.float64) * shaped_correction
