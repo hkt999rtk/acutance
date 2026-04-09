@@ -161,6 +161,8 @@
   - issue `#29` 的第二十七個 acutance-side follow-up，沿著同一個 preset-side `delta_power` curve neighborhood 再往上探到 phone-region `1.50` 後，發現它仍持續單調改善，表示這個局部 family 目前尚未飽和
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_outer_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_outer_followup.md)
   - issue `#29` 的第二十八個 acutance-side follow-up，沿著同一個 preset-side `delta_power` curve neighborhood 再往外探到 phone-region `1.70` 後，發現它仍持續單調改善，表示這個 uniform phone-region local family 依然尚未飽和
+- [docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_rollover_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_curve_rollover_followup.md)
+  - issue `#29` 的第二十九個 acutance-side follow-up，將同一個 uniform phone-region `delta_power` curve family 往外推到 `1.85 / 2.00 / 2.25` 後，第一次看見 bounded rollover，當前局部最佳點落在 `1.85`
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
