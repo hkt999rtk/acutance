@@ -33,6 +33,7 @@ from .dead_leaves import (
     normalize_for_analysis,
     parse_imatest_random_csv,
     quality_loss_presets_from_acutance,
+    refine_roi_to_texture_support,
 )
 
 FOCUS_ACUTANCE_PRESETS = (
@@ -64,6 +65,12 @@ class Profile:
     roi_source: str = "fixed"
     roi_width: int = 1655
     roi_height: int = 1673
+    roi_refine_percentile: float = 45.0
+    roi_refine_sigma: float = 5.0
+    roi_refine_min_border_margin: int = 8
+    roi_refine_search_radius: int = 12
+    roi_refine_step: int = 2
+    roi_refine_area_tolerance: float = 0.98
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -125,8 +132,22 @@ def build_parser() -> argparse.ArgumentParser:
 def choose_roi(profile: Profile, reference, image: np.ndarray) -> RoiBounds:
     if profile.roi_source == "reference":
         return reference.lrtb.clamp(image.shape[1], image.shape[0])
+    if profile.roi_source == "reference_refined":
+        seed = reference.lrtb.clamp(image.shape[1], image.shape[0])
+        return refine_roi_to_texture_support(
+            image,
+            seed_roi=seed,
+            target_width=profile.roi_width,
+            target_height=profile.roi_height,
+            percentile=profile.roi_refine_percentile,
+            sigma=profile.roi_refine_sigma,
+            min_border_margin=profile.roi_refine_min_border_margin,
+            search_radius=profile.roi_refine_search_radius,
+            step=profile.roi_refine_step,
+            area_tolerance=profile.roi_refine_area_tolerance,
+        )
     detected = detect_texture_roi(image)
-    return RoiBounds.centered(
+    seed = RoiBounds.centered(
         center_x=(detected.left + detected.right) // 2,
         center_y=(detected.top + detected.bottom) // 2,
         width=profile.roi_width,
@@ -134,6 +155,20 @@ def choose_roi(profile: Profile, reference, image: np.ndarray) -> RoiBounds:
         image_width=image.shape[1],
         image_height=image.shape[0],
     )
+    if profile.roi_source == "fixed_refined":
+        return refine_roi_to_texture_support(
+            image,
+            seed_roi=seed,
+            target_width=profile.roi_width,
+            target_height=profile.roi_height,
+            percentile=profile.roi_refine_percentile,
+            sigma=profile.roi_refine_sigma,
+            min_border_margin=profile.roi_refine_min_border_margin,
+            search_radius=profile.roi_refine_search_radius,
+            step=profile.roi_refine_step,
+            area_tolerance=profile.roi_refine_area_tolerance,
+        )
+    return seed
 
 
 def detect_texture_roi(image: np.ndarray) -> RoiBounds:

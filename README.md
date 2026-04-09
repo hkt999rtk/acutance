@@ -111,6 +111,8 @@
   - issue `#29` 的第二個 multi-family follow-up，加入 toe-style OECF linearization 後，literal parity 的 curve 與 overall Quality Loss 都進一步改善，但 preset Acutance 仍未完全對齊
 - [docs/imatest_parity_oetf_family_followup.md](docs/imatest_parity_oetf_family_followup.md)
   - issue `#29` 的第三個 linearization-family follow-up，比較標準 `sRGB / Rec.709` inverse-OETF 與 toe proxy，結果顯示標準 OETF 分支明顯較差，toe proxy 仍是目前較好的 OECF 近似方向
+- [docs/imatest_parity_reference_refined_followup.md](docs/imatest_parity_reference_refined_followup.md)
+  - issue `#29` 的第四個 registration follow-up，使用 reference-guided ROI refinement 後，toe-plus-sensor 分支在 curve、preset Acutance、與 overall Quality Loss 都有小幅進一步改善
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
