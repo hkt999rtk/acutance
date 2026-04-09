@@ -101,6 +101,8 @@ class Profile:
     matched_ori_acutance_curve_correction_clip_hi_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_correction_clip_lo: float | None = None
     matched_ori_acutance_preset_correction_clip_hi: float | None = None
+    matched_ori_acutance_preset_correction_clip_hi_relative_scales: tuple[float, ...] | None = None
+    matched_ori_acutance_preset_correction_clip_hi_values: tuple[float, ...] | None = None
     matched_ori_acutance_correction_strength: float = 1.0
     matched_ori_acutance_blend_start_relative_scale: float = 0.0
     matched_ori_acutance_blend_stop_relative_scale: float = 0.0
@@ -633,7 +635,7 @@ def summarize_profile(
                     np.asarray([acutance[preset.name] for preset in presets], dtype=np.float64),
                     correction_positions,
                     clip_reference_correction_curve(
-                        preset_positions,
+                        correction_positions,
                         correction_curve,
                         clip_lo=(
                             profile.matched_ori_acutance_preset_correction_clip_lo
@@ -645,6 +647,10 @@ def summarize_profile(
                             if profile.matched_ori_acutance_preset_correction_clip_hi is not None
                             else profile.matched_ori_acutance_correction_clip_hi
                         ),
+                        clip_hi_positions=(
+                            profile.matched_ori_acutance_preset_correction_clip_hi_relative_scales
+                        ),
+                        clip_hi_values=profile.matched_ori_acutance_preset_correction_clip_hi_values,
                     ),
                     strength=profile.matched_ori_acutance_correction_strength,
                     blend_start_cpp=profile.matched_ori_acutance_blend_start_relative_scale,
@@ -722,6 +728,8 @@ def summarize_profile(
             "matched_ori_acutance_curve_correction_clip_hi_values": profile.matched_ori_acutance_curve_correction_clip_hi_values,
             "matched_ori_acutance_preset_correction_clip_lo": profile.matched_ori_acutance_preset_correction_clip_lo,
             "matched_ori_acutance_preset_correction_clip_hi": profile.matched_ori_acutance_preset_correction_clip_hi,
+            "matched_ori_acutance_preset_correction_clip_hi_relative_scales": profile.matched_ori_acutance_preset_correction_clip_hi_relative_scales,
+            "matched_ori_acutance_preset_correction_clip_hi_values": profile.matched_ori_acutance_preset_correction_clip_hi_values,
             "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
             "matched_ori_acutance_blend_start_relative_scale": profile.matched_ori_acutance_blend_start_relative_scale,
             "matched_ori_acutance_blend_stop_relative_scale": profile.matched_ori_acutance_blend_stop_relative_scale,

@@ -86,6 +86,8 @@ class Profile:
     matched_ori_acutance_curve_correction_clip_hi_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_correction_clip_lo: float | None = None
     matched_ori_acutance_preset_correction_clip_hi: float | None = None
+    matched_ori_acutance_preset_correction_clip_hi_relative_scales: tuple[float, ...] | None = None
+    matched_ori_acutance_preset_correction_clip_hi_values: tuple[float, ...] | None = None
     matched_ori_acutance_correction_strength: float = 1.0
     matched_ori_acutance_blend_start_relative_scale: float = 0.0
     matched_ori_acutance_blend_stop_relative_scale: float = 0.0
@@ -552,6 +554,8 @@ def profile_payload(
             "matched_ori_acutance_curve_correction_clip_hi_values": profile.matched_ori_acutance_curve_correction_clip_hi_values,
             "matched_ori_acutance_preset_correction_clip_lo": profile.matched_ori_acutance_preset_correction_clip_lo,
             "matched_ori_acutance_preset_correction_clip_hi": profile.matched_ori_acutance_preset_correction_clip_hi,
+            "matched_ori_acutance_preset_correction_clip_hi_relative_scales": profile.matched_ori_acutance_preset_correction_clip_hi_relative_scales,
+            "matched_ori_acutance_preset_correction_clip_hi_values": profile.matched_ori_acutance_preset_correction_clip_hi_values,
             "matched_ori_acutance_correction_strength": profile.matched_ori_acutance_correction_strength,
             "matched_ori_acutance_blend_start_relative_scale": profile.matched_ori_acutance_blend_start_relative_scale,
             "matched_ori_acutance_blend_stop_relative_scale": profile.matched_ori_acutance_blend_stop_relative_scale,

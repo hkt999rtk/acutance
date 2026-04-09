@@ -149,6 +149,8 @@
   - issue `#29` 的第二十一個 acutance-side follow-up，將 nonlinear `delta_power` 分成 curve-side 與 preset-side 後，發現 curve-side `0.95` 可以把 `curve_mae_mean` 再降到 `0.03776865`，同時完全保留目前最好的 preset 與 Quality Loss 指標
 - [docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_split_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_delta_power_split_followup.md)
   - issue `#29` 的第二十二個 acutance-side follow-up，將 nonlinear `delta_power` 只加到 preset-side 後，發現 mild expansion `1.05` 可以在完全保留目前最佳 curve branch 的前提下，把 focus-preset Acutance、overall Quality Loss、與 Phone preset 再往前推一小步
+- [docs/imatest_parity_reference_anchor_acutance_curve_preset_clip_shape_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_preset_clip_shape_followup.md)
+  - issue `#29` 的第二十三個 acutance-side follow-up，加入 preset-side `clip_hi` relative-scale shaping 並修正其套用路徑後，驗證 moderate phone-region clip relief (`1.12 / 1.14`) 對目前最佳分支完全沒有可觀察效果，說明剩餘 gap 不是被這個 local preset clip cap 限制
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)

@@ -127,6 +127,27 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(clipped, [1.02, 1.04, 1.06])
 
+    def test_preset_reference_correction_uses_correction_positions_for_clip_shape(self) -> None:
+        correction_positions = np.array([1.0, 2.0, 4.0, 6.0], dtype=np.float64)
+        correction_curve = np.array([1.08, 1.10, 1.14, 1.20], dtype=np.float64)
+        preset_positions = np.array([1.5, 5.8], dtype=np.float64)
+        clipped_curve = clip_reference_correction_curve(
+            correction_positions,
+            correction_curve,
+            clip_lo=0.9,
+            clip_hi=1.2,
+            clip_hi_positions=[0.0, 4.5, 5.8, 6.2],
+            clip_hi_values=[1.10, 1.10, 1.12, 1.12],
+        )
+        corrected = apply_reference_correction_curve(
+            preset_positions,
+            np.ones(2, dtype=np.float64),
+            correction_positions,
+            clipped_curve,
+        )
+        np.testing.assert_allclose(clipped_curve, [1.08, 1.10, 1.10, 1.12])
+        np.testing.assert_allclose(corrected, [1.09, 1.118])
+
     def test_reference_acutance_correction_curve_uses_relative_viewing_scale(self) -> None:
         positions, correction = derive_reference_acutance_correction_curve(
             [
@@ -177,6 +198,8 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_acutance_curve_correction_clip_hi_relative_scales=(0.0, 1.0, 2.0),
             matched_ori_acutance_curve_correction_clip_hi_values=(1.02, 1.04, 1.06),
             matched_ori_acutance_preset_correction_clip_hi=1.10,
+            matched_ori_acutance_preset_correction_clip_hi_relative_scales=(0.0, 4.5, 5.8),
+            matched_ori_acutance_preset_correction_clip_hi_values=(1.08, 1.10, 1.14),
             matched_ori_acutance_correction_strength=0.75,
             matched_ori_acutance_blend_start_relative_scale=2.5,
             matched_ori_acutance_blend_stop_relative_scale=5.5,
@@ -199,6 +222,14 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             (1.02, 1.04, 1.06),
         )
         self.assertEqual(profile.matched_ori_acutance_preset_correction_clip_hi, 1.10)
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_correction_clip_hi_relative_scales,
+            (0.0, 4.5, 5.8),
+        )
+        self.assertEqual(
+            profile.matched_ori_acutance_preset_correction_clip_hi_values,
+            (1.08, 1.10, 1.14),
+        )
         self.assertEqual(profile.matched_ori_acutance_correction_strength, 0.75)
         self.assertEqual(profile.matched_ori_acutance_blend_start_relative_scale, 2.5)
         self.assertEqual(profile.matched_ori_acutance_blend_stop_relative_scale, 5.5)
