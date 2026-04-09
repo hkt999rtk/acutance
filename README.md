@@ -201,6 +201,8 @@
   - issue `#29` 的第四十七個 upstream Acutance follow-up，將同一個 curve-side mid-scale notch family 再往下探到 `0.955` 後，確認它依然持續單調改善，尚未出現 rollover，並再次更新目前 best branch
 - [docs/imatest_parity_reference_anchor_acutance_curve_midclip_deepest_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_midclip_deepest_followup.md)
   - issue `#29` 的第四十八個 upstream Acutance follow-up，將同一個 curve-side mid-scale notch family 再往下探到 `0.945` 後，確認它依然持續單調改善，尚未出現 rollover，並再次更新目前 best branch
+- [docs/imatest_parity_reference_anchor_acutance_curve_midclip_deepest2_followup.md](docs/imatest_parity_reference_anchor_acutance_curve_midclip_deepest2_followup.md)
+  - issue `#29` 的第四十九個 upstream Acutance follow-up，將同一個 curve-side mid-scale notch family 再往下探到 `0.935` 後，確認它依然持續單調改善，尚未出現 rollover，並再次更新目前 best branch
 - [release/deadleaf_13b10_release/README.md](/Users/kevinhuang/work/acutance/release/deadleaf_13b10_release/README.md)
   - issue `#13`、`#18`、`#29` 的 release-facing parity-fit / reference profiles、預設 release 執行入口、以及保留的 diagnostic profiles
 - [algo/README.md](/Users/kevinhuang/work/acutance/algo/README.md)
