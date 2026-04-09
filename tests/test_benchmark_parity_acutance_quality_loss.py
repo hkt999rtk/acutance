@@ -105,6 +105,16 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(corrected, [1.875, 1.5, 2.0])
 
+    def test_reference_correction_curve_supports_delta_power(self) -> None:
+        corrected = apply_reference_correction_curve(
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.ones(2, dtype=np.float64),
+            np.array([0.1, 0.2], dtype=np.float64),
+            np.array([1.25, 0.75], dtype=np.float64),
+            correction_delta_power=2.0,
+        )
+        np.testing.assert_allclose(corrected, [1.0625, 0.9375])
+
     def test_reference_acutance_correction_curve_uses_relative_viewing_scale(self) -> None:
         positions, correction = derive_reference_acutance_correction_curve(
             [
@@ -140,6 +150,7 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_acutance_blend_stop_relative_scale=5.5,
             matched_ori_acutance_strength_curve_relative_scales=(0.0, 3.0, 5.8),
             matched_ori_acutance_strength_curve_values=(1.0, 1.0, 0.4),
+            matched_ori_acutance_correction_delta_power=1.4,
             matched_ori_acutance_preset_strength_curve_relative_scales=(0.0, 4.5, 5.8),
             matched_ori_acutance_preset_strength_curve_values=(1.0, 0.85, 0.45),
         )
@@ -149,6 +160,7 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(profile.matched_ori_acutance_blend_stop_relative_scale, 5.5)
         self.assertEqual(profile.matched_ori_acutance_strength_curve_relative_scales, (0.0, 3.0, 5.8))
         self.assertEqual(profile.matched_ori_acutance_strength_curve_values, (1.0, 1.0, 0.4))
+        self.assertEqual(profile.matched_ori_acutance_correction_delta_power, 1.4)
         self.assertEqual(
             profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             (0.0, 4.5, 5.8),
