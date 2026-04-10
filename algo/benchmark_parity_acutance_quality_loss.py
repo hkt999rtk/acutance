@@ -298,7 +298,7 @@ def summarize_profile(
         )
     )
     ori_reference_map = build_ori_reference_map(dataset_root) if use_ori_reference else {}
-    oecf_curve_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    oecf_curve_cache: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]] = {}
     correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     acutance_correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     presets = build_acutance_presets(profile.acutance_preset_overrides)
@@ -330,8 +330,9 @@ def summarize_profile(
         )
         roi = choose_roi(profile, reference, image)
         capture_key = capture_key_from_stem(raw_path.stem)
+        oecf_cache_key = (capture_key, raw_path.stem)
         if profile.matched_ori_oecf_reference and capture_key in ori_reference_map:
-            if capture_key not in oecf_curve_cache:
+            if oecf_cache_key not in oecf_curve_cache:
                 ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
                 ori_reference = parse_imatest_random_csv(ori_csv_path)
                 ori_raw = load_raw_u16(ori_raw_path, width, height)
@@ -355,8 +356,8 @@ def summarize_profile(
                     ],
                     quantiles=profile.matched_ori_oecf_quantiles,
                 )
-                oecf_curve_cache[capture_key] = (source_values, target_values)
-            source_values, target_values = oecf_curve_cache[capture_key]
+                oecf_curve_cache[oecf_cache_key] = (source_values, target_values)
+            source_values, target_values = oecf_curve_cache[oecf_cache_key]
             image = apply_quantile_transfer_curve(
                 image,
                 source_values,
