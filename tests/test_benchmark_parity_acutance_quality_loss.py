@@ -17,8 +17,10 @@ from algo.benchmark_parity_acutance_quality_loss import (
 from algo.dead_leaves import AcutancePoint, RoiBounds
 from algo.parity_benchmark_common import (
     align_patch_phase_correlation,
+    apply_quantile_transfer_curve,
     apply_reference_correction_curve,
     clip_reference_correction_curve,
+    derive_quantile_transfer_curve,
     derive_reference_acutance_correction_curve,
     derive_reference_correction_curve,
     derive_intrinsic_transfer_curve,
@@ -121,6 +123,28 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             strength_curve_values=[1.0, 0.5, 1.0],
         )
         np.testing.assert_allclose(corrected, [1.875, 1.5, 2.0])
+
+    def test_quantile_transfer_curve_is_monotonic_and_anchored(self) -> None:
+        source_values, target_values = derive_quantile_transfer_curve(
+            np.array([[0.0, 0.2], [0.4, 1.0]], dtype=np.float32),
+            np.array([[0.0, 0.1], [0.3, 1.0]], dtype=np.float32),
+            quantiles=(0.0, 0.25, 0.5, 0.75, 1.0),
+        )
+        self.assertEqual(source_values[0], 0.0)
+        self.assertEqual(target_values[0], 0.0)
+        self.assertEqual(source_values[-1], 1.0)
+        self.assertEqual(target_values[-1], 1.0)
+        self.assertTrue(np.all(np.diff(source_values) > 0.0))
+        self.assertTrue(np.all(np.diff(target_values) >= 0.0))
+
+    def test_quantile_transfer_curve_blends_by_strength(self) -> None:
+        corrected = apply_quantile_transfer_curve(
+            np.array([0.0, 0.25, 0.5, 1.0], dtype=np.float32),
+            np.array([0.0, 0.5, 1.0], dtype=np.float64),
+            np.array([0.0, 0.25, 1.0], dtype=np.float64),
+            strength=0.5,
+        )
+        np.testing.assert_allclose(corrected, [0.0, 0.1875, 0.375, 1.0])
 
     def test_reference_correction_curve_supports_delta_power(self) -> None:
         corrected = apply_reference_correction_curve(
@@ -296,6 +320,18 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_anchor_mode="acutance_only",
         )
         self.assertEqual(profile.matched_ori_anchor_mode, "acutance_only")
+
+    def test_psd_profile_allows_matched_ori_oecf_fields(self) -> None:
+        profile = PsdProfile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            matched_ori_oecf_reference=True,
+            matched_ori_oecf_strength=0.4,
+            matched_ori_oecf_quantiles=(0.0, 0.2, 0.5, 0.8, 1.0),
+        )
+        self.assertTrue(profile.matched_ori_oecf_reference)
+        self.assertEqual(profile.matched_ori_oecf_strength, 0.4)
+        self.assertEqual(profile.matched_ori_oecf_quantiles, (0.0, 0.2, 0.5, 0.8, 1.0))
 
     def test_psd_profile_allows_acutance_curve_anchor_fields(self) -> None:
         profile = PsdProfile(
