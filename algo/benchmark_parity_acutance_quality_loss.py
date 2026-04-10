@@ -44,6 +44,7 @@ from .parity_benchmark_common import (
     clip_reference_correction_curve,
     derive_reference_acutance_correction_curve,
     derive_reference_correction_curve,
+    derive_intrinsic_transfer_curve,
 )
 
 FOCUS_ACUTANCE_PRESETS = (
@@ -84,6 +85,10 @@ class Profile:
     roi_refine_search_radius: int = 12
     roi_refine_step: int = 2
     roi_refine_area_tolerance: float = 0.98
+    intrinsic_full_reference_mode: str = "none"
+    intrinsic_full_reference_clip_lo: float = 0.5
+    intrinsic_full_reference_clip_hi: float = 1.5
+    intrinsic_full_reference_registration_mode: str = "phase_correlation"
     matched_ori_reference_anchor: bool = False
     matched_ori_anchor_mode: str = "all"
     matched_ori_correction_clip_lo: float = 0.5
@@ -295,12 +300,14 @@ def summarize_profile(
             profile.matched_ori_oecf_reference,
             profile.matched_ori_reference_anchor,
             profile.matched_ori_acutance_reference_anchor,
+            profile.intrinsic_full_reference_mode != "none",
         )
     )
     ori_reference_map = build_ori_reference_map(dataset_root) if use_ori_reference else {}
     oecf_curve_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     acutance_correction_cache: dict[str, tuple[np.ndarray, np.ndarray]] = {}
+    intrinsic_reference_cache: dict[str, tuple[object, np.ndarray, RoiBounds]] = {}
     presets = build_acutance_presets(profile.acutance_preset_overrides)
     csv_paths = sorted(dataset_root.glob("**/Results/*_R_Random.csv"))
     curve_mae: list[float] = []
@@ -415,6 +422,56 @@ def summarize_profile(
             denominator_clip=profile.compensation_denominator_clip,
             max_gain=profile.compensation_max_gain,
         )
+        if profile.intrinsic_full_reference_mode != "none":
+            if profile.intrinsic_full_reference_mode != "paired_ori_transfer":
+                raise ValueError(
+                    f"Unsupported intrinsic full-reference mode: {profile.intrinsic_full_reference_mode}"
+                )
+            capture_key = capture_key_from_stem(raw_path.stem)
+            if capture_key in ori_reference_map:
+                if capture_key not in intrinsic_reference_cache:
+                    ori_csv_path, ori_raw_path = ori_reference_map[capture_key]
+                    ori_reference = parse_imatest_random_csv(ori_csv_path)
+                    ori_raw = load_raw_u16(ori_raw_path, width, height)
+                    ori_plane = extract_analysis_plane(
+                        ori_raw,
+                        bayer_pattern=BayerPattern(profile.bayer_pattern),
+                        mode=BayerMode(profile.bayer_mode),
+                    )
+                    ori_image = normalize_for_analysis(
+                        ori_plane,
+                        gamma=profile.gamma,
+                        mode=profile.linearization_mode,
+                        toe=profile.linearization_toe,
+                    )
+                    ori_roi = choose_roi(profile, ori_reference, ori_image)
+                    intrinsic_reference_cache[capture_key] = (ori_reference, ori_image, ori_roi)
+                ori_reference, ori_image, ori_roi = intrinsic_reference_cache[capture_key]
+                reference_patch = ori_image[
+                    ori_roi.top : ori_roi.bottom + 1,
+                    ori_roi.left : ori_roi.right + 1,
+                ]
+                observed_patch = image[
+                    roi.top : roi.bottom + 1,
+                    roi.left : roi.right + 1,
+                ]
+                transfer_curve = derive_intrinsic_transfer_curve(
+                    reference_patch,
+                    observed_patch,
+                    bin_centers=ori_reference.frequencies_cpp,
+                    normalization_band=(
+                        profile.normalization_band_lo,
+                        profile.normalization_band_hi,
+                    ),
+                    normalization_mode=profile.normalization_mode,
+                    clip_lo=profile.intrinsic_full_reference_clip_lo,
+                    clip_hi=profile.intrinsic_full_reference_clip_hi,
+                    registration_mode=profile.intrinsic_full_reference_registration_mode,
+                )
+                scaled_frequencies = np.asarray(ori_reference.frequencies_cpp, dtype=np.float64)
+                compensated_mtf_for_acutance = (
+                    np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
+                )
         if profile.matched_ori_reference_anchor:
             if capture_key in ori_reference_map:
                 if capture_key not in correction_cache:
@@ -846,6 +903,10 @@ def summarize_profile(
             "bayer_pattern": profile.bayer_pattern,
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
+            "intrinsic_full_reference_mode": profile.intrinsic_full_reference_mode,
+            "intrinsic_full_reference_clip_lo": profile.intrinsic_full_reference_clip_lo,
+            "intrinsic_full_reference_clip_hi": profile.intrinsic_full_reference_clip_hi,
+            "intrinsic_full_reference_registration_mode": profile.intrinsic_full_reference_registration_mode,
             "matched_ori_reference_anchor": profile.matched_ori_reference_anchor,
             "matched_ori_anchor_mode": profile.matched_ori_anchor_mode,
             "matched_ori_correction_clip_lo": profile.matched_ori_correction_clip_lo,
