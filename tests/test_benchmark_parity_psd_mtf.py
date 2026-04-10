@@ -141,6 +141,14 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
 
             self.assertEqual(derive_curve.call_count, 2)
 
+    def test_profile_allows_intrinsic_full_reference_mode(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            intrinsic_full_reference_mode="paired_ori_transfer",
+        )
+        self.assertEqual(profile.intrinsic_full_reference_mode, "paired_ori_transfer")
+
 
 if __name__ == "__main__":
     unittest.main()

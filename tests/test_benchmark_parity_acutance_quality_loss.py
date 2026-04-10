@@ -6,6 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import cv2
 import numpy as np
 
 from algo.benchmark_parity_acutance_quality_loss import (
@@ -18,12 +19,14 @@ from algo.benchmark_parity_acutance_quality_loss import (
 )
 from algo.dead_leaves import AcutancePoint, RoiBounds
 from algo.parity_benchmark_common import (
+    align_patch_phase_correlation,
     apply_quantile_transfer_curve,
     apply_reference_correction_curve,
     clip_reference_correction_curve,
     derive_quantile_transfer_curve,
     derive_reference_acutance_correction_curve,
     derive_reference_correction_curve,
+    derive_intrinsic_transfer_curve,
 )
 from algo.benchmark_parity_psd_mtf import Profile as PsdProfile
 
@@ -254,6 +257,63 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         np.testing.assert_allclose(positions, [0.25, 0.5])
         np.testing.assert_allclose(correction, [2.0, 0.25])
+
+    def test_phase_correlation_alignment_recovers_simple_translation(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(96, 96)).astype(np.float32)
+        transform = np.array([[1.0, 0.0, 5.0], [0.0, 1.0, -3.0]], dtype=np.float32)
+        observed = cv2.warpAffine(
+            reference,
+            transform,
+            (reference.shape[1], reference.shape[0]),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REFLECT,
+        )
+        aligned, shift, response = align_patch_phase_correlation(reference, observed)
+        self.assertGreater(response, 0.5)
+        self.assertAlmostEqual(shift[0], 5.0, delta=0.5)
+        self.assertAlmostEqual(shift[1], -3.0, delta=0.5)
+        self.assertLess(float(np.mean(np.abs(aligned - reference))), 0.2)
+
+    def test_intrinsic_transfer_curve_is_near_identity_for_registered_translation(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(96, 96)).astype(np.float32)
+        transform = np.array([[1.0, 0.0, 4.0], [0.0, 1.0, 2.0]], dtype=np.float32)
+        observed = cv2.warpAffine(
+            reference,
+            transform,
+            (reference.shape[1], reference.shape[0]),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REFLECT,
+        )
+        transfer = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="phase_correlation",
+        )
+        self.assertLess(float(np.mean(np.abs(transfer - 1.0))), 0.12)
+
+    def test_intrinsic_transfer_curve_captures_high_frequency_rolloff(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(96, 96)).astype(np.float32)
+        observed = cv2.GaussianBlur(reference, (0, 0), 1.4)
+        transfer = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="phase_correlation",
+        )
+        self.assertGreater(float(np.mean(transfer[:4])), float(np.mean(transfer[-4:])))
+        self.assertLess(float(np.mean(transfer[-4:])), 0.85)
 
     def test_psd_profile_allows_acutance_only_anchor_mode(self) -> None:
         profile = PsdProfile(
