@@ -12,6 +12,7 @@ from .dead_leaves import (
     BayerMode,
     BayerPattern,
     IMATEST_REFERENCE_BINS,
+    MTF_SHAPE_CORRECTION_SHARE_GATE,
     RoiBounds,
     acutance_curve_from_mtf,
     acutance_presets_from_mtf,
@@ -141,6 +142,17 @@ class Profile:
     )
     high_frequency_guard_start_cpp: float | None = None
     high_frequency_guard_stop_cpp: float = 0.5
+    mtf_shape_correction_mode: str = "none"
+    mtf_shape_correction_gain: float = 0.035
+    mtf_shape_correction_share_gate_lo: float = MTF_SHAPE_CORRECTION_SHARE_GATE[0]
+    mtf_shape_correction_share_gate_hi: float = MTF_SHAPE_CORRECTION_SHARE_GATE[1]
+    mtf_shape_correction_mid_start_cpp: float = 0.095
+    mtf_shape_correction_mid_peak_cpp: float = 0.145
+    mtf_shape_correction_mid_stop_cpp: float = 0.19
+    mtf_shape_correction_high_start_cpp: float = 0.36
+    mtf_shape_correction_high_peak_cpp: float = 0.40
+    mtf_shape_correction_high_stop_cpp: float = 0.49
+    mtf_shape_correction_high_weight: float = 0.25
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
     sensor_fill_factor: float = 1.0
@@ -709,6 +721,9 @@ def profile_payload(
             "frequency_scale": profile.frequency_scale,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,
+            "acutance_noise_scale_mode": profile.acutance_noise_scale_mode,
+            "high_frequency_guard_start_cpp": profile.high_frequency_guard_start_cpp,
+            "mtf_shape_correction_mode": profile.mtf_shape_correction_mode,
             "calibration_file": profile.calibration_file,
             "mtf_compensation_mode": profile.mtf_compensation_mode,
             "sensor_fill_factor": profile.sensor_fill_factor,

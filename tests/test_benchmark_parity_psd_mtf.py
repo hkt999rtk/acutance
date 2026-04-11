@@ -158,6 +158,16 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
         )
         self.assertEqual(profile.intrinsic_full_reference_transfer_mode, "radial_real_mean")
 
+    def test_profile_allows_hf_noise_share_shape_correction_fields(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            acutance_noise_scale_mode="high_frequency_noise_share_quadratic",
+            mtf_shape_correction_mode="hf_noise_share_gated_bump",
+        )
+        self.assertEqual(profile.acutance_noise_scale_mode, "high_frequency_noise_share_quadratic")
+        self.assertEqual(profile.mtf_shape_correction_mode, "hf_noise_share_gated_bump")
+
     def test_profile_allows_chart_fill_factor_for_compensation_family(self) -> None:
         profile = Profile(
             name="test",
