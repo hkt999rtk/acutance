@@ -560,6 +560,159 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
 
             self.assertEqual(derive_curve.call_count, 2)
 
+    def test_intrinsic_scope_can_limit_full_reference_to_acutance_only(self) -> None:
+        capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
+        preset_names = (
+            '5.5" Phone Display Acutance',
+            "Computer Monitor Acutance",
+            "UHDTV Display Acutance",
+            "Small Print Acutance",
+            "Large Print Acutance",
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            dataset_root = Path(tmpdir)
+            variant_root = dataset_root / "OV13B10_AI_NR_OV13B10_ppqpkl_0.10"
+            results_dir = variant_root / "Results"
+            results_dir.mkdir(parents=True)
+            stem = f"{capture_key}_variantA"
+            (results_dir / f"{stem}_R_Random.csv").write_text("", encoding="utf-8")
+            (variant_root / f"{stem}.raw").write_bytes(b"")
+
+            reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                acutance_table=[
+                    AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=1.0)
+                ],
+                reported_acutance={name: 1.0 for name in preset_names},
+                reported_quality_loss={
+                    name.replace("Acutance", "Quality Loss"): 0.0 for name in preset_names
+                },
+            )
+            ori_reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.1, 0.2], dtype=np.float64),
+                mtf=np.array([1.0, 1.0], dtype=np.float64),
+                acutance_table=reference.acutance_table,
+            )
+            estimate = SimpleNamespace(
+                roi=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.1, 0.2], dtype=np.float64),
+                mtf_for_acutance=np.array([1.0, 1.0], dtype=np.float64),
+                acutance_high_frequency_noise_share=0.0,
+            )
+            profile = Profile(
+                name="test",
+                calibration_file="calibration.json",
+                roi_source="reference",
+                intrinsic_full_reference_mode="paired_ori_transfer",
+                intrinsic_full_reference_scope="acutance_only",
+            )
+
+            def parse_csv(path: Path):
+                return ori_reference if path.name == "ori.csv" else reference
+
+            def acutance_from_mtf(_freqs, mtf, **_kwargs):
+                value = float(np.asarray(mtf, dtype=np.float64)[0])
+                return {name: value for name in preset_names}
+
+            with (
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_ideal_psd_calibration",
+                    return_value=None,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.build_ori_reference_map",
+                    return_value={capture_key: (dataset_root / "ori.csv", dataset_root / "ori.raw")},
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.parse_imatest_random_csv",
+                    side_effect=parse_csv,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_raw_u16",
+                    side_effect=lambda path, width, height: np.zeros((height, width), dtype=np.uint16),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.extract_analysis_plane",
+                    side_effect=lambda raw, **_: raw,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.normalize_for_analysis",
+                    side_effect=lambda plane, **_: plane,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.estimate_dead_leaves_mtf",
+                    return_value=estimate,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.apply_mtf_compensation",
+                    side_effect=lambda mtf, freqs, **_: (
+                        np.asarray(mtf, dtype=np.float64),
+                        np.asarray(freqs, dtype=np.float64),
+                    ),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.derive_intrinsic_transfer_curve",
+                    return_value=np.array([2.0, 2.0], dtype=np.float64),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.apply_mtf_shape_correction",
+                    side_effect=lambda mtf, freqs, **_: (
+                        np.asarray(mtf, dtype=np.float64),
+                        np.asarray(freqs, dtype=np.float64),
+                    ),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_curve_from_mtf",
+                    side_effect=lambda _freqs, mtf, **_kwargs: [
+                        AcutancePoint(
+                            print_height_cm=40.0,
+                            viewing_distance_cm=10.0,
+                            acutance=float(np.asarray(mtf, dtype=np.float64)[0]),
+                        )
+                    ],
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_presets_from_mtf",
+                    side_effect=acutance_from_mtf,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_curves",
+                    return_value={"count": 1, "mae": 0.0},
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_presets",
+                    side_effect=lambda estimate_map, reference_map: {
+                        name: {
+                            "abs_error": abs(float(estimate_map[name]) - float(reference_map[name])),
+                            "estimate": float(estimate_map[name]),
+                            "reference": float(reference_map[name]),
+                        }
+                        for name in estimate_map
+                    },
+                ) as compare_presets,
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.quality_loss_presets_from_acutance",
+                    return_value=reference.reported_quality_loss,
+                ) as quality_loss_from_acutance,
+            ):
+                summarize_profile(
+                    dataset_root=dataset_root,
+                    profile_path=dataset_root / "profile.json",
+                    profile=profile,
+                    width=2,
+                    height=2,
+                )
+
+            self.assertEqual(
+                compare_presets.call_args.args[0]['5.5" Phone Display Acutance'],
+                2.0,
+            )
+            self.assertEqual(
+                quality_loss_from_acutance.call_args.args[0]['5.5" Phone Display Acutance'],
+                1.0,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

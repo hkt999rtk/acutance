@@ -71,6 +71,7 @@ class Profile:
     roi_refine_step: int = 2
     roi_refine_area_tolerance: float = 0.98
     intrinsic_full_reference_mode: str = "none"
+    intrinsic_full_reference_scope: str = "replace_all"
     intrinsic_full_reference_clip_lo: float = 0.5
     intrinsic_full_reference_clip_hi: float = 1.5
     intrinsic_full_reference_registration_mode: str = "phase_correlation"
@@ -412,6 +413,10 @@ def profile_payload(
                 raise ValueError(
                     f"Unsupported intrinsic full-reference mode: {profile.intrinsic_full_reference_mode}"
                 )
+            if profile.intrinsic_full_reference_scope not in {"replace_all", "acutance_only"}:
+                raise ValueError(
+                    f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
+                )
             capture_key = capture_key_from_stem(raw_path.stem)
             if capture_key in ori_reference_map:
                 if capture_key not in intrinsic_reference_cache:
@@ -454,8 +459,10 @@ def profile_payload(
                     registration_mode=profile.intrinsic_full_reference_registration_mode,
                 )
                 scaled_frequencies = np.asarray(ori_reference.frequencies_cpp, dtype=np.float64)
-                compensated_mtf = np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
-                compensated_mtf_for_acutance = compensated_mtf.copy()
+                intrinsic_mtf = np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
+                compensated_mtf_for_acutance = intrinsic_mtf.copy()
+                if profile.intrinsic_full_reference_scope == "replace_all":
+                    compensated_mtf = intrinsic_mtf
         if profile.matched_ori_reference_anchor:
             if capture_key in ori_reference_map:
                 if capture_key not in correction_cache:
@@ -652,6 +659,7 @@ def profile_payload(
             "bayer_mode": profile.bayer_mode,
             "roi_source": profile.roi_source,
             "intrinsic_full_reference_mode": profile.intrinsic_full_reference_mode,
+            "intrinsic_full_reference_scope": profile.intrinsic_full_reference_scope,
             "intrinsic_full_reference_clip_lo": profile.intrinsic_full_reference_clip_lo,
             "intrinsic_full_reference_clip_hi": profile.intrinsic_full_reference_clip_hi,
             "intrinsic_full_reference_registration_mode": profile.intrinsic_full_reference_registration_mode,
