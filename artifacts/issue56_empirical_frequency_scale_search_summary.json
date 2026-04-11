@@ -1,0 +1,129 @@
+{
+  "calibration_sweep": {
+    "best_scale": 1.15,
+    "total_error": 10.7989294439512,
+    "source_count": 40,
+    "analysis_pipeline": {
+      "gamma": 0.5,
+      "bayer_pattern": "RGGB",
+      "bayer_mode": "demosaic_red"
+    }
+  },
+  "candidate_psd_summary": {
+    "1.095": {
+      "curve_mae_mean": 0.048104121871917774,
+      "mtf_abs_signed_rel_mean": 0.14593603627453947,
+      "mtf_bands": {
+        "high": {
+          "mae_mean": 0.03935916762317556,
+          "mre_mean": 0.1905589728186529,
+          "signed_rel_mean": 0.17845932646695462
+        },
+        "low": {
+          "mae_mean": 0.04782764538868513,
+          "mre_mean": 0.062216203864202346,
+          "signed_rel_mean": 0.05447743541250831
+        },
+        "mid": {
+          "mae_mean": 0.07100200595215347,
+          "mre_mean": 0.23128756658999317,
+          "signed_rel_mean": 0.22947830256044605
+        },
+        "top": {
+          "mae_mean": 0.07149723101533038,
+          "mre_mean": 0.2034524498275106,
+          "signed_rel_mean": -0.12132908065824888
+        }
+      },
+      "mtf_threshold_mae": {
+        "mtf20": 0.031580123999406,
+        "mtf30": 0.047830649248861,
+        "mtf50": 0.021573538079002308
+      },
+      "preset_mae": {
+        "5.5\" Phone Display Acutance": 0.01821327283750133,
+        "Computer Monitor Acutance": 0.06637708668537426,
+        "Large Print Acutance": 0.06393791007456333,
+        "Small Print Acutance": 0.06790673479726608,
+        "UHDTV Display Acutance": 0.06338649576934968
+      }
+    },
+    "1.135": {
+      "curve_mae_mean": 0.05150719846131648,
+      "mtf_abs_signed_rel_mean": 0.17177130292834428,
+      "mtf_bands": {
+        "high": {
+          "mae_mean": 0.05076559033312937,
+          "mre_mean": 0.24596789697385027,
+          "signed_rel_mean": 0.24004369376935294
+        },
+        "low": {
+          "mae_mean": 0.05447930159726615,
+          "mre_mean": 0.07101644423111948,
+          "signed_rel_mean": 0.06632912506667055
+        },
+        "mid": {
+          "mae_mean": 0.08690490947192038,
+          "mre_mean": 0.2807193685351911,
+          "signed_rel_mean": 0.279936539058256
+        },
+        "top": {
+          "mae_mean": 0.07166260423163397,
+          "mre_mean": 0.20617892134937735,
+          "signed_rel_mean": -0.10077585381909762
+        }
+      },
+      "mtf_threshold_mae": {
+        "mtf20": 0.044691280481607684,
+        "mtf30": 0.05379348202121811,
+        "mtf50": 0.03229322127064498
+      },
+      "preset_mae": {
+        "5.5\" Phone Display Acutance": 0.021378899254289437,
+        "Computer Monitor Acutance": 0.06861147140866179,
+        "Large Print Acutance": 0.07030979044463717,
+        "Small Print Acutance": 0.07484918621757386,
+        "UHDTV Display Acutance": 0.06804903571201891
+      }
+    },
+    "1.15": {
+      "curve_mae_mean": 0.05308857338679508,
+      "mtf_abs_signed_rel_mean": 0.18150411057590965,
+      "mtf_bands": {
+        "high": {
+          "mae_mean": 0.05535549811711371,
+          "mre_mean": 0.26838332046828367,
+          "signed_rel_mean": 0.264075713852754
+        },
+        "low": {
+          "mae_mean": 0.05688132792216418,
+          "mre_mean": 0.07412949609843092,
+          "signed_rel_mean": 0.07024922741521525
+        },
+        "mid": {
+          "mae_mean": 0.0929405296596524,
+          "mre_mean": 0.29936748767064447,
+          "signed_rel_mean": 0.2988421069390708
+        },
+        "top": {
+          "mae_mean": 0.07188418659272403,
+          "mre_mean": 0.20738299621083184,
+          "signed_rel_mean": -0.09284939409659845
+        }
+      },
+      "mtf_threshold_mae": {
+        "mtf20": 0.04650188323113688,
+        "mtf30": 0.05913432470861728,
+        "mtf50": 0.03859439021706691
+      },
+      "preset_mae": {
+        "5.5\" Phone Display Acutance": 0.022887794832821766,
+        "Computer Monitor Acutance": 0.06962956715013482,
+        "Large Print Acutance": 0.07292005142475391,
+        "Small Print Acutance": 0.07489396696538797,
+        "UHDTV Display Acutance": 0.06997797658437958
+      }
+    }
+  },
+  "selected_candidate": "1.095"
+}
