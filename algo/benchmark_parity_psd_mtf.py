@@ -75,6 +75,7 @@ class Profile:
     intrinsic_full_reference_clip_lo: float = 0.5
     intrinsic_full_reference_clip_hi: float = 1.5
     intrinsic_full_reference_registration_mode: str = "phase_correlation"
+    intrinsic_full_reference_transfer_mode: str = "magnitude_ratio"
     matched_ori_reference_anchor: bool = False
     matched_ori_anchor_mode: str = "all"
     matched_ori_correction_clip_lo: float = 0.5
@@ -457,6 +458,7 @@ def profile_payload(
                     clip_lo=profile.intrinsic_full_reference_clip_lo,
                     clip_hi=profile.intrinsic_full_reference_clip_hi,
                     registration_mode=profile.intrinsic_full_reference_registration_mode,
+                    transfer_mode=profile.intrinsic_full_reference_transfer_mode,
                 )
                 scaled_frequencies = np.asarray(ori_reference.frequencies_cpp, dtype=np.float64)
                 intrinsic_mtf = np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
@@ -663,6 +665,7 @@ def profile_payload(
             "intrinsic_full_reference_clip_lo": profile.intrinsic_full_reference_clip_lo,
             "intrinsic_full_reference_clip_hi": profile.intrinsic_full_reference_clip_hi,
             "intrinsic_full_reference_registration_mode": profile.intrinsic_full_reference_registration_mode,
+            "intrinsic_full_reference_transfer_mode": profile.intrinsic_full_reference_transfer_mode,
             "matched_ori_reference_anchor": profile.matched_ori_reference_anchor,
             "matched_ori_anchor_mode": profile.matched_ori_anchor_mode,
             "matched_ori_correction_clip_lo": profile.matched_ori_correction_clip_lo,

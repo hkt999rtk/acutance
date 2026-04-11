@@ -192,6 +192,49 @@ def _radial_bin_average(
     return averaged
 
 
+def _radial_bin_average_real(
+    values2d: np.ndarray,
+    *,
+    bin_centers: np.ndarray,
+    valid_mask: np.ndarray | None = None,
+) -> np.ndarray:
+    centers = np.asarray(bin_centers, dtype=np.float64)
+    values = np.asarray(values2d, dtype=np.complex128)
+    fy = np.fft.fftshift(np.fft.fftfreq(values.shape[0], d=1.0))
+    fx = np.fft.fftshift(np.fft.fftfreq(values.shape[1], d=1.0))
+    yy, xx = np.meshgrid(fy, fx, indexing="ij")
+    radius = np.sqrt(xx * xx + yy * yy)
+
+    edges = np.empty(centers.size + 1, dtype=np.float64)
+    edges[0] = 0.0
+    edges[-1] = 0.5
+    if centers.size > 1:
+        edges[1:-1] = 0.5 * (centers[:-1] + centers[1:])
+    else:
+        edges[1:-1] = centers[0]
+
+    mask = radius <= 0.5
+    if valid_mask is not None:
+        mask &= np.asarray(valid_mask, dtype=bool)
+    radius = radius[mask]
+    sample_values = values[mask]
+
+    averaged = np.ones(centers.size, dtype=np.float64)
+    counts = np.zeros(centers.size, dtype=np.int64)
+    if radius.size == 0:
+        return averaged
+
+    sums = np.zeros(centers.size, dtype=np.float64)
+    bin_ids = np.digitize(radius, edges) - 1
+    valid = (bin_ids >= 0) & (bin_ids < centers.size)
+    for idx, value in zip(bin_ids[valid], sample_values[valid]):
+        sums[idx] += float(np.real(value))
+        counts[idx] += 1
+    nonzero = counts > 0
+    averaged[nonzero] = sums[nonzero] / counts[nonzero]
+    return averaged
+
+
 def derive_intrinsic_transfer_curve(
     reference_patch: np.ndarray,
     observed_patch: np.ndarray,
@@ -202,6 +245,7 @@ def derive_intrinsic_transfer_curve(
     clip_lo: float,
     clip_hi: float,
     registration_mode: str = "phase_correlation",
+    transfer_mode: str = "magnitude_ratio",
 ) -> np.ndarray:
     reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
     if registration_mode == "phase_correlation":
@@ -222,17 +266,26 @@ def derive_intrinsic_transfer_curve(
     reference_spectrum = np.fft.fftshift(np.fft.fft2(reference * window))
     observed_spectrum = np.fft.fftshift(np.fft.fft2(observed_aligned * window))
     reference_power = np.abs(reference_spectrum) ** 2
-    transfer_2d = np.abs(observed_spectrum * np.conj(reference_spectrum)) / np.maximum(
+    complex_transfer_2d = (observed_spectrum * np.conj(reference_spectrum)) / np.maximum(
         reference_power,
         EPS,
     )
     support = reference_power[reference_power > EPS]
     power_floor = max(float(np.percentile(support, 10)) * 0.1, EPS) if support.size else EPS
-    transfer_curve = _radial_bin_average(
-        np.clip(transfer_2d, clip_lo, clip_hi),
-        bin_centers=np.asarray(bin_centers, dtype=np.float64),
-        valid_mask=reference_power >= power_floor,
-    )
+    if transfer_mode == "magnitude_ratio":
+        transfer_curve = _radial_bin_average(
+            np.clip(np.abs(complex_transfer_2d), clip_lo, clip_hi),
+            bin_centers=np.asarray(bin_centers, dtype=np.float64),
+            valid_mask=reference_power >= power_floor,
+        )
+    elif transfer_mode == "radial_real_mean":
+        transfer_curve = _radial_bin_average_real(
+            complex_transfer_2d,
+            bin_centers=np.asarray(bin_centers, dtype=np.float64),
+            valid_mask=reference_power >= power_floor,
+        )
+    else:
+        raise ValueError(f"Unsupported intrinsic transfer mode: {transfer_mode}")
     lo, hi = normalization_band
     band = (
         (np.asarray(bin_centers, dtype=np.float64) >= float(lo))

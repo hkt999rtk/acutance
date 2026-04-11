@@ -149,6 +149,15 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
         )
         self.assertEqual(profile.intrinsic_full_reference_mode, "paired_ori_transfer")
 
+    def test_profile_allows_intrinsic_phase_retention_transfer_mode(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            intrinsic_full_reference_mode="paired_ori_transfer",
+            intrinsic_full_reference_transfer_mode="radial_real_mean",
+        )
+        self.assertEqual(profile.intrinsic_full_reference_transfer_mode, "radial_real_mean")
+
     def test_profile_allows_chart_fill_factor_for_compensation_family(self) -> None:
         profile = Profile(
             name="test",
