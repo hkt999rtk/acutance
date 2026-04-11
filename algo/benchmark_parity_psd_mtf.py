@@ -11,7 +11,6 @@ import numpy as np
 from .dead_leaves import (
     BayerMode,
     BayerPattern,
-    IMATEST_REFERENCE_BINS,
     MTF_SHAPE_CORRECTION_SHARE_GATE,
     RoiBounds,
     acutance_curve_from_mtf,
@@ -40,6 +39,7 @@ from .parity_benchmark_common import (
     derive_quantile_transfer_curve,
     derive_reference_correction_curve,
     derive_intrinsic_transfer_curve,
+    resolve_frequency_bin_centers,
 )
 
 BANDS = (
@@ -117,6 +117,7 @@ class Profile:
     matched_ori_acutance_preset_correction_delta_power_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
+    frequency_bin_source: str = "reference_bins"
     frequency_scale: float = 1.0
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
@@ -361,10 +362,18 @@ def profile_payload(
             ).astype(np.float32)
         estimate = estimate_dead_leaves_mtf(
             image,
-            num_bins=len(IMATEST_REFERENCE_BINS),
+            num_bins=len(
+                resolve_frequency_bin_centers(
+                    reference.frequencies_cpp,
+                    source=profile.frequency_bin_source,
+                )
+            ),
             ideal_psd_mode="calibrated_log",
             ideal_psd_calibration=calibration,
-            bin_centers=IMATEST_REFERENCE_BINS,
+            bin_centers=resolve_frequency_bin_centers(
+                reference.frequencies_cpp,
+                source=profile.frequency_bin_source,
+            ),
             roi_override=roi,
             normalization_band=(profile.normalization_band_lo, profile.normalization_band_hi),
             normalization_mode=profile.normalization_mode,
@@ -497,10 +506,18 @@ def profile_payload(
                     ori_roi = choose_roi(profile, ori_reference, ori_image)
                     ori_estimate = estimate_dead_leaves_mtf(
                         ori_image,
-                        num_bins=len(IMATEST_REFERENCE_BINS),
+                        num_bins=len(
+                            resolve_frequency_bin_centers(
+                                ori_reference.frequencies_cpp,
+                                source=profile.frequency_bin_source,
+                            )
+                        ),
                         ideal_psd_mode="calibrated_log",
                         ideal_psd_calibration=calibration,
-                        bin_centers=IMATEST_REFERENCE_BINS,
+                        bin_centers=resolve_frequency_bin_centers(
+                            ori_reference.frequencies_cpp,
+                            source=profile.frequency_bin_source,
+                        ),
                         roi_override=ori_roi,
                         normalization_band=(profile.normalization_band_lo, profile.normalization_band_hi),
                         normalization_mode=profile.normalization_mode,

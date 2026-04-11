@@ -7,7 +7,7 @@ from typing import Sequence
 import cv2
 import numpy as np
 
-from .dead_leaves import AcutancePoint
+from .dead_leaves import AcutancePoint, IMATEST_REFERENCE_BINS
 
 
 EPS = 1e-12
@@ -21,6 +21,21 @@ def capture_key_from_stem(stem: str) -> str:
     if stem.endswith("_R_Random"):
         return stem[: -len("_R_Random")]
     return stem
+
+
+def resolve_frequency_bin_centers(
+    reference_frequencies_cpp: Sequence[float],
+    *,
+    source: str = "reference_bins",
+) -> np.ndarray:
+    if source == "reference_bins":
+        return np.asarray(IMATEST_REFERENCE_BINS, dtype=np.float64).copy()
+    if source == "observable_table":
+        centers = np.asarray(reference_frequencies_cpp, dtype=np.float64)
+        if centers.ndim != 1 or centers.size == 0:
+            raise ValueError("Observable-table frequency bins must be a non-empty 1D series")
+        return centers.copy()
+    raise ValueError(f"Unsupported frequency bin source: {source}")
 
 
 def build_ori_reference_map(dataset_root: Path) -> dict[str, tuple[Path, Path]]:
