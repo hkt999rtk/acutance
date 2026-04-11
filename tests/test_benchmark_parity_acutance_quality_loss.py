@@ -19,6 +19,7 @@ from algo.benchmark_parity_acutance_quality_loss import (
 )
 from algo.dead_leaves import AcutancePoint, RoiBounds
 from algo.parity_benchmark_common import (
+    align_patch_phase_ecc_affine,
     align_patch_phase_correlation,
     apply_quantile_transfer_curve,
     apply_reference_correction_curve,
@@ -297,6 +298,73 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             registration_mode="phase_correlation",
         )
         self.assertLess(float(np.mean(np.abs(transfer - 1.0))), 0.12)
+
+    def test_phase_ecc_affine_alignment_handles_small_rotation_and_scale(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(128, 128)).astype(np.float32)
+        reference = cv2.GaussianBlur(reference, (0, 0), 2.5)
+        center = (reference.shape[1] / 2.0, reference.shape[0] / 2.0)
+        transform = cv2.getRotationMatrix2D(center, 1.4, 1.015)
+        transform[:, 2] += np.array([2.0, -1.5], dtype=np.float32)
+        observed = cv2.warpAffine(
+            reference,
+            transform,
+            (reference.shape[1], reference.shape[0]),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REFLECT,
+        )
+
+        aligned_phase, _, _ = align_patch_phase_correlation(reference, observed)
+        aligned_affine, warp, score = align_patch_phase_ecc_affine(reference, observed)
+
+        self.assertGreater(score, 0.99)
+        self.assertEqual(warp.shape, (2, 3))
+        self.assertLess(
+            float(np.mean(np.abs(aligned_affine - reference))),
+            float(np.mean(np.abs(aligned_phase - reference))) * 0.75,
+        )
+
+    def test_intrinsic_transfer_curve_affine_mode_stays_bounded_on_rotated_patch(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(128, 128)).astype(np.float32)
+        reference = cv2.GaussianBlur(reference, (0, 0), 2.5)
+        center = (reference.shape[1] / 2.0, reference.shape[0] / 2.0)
+        transform = cv2.getRotationMatrix2D(center, 1.2, 1.01)
+        transform[:, 2] += np.array([2.0, -1.0], dtype=np.float32)
+        observed = cv2.warpAffine(
+            reference,
+            transform,
+            (reference.shape[1], reference.shape[0]),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REFLECT,
+        )
+
+        transfer_phase = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="phase_correlation",
+        )
+        transfer_affine = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="phase_ecc_affine",
+        )
+
+        self.assertEqual(transfer_phase.shape, transfer_affine.shape)
+        self.assertTrue(np.all(np.isfinite(transfer_affine)))
+        self.assertGreaterEqual(float(np.min(transfer_affine)), 0.5)
+        self.assertLessEqual(float(np.max(transfer_affine)), 1.5)
+        self.assertLess(float(np.mean(transfer_affine[:4])), 1.1)
 
     def test_intrinsic_transfer_curve_captures_high_frequency_rolloff(self) -> None:
         rng = np.random.default_rng(123)

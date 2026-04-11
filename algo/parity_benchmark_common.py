@@ -53,10 +53,10 @@ def center_crop_to_common_shape(
     return crop_center(reference), crop_center(observed)
 
 
-def align_patch_phase_correlation(
+def estimate_phase_correlation_shift(
     reference_patch: np.ndarray,
     observed_patch: np.ndarray,
-) -> tuple[np.ndarray, tuple[float, float], float]:
+) -> tuple[tuple[float, float], float]:
     reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
     window = np.outer(
         np.hanning(reference.shape[0]),
@@ -67,6 +67,15 @@ def align_patch_phase_correlation(
         observed.astype(np.float32),
         window,
     )
+    return (float(shift[0]), float(shift[1])), float(response)
+
+
+def align_patch_phase_correlation(
+    reference_patch: np.ndarray,
+    observed_patch: np.ndarray,
+) -> tuple[np.ndarray, tuple[float, float], float]:
+    reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
+    shift, response = estimate_phase_correlation_shift(reference, observed)
     transform = np.array(
         [
             [1.0, 0.0, -float(shift[0])],
@@ -82,6 +91,62 @@ def align_patch_phase_correlation(
         borderMode=cv2.BORDER_REFLECT,
     )
     return aligned.astype(np.float64), (float(shift[0]), float(shift[1])), float(response)
+
+
+def _prepare_patch_for_ecc(patch: np.ndarray) -> np.ndarray:
+    prepared = np.asarray(patch, dtype=np.float32)
+    prepared = prepared - float(np.mean(prepared))
+    prepared = cv2.GaussianBlur(prepared, (0, 0), 1.2)
+    std = float(np.std(prepared))
+    if std > EPS:
+        prepared = prepared / std
+    min_value = float(np.min(prepared))
+    max_value = float(np.max(prepared))
+    if max_value - min_value <= EPS:
+        return np.zeros_like(prepared, dtype=np.float32)
+    return ((prepared - min_value) / (max_value - min_value)).astype(np.float32)
+
+
+def align_patch_phase_ecc_affine(
+    reference_patch: np.ndarray,
+    observed_patch: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, float]:
+    reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
+    shift, _ = estimate_phase_correlation_shift(reference, observed)
+    initial_warp = np.array(
+        [
+            [1.0, 0.0, -float(shift[0])],
+            [0.0, 1.0, -float(shift[1])],
+        ],
+        dtype=np.float32,
+    )
+    criteria = (
+        cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT,
+        200,
+        1e-6,
+    )
+    try:
+        correlation, warp = cv2.findTransformECC(
+            _prepare_patch_for_ecc(reference),
+            _prepare_patch_for_ecc(observed),
+            initial_warp.copy(),
+            cv2.MOTION_AFFINE,
+            criteria,
+            None,
+            5,
+        )
+    except cv2.error:
+        aligned, _, response = align_patch_phase_correlation(reference, observed)
+        return aligned, initial_warp.astype(np.float64), float(response)
+
+    aligned = cv2.warpAffine(
+        observed.astype(np.float32),
+        warp,
+        (reference.shape[1], reference.shape[0]),
+        flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP,
+        borderMode=cv2.BORDER_REFLECT,
+    )
+    return aligned.astype(np.float64), warp.astype(np.float64), float(correlation)
 
 
 def _radial_bin_average(
@@ -141,6 +206,8 @@ def derive_intrinsic_transfer_curve(
     reference, observed = center_crop_to_common_shape(reference_patch, observed_patch)
     if registration_mode == "phase_correlation":
         observed_aligned, _, _ = align_patch_phase_correlation(reference, observed)
+    elif registration_mode == "phase_ecc_affine":
+        observed_aligned, _, _ = align_patch_phase_ecc_affine(reference, observed)
     elif registration_mode == "none":
         observed_aligned = observed
     else:
@@ -179,6 +246,8 @@ def derive_intrinsic_transfer_curve(
         if anchor > EPS:
             transfer_curve = transfer_curve / anchor
     return np.clip(transfer_curve, clip_lo, clip_hi)
+
+
 def derive_quantile_transfer_curve(
     source_image: np.ndarray,
     target_image: np.ndarray,
