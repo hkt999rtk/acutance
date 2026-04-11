@@ -143,6 +143,7 @@ class Profile:
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
     sensor_fill_factor: float = 1.0
+    chart_fill_factor: float = 1.0
     compensation_denominator_clip: float = 0.25
     compensation_max_gain: float = 3.0
     quality_loss_om_ceiling: float = 0.8851
@@ -394,6 +395,7 @@ def profile_payload(
             scaled_frequencies,
             mode=profile.mtf_compensation_mode,
             sensor_fill_factor=profile.sensor_fill_factor,
+            chart_fill_factor=profile.chart_fill_factor,
             denominator_clip=profile.compensation_denominator_clip,
             max_gain=profile.compensation_max_gain,
         )
@@ -402,6 +404,7 @@ def profile_payload(
             scaled_frequencies,
             mode=profile.mtf_compensation_mode,
             sensor_fill_factor=profile.sensor_fill_factor,
+            chart_fill_factor=profile.chart_fill_factor,
             denominator_clip=profile.compensation_denominator_clip,
             max_gain=profile.compensation_max_gain,
         )
@@ -527,6 +530,7 @@ def profile_payload(
                         ori_scaled_frequencies,
                         mode=profile.mtf_compensation_mode,
                         sensor_fill_factor=profile.sensor_fill_factor,
+                        chart_fill_factor=profile.chart_fill_factor,
                         denominator_clip=profile.compensation_denominator_clip,
                         max_gain=profile.compensation_max_gain,
                     )
@@ -535,6 +539,7 @@ def profile_payload(
                         ori_scaled_frequencies,
                         mode=profile.mtf_compensation_mode,
                         sensor_fill_factor=profile.sensor_fill_factor,
+                        chart_fill_factor=profile.chart_fill_factor,
                         denominator_clip=profile.compensation_denominator_clip,
                         max_gain=profile.compensation_max_gain,
                     )
@@ -704,6 +709,7 @@ def profile_payload(
             "calibration_file": profile.calibration_file,
             "mtf_compensation_mode": profile.mtf_compensation_mode,
             "sensor_fill_factor": profile.sensor_fill_factor,
+            "chart_fill_factor": profile.chart_fill_factor,
         },
         "overall": {
             "curve_mae_mean": float(np.mean(curve_mae)),

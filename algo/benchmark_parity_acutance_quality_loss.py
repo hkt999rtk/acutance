@@ -171,6 +171,7 @@ class Profile:
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
     sensor_fill_factor: float = 1.0
+    chart_fill_factor: float = 1.0
     compensation_denominator_clip: float = 0.25
     compensation_max_gain: float = 3.0
 
@@ -395,6 +396,7 @@ def summarize_profile(
                 ori_scaled_frequencies,
                 mode=profile.mtf_compensation_mode,
                 sensor_fill_factor=profile.sensor_fill_factor,
+                chart_fill_factor=profile.chart_fill_factor,
                 denominator_clip=profile.compensation_denominator_clip,
                 max_gain=profile.compensation_max_gain,
             )
@@ -634,6 +636,7 @@ def summarize_profile(
             scaled_frequencies,
             mode=profile.mtf_compensation_mode,
             sensor_fill_factor=profile.sensor_fill_factor,
+            chart_fill_factor=profile.chart_fill_factor,
             denominator_clip=profile.compensation_denominator_clip,
             max_gain=profile.compensation_max_gain,
         )
@@ -766,6 +769,7 @@ def summarize_profile(
                         ori_scaled_frequencies,
                         mode=profile.mtf_compensation_mode,
                         sensor_fill_factor=profile.sensor_fill_factor,
+                        chart_fill_factor=profile.chart_fill_factor,
                         denominator_clip=profile.compensation_denominator_clip,
                         max_gain=profile.compensation_max_gain,
                     )
@@ -1036,6 +1040,7 @@ def summarize_profile(
             "mtf_shape_correction_mode": profile.mtf_shape_correction_mode,
             "mtf_compensation_mode": profile.mtf_compensation_mode,
             "sensor_fill_factor": profile.sensor_fill_factor,
+            "chart_fill_factor": profile.chart_fill_factor,
             "acutance_preset_overrides": profile.acutance_preset_overrides,
         },
         "overall": {

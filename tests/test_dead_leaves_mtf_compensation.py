@@ -80,6 +80,33 @@ class DeadLeavesMtfCompensationTest(unittest.TestCase):
         )
         np.testing.assert_allclose(compensation, [2.0, 2.0])
 
+    def test_chart_sensor_aperture_compensation_adds_more_gain_than_sensor_only(self) -> None:
+        frequencies = np.array([0.0, 0.1, 0.25, 0.5], dtype=np.float64)
+        sensor_only = estimate_mtf_compensation_curve(
+            frequencies,
+            mode="sensor_aperture_sinc",
+            sensor_fill_factor=1.5,
+            max_gain=8.0,
+        )
+        chart_sensor = estimate_mtf_compensation_curve(
+            frequencies,
+            mode="chart_sensor_aperture_sinc",
+            sensor_fill_factor=1.5,
+            chart_fill_factor=0.5,
+            max_gain=8.0,
+        )
+        self.assertAlmostEqual(chart_sensor[0], 1.0)
+        self.assertGreater(chart_sensor[-1], sensor_only[-1])
+
+    def test_chart_sensor_aperture_compensation_validates_chart_fill_factor(self) -> None:
+        frequencies = np.array([0.1, 0.25], dtype=np.float64)
+        with self.assertRaisesRegex(ValueError, "chart_fill_factor must be positive"):
+            estimate_mtf_compensation_curve(
+                frequencies,
+                mode="chart_sensor_aperture_sinc",
+                chart_fill_factor=0.0,
+            )
+
     def test_apply_mtf_compensation_multiplies_curve(self) -> None:
         frequencies = np.array([0.0, 0.25, 0.5], dtype=np.float64)
         mtf = np.array([1.0, 0.8, 0.4], dtype=np.float64)
