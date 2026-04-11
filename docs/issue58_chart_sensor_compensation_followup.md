@@ -4,15 +4,17 @@ This note records the bounded chart/sensor compensation refresh for issue `#58`.
 
 ## Family
 
-This pass revisits the chart/sensor compensation family from issue `#39` on top of the newer post-PR-`#57` direct-method branch.
+This pass revisits the chart/sensor compensation family from issue `#39` within the newer post-PR-`#57` direct-method context.
 
-It keeps the current reduced direct-method line from PR `#55` intact:
+The checked-in issue-58 artifacts keep the current static-bin ROI-reference direct-method baseline intact:
 
 - anchored high-frequency PSD calibration
 - `roi_source = reference`
 - static inferred reference-bin centers
 - `frequency_scale = 1.0`
 - unchanged matched-ORI, Acutance, and Quality Loss correction stack
+
+That means this refresh is benchmarked against the PR-`#53` / current-static-bin default line, not against the PR-`#55` observable-bin candidate itself. PR `#55` remains in the comparison table because issue `#58` still needs to report whether the refreshed chart/sensor family is better or worse than that earlier observable-bin follow-up.
 
 The only family change is the same source-backed lower-layer chart aperture term that issue `#39` introduced on the older branch:
 
@@ -29,7 +31,7 @@ This remains the same documented family identified in [dead_leaves_black_box_res
 
 ## Profiles Compared
 
-Current direct-method baseline from PR `#55`:
+Current direct-method baseline used in the issue-58 artifacts, matching the post-PR-`#55` static-bin default line:
 
 - [../algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json](../algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json)
 
@@ -122,7 +124,7 @@ Relative to PR `#30`, the refreshed candidate is still far better on lower-layer
 
 This is another bounded mixed result, not a new default direct-method path.
 
-The newer direct-method branch does make the old chart/sensor compensation family look meaningfully healthier than it did in PR `#40`: the refreshed candidate materially improves the older chart/sensor result and slightly improves several PSD and Quality Loss metrics relative to PR `#55`. But it still fails the stricter lower-layer gate because the primary PSD curve is slightly worse than PR `#53`, and `MTF20` regresses against both PR `#53` and PR `#55`.
+The newer direct-method branch does make the old chart/sensor compensation family look meaningfully healthier than it did in PR `#40`: the refreshed candidate materially improves the older chart/sensor result and slightly improves several PSD and Quality Loss metrics relative to PR `#55`. But the actual checked-in baseline for this issue is the static-bin ROI-reference line, and against that stricter PR-`#53` / current-default baseline it still fails the lower-layer gate because the primary PSD curve is slightly worse and `MTF20` regresses.
 
 That means the updated chart-medium aperture term is no longer the clearly negative family it looked like in issue `#39`, but it is still not strong enough to replace the current direct-method baseline. The result is useful because it narrows the remaining gap further: later ROI and frequency-mapping refinements made this family less harmful, yet one fixed chart-aperture factor still does not produce a clean lower-layer win on the current dataset.
 
