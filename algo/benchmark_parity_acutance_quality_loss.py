@@ -71,6 +71,8 @@ class Profile:
     gamma: float = 1.0
     linearization_mode: str = "power"
     linearization_toe: float = 0.0
+    black_percentile: float = 0.1
+    white_percentile: float = 99.9
     matched_ori_oecf_reference: bool = False
     matched_ori_oecf_strength: float = 1.0
     matched_ori_oecf_quantiles: tuple[float, ...] = (0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0)
@@ -347,6 +349,8 @@ def summarize_profile(
                 gamma=profile.gamma,
                 mode=profile.linearization_mode,
                 toe=profile.linearization_toe,
+                black_percentile=profile.black_percentile,
+                white_percentile=profile.white_percentile,
             )
             ori_roi = choose_roi(profile, ori_reference, ori_image)
             ori_estimate = estimate_dead_leaves_mtf(
@@ -560,6 +564,8 @@ def summarize_profile(
             gamma=profile.gamma,
             mode=profile.linearization_mode,
             toe=profile.linearization_toe,
+            black_percentile=profile.black_percentile,
+            white_percentile=profile.white_percentile,
         )
         roi = choose_roi(profile, reference, image)
         capture_key = capture_key_from_stem(raw_path.stem)
@@ -579,6 +585,8 @@ def summarize_profile(
                     gamma=profile.gamma,
                     mode=profile.linearization_mode,
                     toe=profile.linearization_toe,
+                    black_percentile=profile.black_percentile,
+                    white_percentile=profile.white_percentile,
                 )
                 ori_roi = choose_roi(profile, ori_reference, ori_image)
                 source_values, target_values = derive_quantile_transfer_curve(
@@ -688,6 +696,8 @@ def summarize_profile(
                         gamma=profile.gamma,
                         mode=profile.linearization_mode,
                         toe=profile.linearization_toe,
+                        black_percentile=profile.black_percentile,
+                        white_percentile=profile.white_percentile,
                     )
                     ori_roi = choose_roi(profile, ori_reference, ori_image)
                     intrinsic_reference_cache[capture_key] = (ori_reference, ori_image, ori_roi)
@@ -737,6 +747,8 @@ def summarize_profile(
                         gamma=profile.gamma,
                         mode=profile.linearization_mode,
                         toe=profile.linearization_toe,
+                        black_percentile=profile.black_percentile,
+                        white_percentile=profile.white_percentile,
                     )
                     ori_roi = choose_roi(profile, ori_reference, ori_image)
                     ori_estimate = estimate_dead_leaves_mtf(

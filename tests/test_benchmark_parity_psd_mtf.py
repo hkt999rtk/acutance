@@ -267,6 +267,16 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
         self.assertEqual(profile.mtf_compensation_mode, "chart_sensor_aperture_sinc")
         self.assertEqual(profile.chart_fill_factor, 0.5)
 
+    def test_profile_allows_empirical_linearization_percentiles(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            black_percentile=0.0,
+            white_percentile=99.5,
+        )
+        self.assertEqual(profile.black_percentile, 0.0)
+        self.assertEqual(profile.white_percentile, 99.5)
+
     def test_intrinsic_scope_can_limit_full_reference_to_acutance_side_only(self) -> None:
         capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
         with tempfile.TemporaryDirectory() as tmpdir:
