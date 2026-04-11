@@ -299,6 +299,70 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         )
         self.assertLess(float(np.mean(np.abs(transfer - 1.0))), 0.12)
 
+    def test_phase_retention_transfer_mode_stays_near_identity_for_translation(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(96, 96)).astype(np.float32)
+        transform = np.array([[1.0, 0.0, 4.0], [0.0, 1.0, 2.0]], dtype=np.float32)
+        observed = cv2.warpAffine(
+            reference,
+            transform,
+            (reference.shape[1], reference.shape[0]),
+            flags=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_REFLECT,
+        )
+        transfer = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="phase_correlation",
+            transfer_mode="radial_real_mean",
+        )
+        self.assertLess(float(np.mean(np.abs(transfer - 1.0))), 0.15)
+
+    def test_phase_retention_transfer_mode_reduces_incoherent_high_frequency_gain(self) -> None:
+        rng = np.random.default_rng(123)
+        reference = rng.normal(size=(128, 128)).astype(np.float32)
+        reference = cv2.GaussianBlur(reference, (0, 0), 1.8)
+        blurred = cv2.GaussianBlur(reference, (0, 0), 1.4)
+        incoherent_noise = rng.normal(
+            scale=float(np.std(blurred)) * 0.5,
+            size=reference.shape,
+        ).astype(np.float32)
+        observed = blurred + incoherent_noise
+
+        magnitude_transfer = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="none",
+            transfer_mode="magnitude_ratio",
+        )
+        phase_retained_transfer = derive_intrinsic_transfer_curve(
+            reference,
+            observed,
+            bin_centers=np.linspace(0.01, 0.49, 32, dtype=np.float64),
+            normalization_band=(0.01, 0.03),
+            normalization_mode="mean",
+            clip_lo=0.5,
+            clip_hi=1.5,
+            registration_mode="none",
+            transfer_mode="radial_real_mean",
+        )
+
+        self.assertLess(
+            float(np.mean(phase_retained_transfer[-4:])),
+            float(np.mean(magnitude_transfer[-4:])) - 0.1,
+        )
+        self.assertGreater(float(np.mean(phase_retained_transfer[:4])), 0.9)
+
     def test_phase_ecc_affine_alignment_handles_small_rotation_and_scale(self) -> None:
         rng = np.random.default_rng(123)
         reference = rng.normal(size=(128, 128)).astype(np.float32)
