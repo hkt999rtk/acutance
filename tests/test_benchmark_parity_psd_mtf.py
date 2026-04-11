@@ -149,6 +149,16 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
         )
         self.assertEqual(profile.intrinsic_full_reference_mode, "paired_ori_transfer")
 
+    def test_profile_allows_chart_fill_factor_for_compensation_family(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            mtf_compensation_mode="chart_sensor_aperture_sinc",
+            chart_fill_factor=0.5,
+        )
+        self.assertEqual(profile.mtf_compensation_mode, "chart_sensor_aperture_sinc")
+        self.assertEqual(profile.chart_fill_factor, 0.5)
+
 
 if __name__ == "__main__":
     unittest.main()
