@@ -80,6 +80,133 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual(refine.call_args.kwargs["seed_roi"], reference.lrtb)
 
+    def test_summarize_profile_uses_observable_table_frequency_bins(self) -> None:
+        capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
+        with tempfile.TemporaryDirectory() as tmpdir:
+            dataset_root = Path(tmpdir)
+            variant_root = dataset_root / "OV13B10_AI_NR_OV13B10_ppqpkl_0.10"
+            results_dir = variant_root / "Results"
+            results_dir.mkdir(parents=True)
+            stem = f"{capture_key}_variantA"
+            (results_dir / f"{stem}_R_Random.csv").write_text("", encoding="utf-8")
+            (variant_root / f"{stem}.raw").write_bytes(b"")
+
+            reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.02, 0.1, 0.25, 0.4], dtype=np.float64),
+                mtf=np.array([1.0, 0.9, 0.8, 0.7], dtype=np.float64),
+                acutance_table=[
+                    AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=1.0)
+                ],
+                reported_acutance={
+                    '5.5" Phone Display Acutance': 1.0,
+                    "Computer Monitor Acutance": 1.0,
+                    "UHDTV Display Acutance": 1.0,
+                    "Small Print Acutance": 1.0,
+                    "Large Print Acutance": 1.0,
+                },
+                reported_quality_loss={
+                    '5.5" Phone Display Quality Loss': 1.0,
+                    "Computer Monitor Quality Loss": 1.0,
+                    "UHDTV Display Quality Loss": 1.0,
+                    "Small Print Quality Loss": 1.0,
+                    "Large Print Quality Loss": 1.0,
+                },
+            )
+            estimate = SimpleNamespace(
+                roi=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=reference.frequencies_cpp,
+                mtf_for_acutance=np.array([1.0, 0.9, 0.8, 0.7], dtype=np.float64),
+                acutance_high_frequency_noise_share=0.0,
+            )
+            profile = Profile(
+                name="test",
+                calibration_file="calibration.json",
+                roi_source="reference",
+                frequency_bin_source="observable_table",
+            )
+
+            with (
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_ideal_psd_calibration",
+                    return_value=None,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.parse_imatest_random_csv",
+                    return_value=reference,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_raw_u16",
+                    side_effect=lambda path, width, height: np.zeros((height, width), dtype=np.uint16),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.extract_analysis_plane",
+                    side_effect=lambda raw, **_: raw,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.normalize_for_analysis",
+                    side_effect=lambda plane, **_: plane,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.estimate_dead_leaves_mtf",
+                    return_value=estimate,
+                ) as estimate_mtf,
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.apply_mtf_compensation",
+                    side_effect=lambda mtf, freqs, **_: (
+                        np.asarray(mtf, dtype=np.float64),
+                        np.asarray(freqs, dtype=np.float64),
+                    ),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.apply_mtf_shape_correction",
+                    side_effect=lambda mtf, freqs, **_: (
+                        np.asarray(mtf, dtype=np.float64),
+                        np.asarray(freqs, dtype=np.float64),
+                    ),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_curve_from_mtf",
+                    return_value=reference.acutance_table,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_presets_from_mtf",
+                    return_value=reference.reported_acutance,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.quality_loss_presets_from_acutance",
+                    return_value=reference.reported_quality_loss,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_curves",
+                    return_value={"count": 1, "mae": 0.0},
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_presets",
+                    side_effect=[
+                        {name: {"abs_error": 0.0} for name in reference.reported_acutance},
+                        {name: {"abs_error": 0.0} for name in reference.reported_quality_loss},
+                    ],
+                ),
+            ):
+                summarize_profile(
+                    dataset_root=dataset_root,
+                    profile_path=dataset_root / "profile.json",
+                    profile=profile,
+                    width=2,
+                    height=2,
+                )
+
+            self.assertEqual(estimate_mtf.call_count, 1)
+            np.testing.assert_allclose(
+                estimate_mtf.call_args.kwargs["bin_centers"],
+                reference.frequencies_cpp,
+            )
+            self.assertEqual(
+                estimate_mtf.call_args.kwargs["num_bins"],
+                len(reference.frequencies_cpp),
+            )
+
     def test_reference_correction_curve_is_clipped(self) -> None:
         correction = derive_reference_correction_curve(
             np.array([0.1, 0.2], dtype=np.float64),
@@ -140,6 +267,14 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(target_values[-1], 1.0)
         self.assertTrue(np.all(np.diff(source_values) > 0.0))
         self.assertTrue(np.all(np.diff(target_values) >= 0.0))
+
+    def test_profile_allows_observable_table_frequency_bins(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            frequency_bin_source="observable_table",
+        )
+        self.assertEqual(profile.frequency_bin_source, "observable_table")
 
     def test_quantile_transfer_curve_blends_by_strength(self) -> None:
         corrected = apply_quantile_transfer_curve(
@@ -587,6 +722,7 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             }
             reference = SimpleNamespace(
                 lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.1, 0.2], dtype=np.float64),
                 acutance_table=acutance_table,
                 reported_acutance=reported_acutance,
                 reported_quality_loss=reported_quality_loss,
@@ -712,6 +848,7 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
 
             reference = SimpleNamespace(
                 lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.1, 0.2], dtype=np.float64),
                 acutance_table=[
                     AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=1.0)
                 ],
