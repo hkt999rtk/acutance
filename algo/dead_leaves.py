@@ -1605,6 +1605,8 @@ def estimate_dead_leaves_mtf(
     acutance_noise_share_band: tuple[float, float] = ACUTANCE_HF_NOISE_SHARE_BAND,
     acutance_noise_share_scale_coefficients: tuple[float, float, float] = ACUTANCE_HF_NOISE_SHARE_SCALE_COEFFICIENTS,
     acutance_noise_scale_clip: tuple[float, float] = ACUTANCE_NOISE_SCALE_CLIP,
+    readout_smoothing_window: int = 1,
+    readout_interpolation: str = "linear",
     high_frequency_guard_start_cpp: float | None = None,
     high_frequency_guard_stop_cpp: float = 0.5,
 ) -> SpectrumResult:
@@ -1697,7 +1699,12 @@ def estimate_dead_leaves_mtf(
         reference_band=acutance_reference_band,
         reference_mode=acutance_reference_mode,
     )
-    metrics = compute_mtf_metrics(frequencies_cpp, mtf)
+    metrics = compute_mtf_metrics(
+        frequencies_cpp,
+        mtf,
+        smoothing_window=readout_smoothing_window,
+        interpolation_mode=readout_interpolation,
+    )
 
     return SpectrumResult(
         roi=roi,

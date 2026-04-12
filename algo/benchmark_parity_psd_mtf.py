@@ -403,6 +403,8 @@ def profile_payload(
             acutance_noise_share_scale_coefficients=tuple(
                 profile.acutance_noise_share_scale_coefficients
             ),
+            readout_smoothing_window=profile.readout_smoothing_window,
+            readout_interpolation=profile.readout_interpolation,
             high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
             high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
         )
@@ -551,6 +553,8 @@ def profile_payload(
                         acutance_noise_share_scale_coefficients=tuple(
                             profile.acutance_noise_share_scale_coefficients
                         ),
+                        readout_smoothing_window=profile.readout_smoothing_window,
+                        readout_interpolation=profile.readout_interpolation,
                         high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
                         high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
                     )

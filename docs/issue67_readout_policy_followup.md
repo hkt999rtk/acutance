@@ -25,6 +25,7 @@ No broader direct-method retuning is reopened here.
 - Added `readout_smoothing_window` / `readout_interpolation` profile-schema support to:
   - `algo/benchmark_parity_psd_mtf.py`
   - `algo/benchmark_parity_acutance_quality_loss.py`
+- Wired those fields through the shared `estimate_dead_leaves_mtf(...)` readout path in `algo/dead_leaves.py`, so the issue-67 profile now exercises a real threshold-readout change instead of metadata-only profile fields.
 - Added focused tests covering the new profile fields in:
   - `tests/test_benchmark_parity_psd_mtf.py`
   - `tests/test_benchmark_parity_acutance_quality_loss.py`
@@ -68,6 +69,8 @@ Compared with the merged `PR #66` profile:
 - `overall_quality_loss_mae_mean` is unchanged: `1.53177498 -> 1.53177498`
 
 So on the current direct-method branch, the bounded readout-policy change does not improve the lower-layer tradeoff at all. It only changes threshold extraction, and in this branch it changes it for the worse.
+
+The unchanged PSD and Acutance / Quality Loss metrics are expected here because this family only changes threshold readout policy. After the code-path fix on this branch, the benchmark still reproduces the same issue-67 conclusion: the readout settings are exercised for threshold extraction, but they do not move the underlying PSD or Acutance-side fit.
 
 ## Relation To Existing README Evidence
 

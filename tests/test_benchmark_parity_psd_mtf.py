@@ -87,6 +87,8 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
                 calibration_file="calibration.json",
                 roi_source="reference",
                 frequency_bin_source="observable_table",
+                readout_smoothing_window=7,
+                readout_interpolation="linear",
             )
 
             with (
@@ -136,6 +138,8 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
                 estimate_mtf.call_args.kwargs["num_bins"],
                 len(reference.frequencies_cpp),
             )
+            self.assertEqual(estimate_mtf.call_args.kwargs["readout_smoothing_window"], 7)
+            self.assertEqual(estimate_mtf.call_args.kwargs["readout_interpolation"], "linear")
 
     def test_capture_key_from_stem_strips_denoise_suffix(self) -> None:
         self.assertEqual(
