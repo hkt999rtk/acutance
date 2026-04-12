@@ -135,6 +135,8 @@ class Profile:
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
     frequency_bin_source: str = "reference_bins"
     frequency_scale: float = 1.0
+    readout_smoothing_window: int = 1
+    readout_interpolation: str = "linear"
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
     normalization_mode: str = "max"
@@ -388,6 +390,8 @@ def summarize_profile(
                 acutance_noise_share_scale_coefficients=tuple(
                     profile.acutance_noise_share_scale_coefficients
                 ),
+                readout_smoothing_window=profile.readout_smoothing_window,
+                readout_interpolation=profile.readout_interpolation,
                 high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
                 high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
             )
@@ -640,6 +644,8 @@ def summarize_profile(
             acutance_noise_share_scale_coefficients=tuple(
                 profile.acutance_noise_share_scale_coefficients
             ),
+            readout_smoothing_window=profile.readout_smoothing_window,
+            readout_interpolation=profile.readout_interpolation,
             high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
             high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
         )
@@ -786,6 +792,8 @@ def summarize_profile(
                         acutance_noise_share_scale_coefficients=tuple(
                             profile.acutance_noise_share_scale_coefficients
                         ),
+                        readout_smoothing_window=profile.readout_smoothing_window,
+                        readout_interpolation=profile.readout_interpolation,
                         high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
                         high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
                     )
@@ -1073,6 +1081,8 @@ def summarize_profile(
             "quality_loss_coefficients": profile.quality_loss_coefficients,
             "quality_loss_preset_overrides": profile.quality_loss_preset_overrides,
             "frequency_scale": profile.frequency_scale,
+            "readout_smoothing_window": profile.readout_smoothing_window,
+            "readout_interpolation": profile.readout_interpolation,
             "texture_support_scale": profile.texture_support_scale,
             "calibration_file": profile.calibration_file,
             "acutance_noise_scale_mode": profile.acutance_noise_scale_mode,

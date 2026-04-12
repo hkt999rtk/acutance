@@ -121,6 +121,8 @@ class Profile:
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
     frequency_bin_source: str = "reference_bins"
     frequency_scale: float = 1.0
+    readout_smoothing_window: int = 1
+    readout_interpolation: str = "linear"
     normalization_band_lo: float = 0.01
     normalization_band_hi: float = 0.03
     normalization_mode: str = "max"
@@ -401,6 +403,8 @@ def profile_payload(
             acutance_noise_share_scale_coefficients=tuple(
                 profile.acutance_noise_share_scale_coefficients
             ),
+            readout_smoothing_window=profile.readout_smoothing_window,
+            readout_interpolation=profile.readout_interpolation,
             high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
             high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
         )
@@ -549,6 +553,8 @@ def profile_payload(
                         acutance_noise_share_scale_coefficients=tuple(
                             profile.acutance_noise_share_scale_coefficients
                         ),
+                        readout_smoothing_window=profile.readout_smoothing_window,
+                        readout_interpolation=profile.readout_interpolation,
                         high_frequency_guard_start_cpp=profile.high_frequency_guard_start_cpp,
                         high_frequency_guard_stop_cpp=profile.high_frequency_guard_stop_cpp,
                     )
@@ -637,7 +643,12 @@ def profile_payload(
                     strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
                     strength_curve_values=profile.matched_ori_strength_curve_values,
                 )
-        metrics = compute_mtf_metrics(scaled_frequencies, compensated_mtf)
+        metrics = compute_mtf_metrics(
+            scaled_frequencies,
+            compensated_mtf,
+            smoothing_window=profile.readout_smoothing_window,
+            interpolation_mode=profile.readout_interpolation,
+        )
         mtf50_errors.append(
             abs(metrics.mtf50 - interpolate_threshold(reference.frequencies_cpp, reference.mtf, 0.5))
         )
@@ -746,6 +757,8 @@ def profile_payload(
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
             "frequency_scale": profile.frequency_scale,
+            "readout_smoothing_window": profile.readout_smoothing_window,
+            "readout_interpolation": profile.readout_interpolation,
             "texture_support_scale": profile.texture_support_scale,
             "signal_psd_correction_gain": profile.signal_psd_correction_gain,
             "acutance_noise_scale_mode": profile.acutance_noise_scale_mode,

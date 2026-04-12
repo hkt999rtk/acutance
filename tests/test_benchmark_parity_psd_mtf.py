@@ -36,6 +36,16 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
         self.assertAlmostEqual(summary["high"]["signed_rel_mean"], -0.3)
         self.assertAlmostEqual(summary["top"]["signed_rel_mean"], -0.4)
 
+    def test_profile_allows_readout_policy_fields(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            readout_smoothing_window=7,
+            readout_interpolation="linear",
+        )
+        self.assertEqual(profile.readout_smoothing_window, 7)
+        self.assertEqual(profile.readout_interpolation, "linear")
+
     def test_choose_roi_reference_refined_uses_reference_seed(self) -> None:
         image = np.zeros((20, 20), dtype=np.float32)
         reference = SimpleNamespace(lrtb=RoiBounds(left=4, right=9, top=5, bottom=10))
@@ -77,6 +87,8 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
                 calibration_file="calibration.json",
                 roi_source="reference",
                 frequency_bin_source="observable_table",
+                readout_smoothing_window=7,
+                readout_interpolation="linear",
             )
 
             with (
@@ -126,6 +138,8 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
                 estimate_mtf.call_args.kwargs["num_bins"],
                 len(reference.frequencies_cpp),
             )
+            self.assertEqual(estimate_mtf.call_args.kwargs["readout_smoothing_window"], 7)
+            self.assertEqual(estimate_mtf.call_args.kwargs["readout_interpolation"], "linear")
 
     def test_capture_key_from_stem_strips_denoise_suffix(self) -> None:
         self.assertEqual(
