@@ -451,6 +451,7 @@ def profile_payload(
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -506,6 +507,7 @@ def profile_payload(
                     "replace_all",
                     "readout_reconnect_quality_loss_isolation",
                     "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                    "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                 }:
                     compensated_mtf = intrinsic_mtf
         if profile.matched_ori_reference_anchor:
@@ -625,11 +627,18 @@ def profile_payload(
                 apply_readout_correction = (
                     profile.intrinsic_full_reference_scope
                     == "readout_reconnect_quality_loss_isolation_matched_ori_graft"
-                    or profile.matched_ori_anchor_mode != "acutance_only"
+                    or (
+                        profile.intrinsic_full_reference_scope
+                        != "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only"
+                        and profile.matched_ori_anchor_mode != "acutance_only"
+                    )
                 )
                 apply_acutance_correction = (
                     profile.intrinsic_full_reference_scope
-                    != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+                    not in {
+                        "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                        "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                    }
                 )
                 if apply_readout_correction:
                     compensated_mtf = apply_reference_correction_curve(
