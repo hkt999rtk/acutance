@@ -688,6 +688,7 @@ def summarize_profile(
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -840,7 +841,10 @@ def summarize_profile(
                 correction_frequencies, correction_curve = correction_cache[capture_key]
                 if (
                     profile.intrinsic_full_reference_scope
-                    != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+                    not in {
+                        "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                        "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                    }
                 ):
                     compensated_mtf_for_acutance = apply_reference_correction_curve(
                         scaled_frequencies,
@@ -919,7 +923,10 @@ def summarize_profile(
         )
         if (
             profile.intrinsic_full_reference_scope
-            != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+            not in {
+                "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+            }
         ):
             curve, acutance = maybe_anchor_acutance_results(
                 capture_key=capture_key,
@@ -935,6 +942,7 @@ def summarize_profile(
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+                "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
             }
         ):
             quality_loss_curve = acutance_curve_from_mtf(
