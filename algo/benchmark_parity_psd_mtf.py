@@ -445,7 +445,11 @@ def profile_payload(
                 raise ValueError(
                     f"Unsupported intrinsic full-reference mode: {profile.intrinsic_full_reference_mode}"
                 )
-            if profile.intrinsic_full_reference_scope not in {"replace_all", "acutance_only"}:
+            if profile.intrinsic_full_reference_scope not in {
+                "replace_all",
+                "acutance_only",
+                "quality_loss_isolation",
+            }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
                 )
