@@ -424,6 +424,8 @@ def profile_payload(
         )
         readout_scaled_frequencies = np.asarray(scaled_frequencies, dtype=np.float64).copy()
         acutance_scaled_frequencies = np.asarray(scaled_frequencies, dtype=np.float64).copy()
+        readout_mtf_compensation_mode = profile.mtf_compensation_mode
+        readout_sensor_fill_factor = profile.sensor_fill_factor
         compensated_mtf, _ = apply_mtf_compensation(
             estimate.mtf,
             scaled_frequencies,
@@ -455,6 +457,7 @@ def profile_payload(
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                 "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -517,6 +520,21 @@ def profile_payload(
                 }:
                     readout_scaled_frequencies = intrinsic_scaled_frequencies
                     compensated_mtf = intrinsic_mtf
+        if (
+            profile.intrinsic_full_reference_scope
+            == "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only"
+        ):
+            readout_mtf_compensation_mode = "sensor_aperture_sinc"
+            readout_sensor_fill_factor = 1.5
+            compensated_mtf, _ = apply_mtf_compensation(
+                estimate.mtf,
+                scaled_frequencies,
+                mode=readout_mtf_compensation_mode,
+                sensor_fill_factor=readout_sensor_fill_factor,
+                chart_fill_factor=profile.chart_fill_factor,
+                denominator_clip=profile.compensation_denominator_clip,
+                max_gain=profile.compensation_max_gain,
+            )
         if profile.matched_ori_reference_anchor:
             if capture_key in ori_reference_map:
                 if capture_key not in correction_cache:
@@ -639,6 +657,7 @@ def profile_payload(
                         not in {
                             "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                             "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
+                            "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
                         }
                         and profile.matched_ori_anchor_mode != "acutance_only"
                     )
@@ -649,6 +668,7 @@ def profile_payload(
                         "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                         "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                         "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
+                        "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
                     }
                 )
                 if apply_readout_correction:
@@ -807,6 +827,8 @@ def profile_payload(
             "calibration_file": profile.calibration_file,
             "mtf_compensation_mode": profile.mtf_compensation_mode,
             "sensor_fill_factor": profile.sensor_fill_factor,
+            "readout_mtf_compensation_mode": readout_mtf_compensation_mode,
+            "readout_sensor_fill_factor": readout_sensor_fill_factor,
             "chart_fill_factor": profile.chart_fill_factor,
         },
         "overall": {
