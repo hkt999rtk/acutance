@@ -1,0 +1,1038 @@
+{
+  "ranking_policy": {
+    "missing_value_policy": "Rows without tracked trend coverage sort after rows with trend coverage. Rows without tracked dead-leaves parity coverage keep null parity fields.",
+    "primary": "trend_direction_match_rate desc",
+    "secondary": "curve_mae_mean asc",
+    "tertiary": "focus_preset_acutance_mae_mean asc",
+    "trend_tiebreaker": "gain_trend_series_shape_error asc"
+  },
+  "rows": [
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_imatest_parity",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.06870956775010477,
+      "gain_trend_series_shape_error": 0.05837536063942883,
+      "label": "release/imatest_parity",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 1,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gain_trend_benchmark.json"
+        ],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/imatest_parity_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "README marks this literal-gamma route as a reference-only hypothesis.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 16,
+      "trend_direction_match_rate": 0.8
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gray_texture_shape",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.0050580877970985896,
+      "gain_trend_series_shape_error": 0.06772595724030461,
+      "label": "release/parity_gray_texture_shape",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 2,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_followup.md",
+          "docs/amodel_gray_texture_series_penalty_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gray_texture_shape_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Best explanatory gray-plus-texture trend branch, but still experiment-only because series MAE is too high.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 16,
+      "trend_direction_match_rate": 0.8
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gray_texture_shape_freq105",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.007121980812272152,
+      "gain_trend_series_shape_error": 0.033400791758490575,
+      "label": "release/parity_gray_texture_shape_freq105",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 3,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_series_penalty_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gray_texture_shape_freq105_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Current best gray-plus-texture compromise, but still experiment-only pending release-facing validation.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 14,
+      "trend_direction_match_rate": 0.7
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gray_texture_shape_freq110",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.006528946201597688,
+      "gain_trend_series_shape_error": 0.04817592512793509,
+      "label": "release/parity_gray_texture_shape_freq110",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 4,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_series_penalty_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gray_texture_shape_freq110_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Narrowed experiment-only gray-plus-texture variant; still not the preferred tradeoff.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 14,
+      "trend_direction_match_rate": 0.7
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gray_texture_shape_nofreq",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.00791616394778347,
+      "gain_trend_series_shape_error": 0.024104731516268456,
+      "label": "release/parity_gray_texture_shape_nofreq",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 5,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_series_penalty_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gray_texture_shape_nofreq_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Useful narrowed control inside the gray-plus-texture family, not a promoted release path.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 13,
+      "trend_direction_match_rate": 0.65
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_experimental_shape",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.00787786012495714,
+      "gain_trend_series_shape_error": 0.030057989404713624,
+      "label": "release/experimental_shape",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 6,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gain_trend_experiment.md",
+          "docs/amodel_gray_texture_series_penalty_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/experimental_shape_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Current experiment reference for trend mismatch, not a shipped default.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 13,
+      "trend_direction_match_rate": 0.65
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gain_noise",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.015633658156600415,
+      "gain_trend_series_shape_error": 0.018044548678085155,
+      "label": "release/parity_gain_noise",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 7,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gain_hypothesis_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gain_hypothesis_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gain_noise_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Gain-noise hypothesis trims delta error slightly but does not fix trend direction.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_fit",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.018148882951082922,
+      "gain_trend_series_shape_error": 0.018628257751567734,
+      "label": "release/parity_fit",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 8,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+        ],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_fit_profile.release.json"
+      },
+      "status": "parity-valid",
+      "status_reason": "Current release default and primary target profile.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gain_shape",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.015299928492502122,
+      "gain_trend_series_shape_error": 0.01876579065541799,
+      "label": "release/parity_gain_shape",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 9,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gain_hypothesis_followup.md",
+          "docs/amodel_gray_texture_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gain_shape_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Gain-shape hypothesis remains inconclusive and is not strong enough for promotion.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_gray_shape",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.01025376937953503,
+      "gain_trend_series_shape_error": 0.03119366329719798,
+      "label": "release/parity_gray_shape",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 10,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_gray_shape_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Gray-only factor isolate improves delta magnitude but not direction-match count.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_recommended",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.013764105189251674,
+      "gain_trend_series_shape_error": 0.0661801340077346,
+      "label": "release/recommended",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 11,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gain_trend_benchmark.json"
+        ],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md",
+          "docs/parity_acutance_quality_loss_validation.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/recommended_profile.release.json"
+      },
+      "status": "parity-valid",
+      "status_reason": "Retained split-workaround parity reference; no longer primary, but still an active comparison line rather than a pure diagnostic control.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_parity_texture_shape",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": 0.010781724255412763,
+      "gain_trend_series_shape_error": 0.11212136133925217,
+      "label": "release/parity_texture_shape",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 12,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/amodel_gray_texture_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/amodel_gray_texture_followup.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/parity_texture_shape_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Texture-support-only isolate leaves trend direction unresolved and inflates series error.",
+      "trend_coverage": true,
+      "trend_direction_group_count": 20,
+      "trend_direction_match_count": 3,
+      "trend_direction_match_rate": 0.15
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012339726096799753,
+        "Computer Monitor Acutance": 0.01211298333455687,
+        "Large Print Acutance": 0.008652070267904098,
+        "Small Print Acutance": 0.010307146668849663,
+        "UHDTV Display Acutance": 0.022070342159923255
+      },
+      "curve_mae_mean": 0.031630678550997944,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue63_empirical_linearization",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.013096453705606729,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue63_empirical_linearization",
+      "mtf_threshold_mae": {
+        "mtf20": 0.03805077337414969,
+        "mtf30": 0.04422298499845122,
+        "mtf50": 0.021589249154774382
+      },
+      "overall_quality_loss_mae_mean": 1.521854122812337,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.31667488505906133,
+        "Computer Monitor Quality Loss": 3.32218083965815,
+        "Large Print Quality Loss": 1.3349872027109564,
+        "Small Print Quality Loss": 1.1811005461400752,
+        "UHDTV Display Quality Loss": 1.4543271404934428
+      },
+      "rank": 13,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue63_empirical_linearization_psd_benchmark.json",
+          "artifacts/issue63_empirical_linearization_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue63_empirical_linearization_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_empirical_linearization_profile.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Important mixed branch: Acutance improved sharply, but PSD and Quality Loss stayed too weak for promotion.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012338772438470614,
+        "Computer Monitor Acutance": 0.01204952686089712,
+        "Large Print Acutance": 0.008671051021070398,
+        "Small Print Acutance": 0.010307033705187688,
+        "UHDTV Display Acutance": 0.021975021832475978
+      },
+      "curve_mae_mean": 0.03189951888358044,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue65_chart_prior_inverse_linearization",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.013068281171620361,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue65_chart_prior_inverse_linearization",
+      "mtf_threshold_mae": {
+        "mtf20": 0.042778033341942426,
+        "mtf30": 0.04902803854046335,
+        "mtf50": 0.021589249154774382
+      },
+      "overall_quality_loss_mae_mean": 1.5317749785548989,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.31661995869798404,
+        "Computer Monitor Quality Loss": 3.3813933594483125,
+        "Large Print Quality Loss": 1.3322211490442237,
+        "Small Print Quality Loss": 1.1810605359751631,
+        "UHDTV Display Quality Loss": 1.4475798896088106
+      },
+      "rank": 14,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue65_chart_prior_inverse_linearization_psd_benchmark.json",
+          "artifacts/issue65_chart_prior_inverse_linearization_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue65_chart_prior_inverse_linearization_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_chart_prior_slope_m006_anchored_hf_psd_roi_reference_only_empirical_linearization_profile.json"
+      },
+      "status": "archived / exhausted",
+      "status_reason": "Explicit bounded negative refinement of the issue-63 branch.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012338772438470614,
+        "Computer Monitor Acutance": 0.01204952686089712,
+        "Large Print Acutance": 0.008671051021070398,
+        "Small Print Acutance": 0.010307033705187688,
+        "UHDTV Display Acutance": 0.021975021832475978
+      },
+      "curve_mae_mean": 0.03189951888358044,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue67_readout_policy",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.013068281171620361,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue67_readout_policy",
+      "mtf_threshold_mae": {
+        "mtf20": 0.043514415552122654,
+        "mtf30": 0.049474379968693985,
+        "mtf50": 0.02450493402291129
+      },
+      "overall_quality_loss_mae_mean": 1.5317749785548989,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.31661995869798404,
+        "Computer Monitor Quality Loss": 3.3813933594483125,
+        "Large Print Quality Loss": 1.3322211490442237,
+        "Small Print Quality Loss": 1.1810605359751631,
+        "UHDTV Display Quality Loss": 1.4475798896088106
+      },
+      "rank": 15,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue67_readout_policy_psd_benchmark.json",
+          "artifacts/issue67_readout_policy_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue67_readout_policy_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_chart_prior_slope_m006_anchored_hf_psd_roi_reference_only_empirical_linearization_readout7_profile.json"
+      },
+      "status": "archived / exhausted",
+      "status_reason": "Explicitly exhausted readout-policy family after the bounded negative re-check.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.016810511427410642,
+        "Computer Monitor Acutance": 0.054237735168271614,
+        "Large Print Acutance": 0.03862844832111008,
+        "Small Print Acutance": 0.030348558063282082,
+        "UHDTV Display Acutance": 0.04493795294455284
+      },
+      "curve_mae_mean": 0.03666081546909307,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue56_empirical_frequency_scale",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.03699264118492546,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue56_empirical_frequency_scale",
+      "mtf_threshold_mae": {
+        "mtf20": 0.031580123999406,
+        "mtf30": 0.047830649248861,
+        "mtf50": 0.021573538079002308
+      },
+      "overall_quality_loss_mae_mean": 1.4582278636293544,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.2023238841227169,
+        "Computer Monitor Quality Loss": 3.6376862499825835,
+        "Large Print Quality Loss": 0.9626965715082461,
+        "Small Print Quality Loss": 0.7457710410703663,
+        "UHDTV Display Quality Loss": 1.7426615714628597
+      },
+      "rank": 16,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue56_empirical_frequency_scale_psd_benchmark.json",
+          "artifacts/issue56_empirical_frequency_scale_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue56_empirical_frequency_scale_followup.md"
+        ],
+        "primary_path": "/tmp/issue56_freqscale_1095.json"
+      },
+      "status": "archived / exhausted",
+      "status_reason": "Closed empirical frequency-scale line; threshold-only gain did not transfer to the full parity objective.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.013802247905288301,
+        "Computer Monitor Acutance": 0.052665183748573804,
+        "Large Print Acutance": 0.05132586418527154,
+        "Small Print Acutance": 0.046702107662187464,
+        "UHDTV Display Acutance": 0.04793875259218785
+      },
+      "curve_mae_mean": 0.03678903166100513,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue29_anchored_hf_psd",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.042486831218701795,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue29_anchored_hf_psd",
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2214989544377113,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.14297991495607307,
+        "Computer Monitor Quality Loss": 2.902905846061304,
+        "Large Print Quality Loss": 0.9548172583377941,
+        "Small Print Quality Loss": 0.6076935256225349,
+        "UHDTV Display Quality Loss": 1.4990982272108502
+      },
+      "rank": 17,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue29_anchored_high_frequency_psd_benchmark.json",
+          "artifacts/issue29_anchored_high_frequency_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue29_anchored_high_frequency_psd_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_profile.json"
+      },
+      "status": "parity-valid",
+      "status_reason": "Small but real source-backed lower-layer improvement that stayed downstream-safe enough to keep as a tracked candidate.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012909940589898264,
+        "Computer Monitor Acutance": 0.053503296232802214,
+        "Large Print Acutance": 0.048029164175666376,
+        "Small Print Acutance": 0.0440934456167187,
+        "UHDTV Display Acutance": 0.047999871775239775
+      },
+      "curve_mae_mean": 0.036795670048548175,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue52_roi_reference",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.04130714367806507,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue52_roi_reference",
+      "mtf_threshold_mae": {
+        "mtf20": 0.026588479385846887,
+        "mtf30": 0.029031147782014672,
+        "mtf50": 0.009210531290681506
+      },
+      "overall_quality_loss_mae_mean": 1.2635712539874173,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.1699187951448336,
+        "Computer Monitor Quality Loss": 2.9887158785513286,
+        "Large Print Quality Loss": 0.9753964866987435,
+        "Small Print Quality Loss": 0.6445598500524008,
+        "UHDTV Display Quality Loss": 1.5392652594897804
+      },
+      "rank": 18,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue52_roi_reference_psd_benchmark.json",
+          "artifacts/issue52_roi_reference_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue52_direct_roi_reference_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Clear lower-layer win, but Quality Loss regressed too much for adoption.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012904952445893157,
+        "Computer Monitor Acutance": 0.053520742514481544,
+        "Large Print Acutance": 0.047952708317223675,
+        "Small Print Acutance": 0.043974804440237894,
+        "UHDTV Display Acutance": 0.04795393982961792
+      },
+      "curve_mae_mean": 0.0368388092478103,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue58_chart_sensor_comp",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.04126142950949084,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue58_chart_sensor_comp",
+      "mtf_threshold_mae": {
+        "mtf20": 0.026782180896081077,
+        "mtf30": 0.029131186223176352,
+        "mtf50": 0.009228613371601612
+      },
+      "overall_quality_loss_mae_mean": 1.2626646788288407,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.16998827003204747,
+        "Computer Monitor Quality Loss": 2.9822377122465236,
+        "Large Print Quality Loss": 0.9752058029182098,
+        "Small Print Quality Loss": 0.6442552253418805,
+        "UHDTV Display Quality Loss": 1.5416363836055424
+      },
+      "rank": 19,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue58_chart_sensor_compensation_psd_benchmark.json",
+          "artifacts/issue58_chart_sensor_compensation_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue58_chart_sensor_compensation_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_chart_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Healthier than the older chart/sensor branch, but still not strong enough to replace the default line.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012632859545328204,
+        "Computer Monitor Acutance": 0.05327084155351432,
+        "Large Print Acutance": 0.04762663123263737,
+        "Small Print Acutance": 0.043478956082953275,
+        "UHDTV Display Acutance": 0.04763101217961305
+      },
+      "curve_mae_mean": 0.03690674373255725,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue54_observable_bins",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.04092806011880924,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue54_observable_bins",
+      "mtf_threshold_mae": {
+        "mtf20": 0.021093664116902187,
+        "mtf30": 0.02920595943030816,
+        "mtf50": 0.009428579810416034
+      },
+      "overall_quality_loss_mae_mean": 1.272290038135693,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.17403968250594493,
+        "Computer Monitor Quality Loss": 3.005541718007179,
+        "Large Print Quality Loss": 0.9797306535035449,
+        "Small Print Quality Loss": 0.6463902403067138,
+        "UHDTV Display Quality Loss": 1.5557478963550824
+      },
+      "rank": 20,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue54_observable_frequency_bins_psd_benchmark.json",
+          "artifacts/issue54_observable_frequency_bins_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue54_observable_frequency_bins_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_observable_bins_profile.json"
+      },
+      "status": "archived / exhausted",
+      "status_reason": "Closed frequency-bin branch; static inferred bins remained the better default on this dataset.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.012887907037208319,
+        "Computer Monitor Acutance": 0.053691360633422315,
+        "Large Print Acutance": 0.048609151243059,
+        "Small Print Acutance": 0.044689945622090124,
+        "UHDTV Display Acutance": 0.048087482733436014
+      },
+      "curve_mae_mean": 0.03710695877117158,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue61_isp_family",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.04159316945384316,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue61_isp_family",
+      "mtf_threshold_mae": {
+        "mtf20": 0.026588479385846887,
+        "mtf30": 0.029031147782014672,
+        "mtf50": 0.009210531290681506
+      },
+      "overall_quality_loss_mae_mean": 1.2611494672413617,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.16715567535695144,
+        "Computer Monitor Quality Loss": 2.9894696043898414,
+        "Large Print Quality Loss": 0.9538243443870495,
+        "Small Print Quality Loss": 0.6408136977961201,
+        "UHDTV Display Quality Loss": 1.5544840142768457
+      },
+      "rank": 21,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue61_isp_family_psd_benchmark.json",
+          "artifacts/issue61_isp_family_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/issue61_isp_family_followup.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_hf_noise_share_shape_profile.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "Useful source-backed negative showing the remaining gap is not solved by the bounded ISP proxy alone.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_imatest_parity_sensor_comp",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "release/imatest_parity_sensor_comp",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 22,
+      "sources": {
+        "artifact_paths": [],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "README marks this literal-parity plus sensor-comp line as reference-only.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_imatest_parity_sensor_comp_toe",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "release/imatest_parity_sensor_comp_toe",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 23,
+      "sources": {
+        "artifact_paths": [],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_toe_profile.release.json"
+      },
+      "status": "diagnostic-only",
+      "status_reason": "README marks this literal-parity plus sensor-comp plus toe line as reference-only.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": null,
+        "Computer Monitor Acutance": null,
+        "Large Print Acutance": null,
+        "Small Print Acutance": null,
+        "UHDTV Display Acutance": null
+      },
+      "curve_mae_mean": null,
+      "dead_leaves_coverage": false,
+      "family_id": "release_legacy_linear",
+      "family_type": "release_profile",
+      "focus_preset_acutance_mae_mean": null,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "release/legacy_linear",
+      "mtf_threshold_mae": {
+        "mtf20": null,
+        "mtf30": null,
+        "mtf50": null
+      },
+      "overall_quality_loss_mae_mean": null,
+      "quality_loss_preset_mae": {},
+      "rank": 24,
+      "sources": {
+        "artifact_paths": [],
+        "doc_paths": [
+          "release/deadleaf_13b10_release/README.md"
+        ],
+        "primary_path": "release/deadleaf_13b10_release/config/legacy_linear_profile.release.json"
+      },
+      "status": "archived / exhausted",
+      "status_reason": "Legacy comparison baseline retained only for historical contrast.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    }
+  ],
+  "scoreboard_version": 1,
+  "status_definitions": {
+    "archived / exhausted": "Closed bounded negative or legacy-only line; kept for historical comparison but not for further direct follow-up on the current surface.",
+    "diagnostic-only": "Useful for explaining a residual or narrowing the next slice, but not kept as the current default or a release-safe replacement.",
+    "parity-valid": "Still kept as a live parity candidate or retained release reference rather than only as a diagnostic probe."
+  }
+}
