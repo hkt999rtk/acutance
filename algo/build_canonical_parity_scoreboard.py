@@ -50,6 +50,7 @@ class DirectMethodSpec:
     doc_paths: tuple[str, ...]
     psd_artifact_path: str
     acutance_artifact_path: str
+    primary_path_override: str | None = None
 
 
 RELEASE_FAMILIES = (
@@ -230,6 +231,12 @@ DIRECT_METHOD_FAMILIES = (
         doc_paths=("docs/issue56_empirical_frequency_scale_followup.md",),
         psd_artifact_path="artifacts/issue56_empirical_frequency_scale_psd_benchmark.json",
         acutance_artifact_path="artifacts/issue56_empirical_frequency_scale_acutance_benchmark.json",
+        primary_path_override=(
+            "algo/"
+            "deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_"
+            "curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_"
+            "psd_roi_reference_only_freqscale_1095_profile.json"
+        ),
     ),
     DirectMethodSpec(
         family_id="direct_issue58_chart_sensor_comp",
@@ -428,7 +435,12 @@ def build_direct_method_row(spec: DirectMethodSpec, repo_root: Path) -> dict[str
     acutance_payload = load_json(repo_root / spec.acutance_artifact_path)
     psd_profile = psd_payload["profiles"][-1]
     acutance_profile = acutance_payload["profiles"][-1]
-    profile_path = str(acutance_profile["profile_path"])
+    profile_path = normalize_direct_method_primary_path(
+        repo_root=repo_root,
+        raw_profile_path=str(acutance_profile["profile_path"]),
+        override=spec.primary_path_override,
+        doc_paths=spec.doc_paths,
+    )
     return {
         "family_id": spec.family_id,
         "label": spec.label,
@@ -469,7 +481,34 @@ def build_direct_method_row(spec: DirectMethodSpec, repo_root: Path) -> dict[str
                 spec.acutance_artifact_path,
             ],
         },
-    }
+}
+
+
+def normalize_direct_method_primary_path(
+    *,
+    repo_root: Path,
+    raw_profile_path: str,
+    override: str | None,
+    doc_paths: tuple[str, ...],
+) -> str:
+    if override is not None:
+        return override
+
+    candidate = Path(raw_profile_path)
+    if candidate.is_absolute():
+        try:
+            return str(candidate.resolve().relative_to(repo_root.resolve()))
+        except ValueError:
+            pass
+    else:
+        repo_candidate = repo_root / candidate
+        if repo_candidate.exists():
+            return relative_path(repo_candidate, repo_root)
+
+    # Historical artifacts sometimes only preserve temp paths. When that happens,
+    # keep the canonical scoreboard repo-local by falling back to the closest
+    # tracked provenance record instead of leaking an ephemeral filesystem path.
+    return doc_paths[0]
 
 
 def sort_key(row: dict[str, Any]) -> tuple[Any, ...]:
