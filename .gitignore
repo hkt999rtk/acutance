@@ -3,3 +3,11 @@ __pycache__/
 .DS_Store
 .codex/
 .local/
+
+# Release packaging and runtime artifacts
+release/*.tgz
+release/*.zip
+release/deadleaf_13b10_release/data/*
+!release/deadleaf_13b10_release/data/README.txt
+release/deadleaf_13b10_release/results/*
+!release/deadleaf_13b10_release/results/README.txt
