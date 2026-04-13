@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -62,6 +64,12 @@ class BuildIntrinsicAfterIssue97NextSliceTest(unittest.TestCase):
             payload["pipeline_delta_summary"]["mtf_compensation_mode"][CURRENT_BEST_LABEL],
             "sensor_aperture_sinc",
         )
+        self.assertEqual(
+            payload["comparison_records"]["issue93_downstream_matched_ori_only_candidate"][
+                "mtf_abs_signed_rel_mean"
+            ],
+            0.13993778559089318,
+        )
         for path in payload["storage_policy"]["new_fitted_artifact_paths"]:
             self.assertFalse(path.startswith("20260318_deadleaf_13b10"))
             self.assertFalse(
@@ -94,6 +102,43 @@ class BuildIntrinsicAfterIssue97NextSliceTest(unittest.TestCase):
         self.assertIn("issue97_flips_negative_vs_issue93", markdown)
         self.assertIn("high_frequency_guard_start_cpp", markdown)
         self.assertIn("Storage Separation", markdown)
+
+    def test_build_payload_fails_when_issue97_embedded_issue93_copy_diverges(self) -> None:
+        repo_root = self.repo_root()
+        source_artifact = repo_root / "artifacts/intrinsic_phase_retained_downstream_matched_ori_only_benchmark.json"
+        diverged = json.loads(source_artifact.read_text(encoding="utf-8"))
+        diverged["profiles"]["issue93_downstream_matched_ori_only_candidate"][
+            "mtf_abs_signed_rel_mean"
+        ] = 9.999
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            diverged_path = Path(tmpdir) / "issue93_diverged.json"
+            diverged_path.write_text(
+                json.dumps(diverged, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+
+            with self.assertRaisesRegex(
+                ValueError, "embedded issue93_downstream_matched_ori_only_candidate record diverges"
+            ):
+                build_payload(
+                    repo_root,
+                    issue95_artifact_path=Path(
+                        "artifacts/intrinsic_after_issue93_next_slice_benchmark.json"
+                    ),
+                    issue93_artifact_path=diverged_path,
+                    issue97_artifact_path=Path(
+                        "artifacts/intrinsic_phase_retained_reported_mtf_disconnect_benchmark.json"
+                    ),
+                    current_best_psd_artifact_path=Path(
+                        "artifacts/issue77_measured_oecf_psd_benchmark.json"
+                    ),
+                    issue93_psd_artifact_path=Path(
+                        "artifacts/issue93_intrinsic_phase_retained_downstream_matched_ori_only_psd_benchmark.json"
+                    ),
+                    issue97_psd_artifact_path=Path(
+                        "artifacts/issue97_intrinsic_phase_retained_reported_mtf_disconnect_psd_benchmark.json"
+                    ),
+                )
 
     @staticmethod
     def repo_root() -> Path:
