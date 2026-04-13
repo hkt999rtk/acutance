@@ -1,0 +1,51 @@
+# Canonical Parity Scoreboard
+
+This scoreboard is the repo-local decision surface requested by issue `#69`.
+
+Ranking policy:
+
+1. `trend direction match rate` descending
+2. `gain-trend series shape error` ascending as the trend tie-breaker
+3. `curve_mae_mean` ascending
+4. `focus preset acutance mae mean` ascending
+
+Coverage note:
+
+- release-profile rows carry tracked A-model trend metrics when the repo has a checked-in gain-trend benchmark for that exact release config.
+- direct-method rows carry tracked dead-leaves parity metrics from the issue artifacts; these rows currently have no exact checked-in A-model trend benchmark on the same profile path, so trend fields remain `-`.
+
+| Rank | Family | Type | Status | Trend match | Series err | Curve MAE | Focus Acu MAE | Phone A | Monitor A | UHDTV A | Small Print A | Large Print A | MTF20 | MTF30 | MTF50 | Overall QL | Source |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | release/imatest_parity | release_profile | diagnostic-only | 16/20 (0.800) | 0.05838 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/imatest_parity_profile.release.json [amodel_gain_trend_benchmark.json] |
+| 2 | release/parity_gray_texture_shape | release_profile | diagnostic-only | 16/20 (0.800) | 0.06773 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gray_texture_shape_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 3 | release/parity_gray_texture_shape_freq105 | release_profile | diagnostic-only | 14/20 (0.700) | 0.03340 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gray_texture_shape_freq105_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 4 | release/parity_gray_texture_shape_freq110 | release_profile | diagnostic-only | 14/20 (0.700) | 0.04818 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gray_texture_shape_freq110_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 5 | release/parity_gray_texture_shape_nofreq | release_profile | diagnostic-only | 13/20 (0.650) | 0.02410 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gray_texture_shape_nofreq_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 6 | release/experimental_shape | release_profile | diagnostic-only | 13/20 (0.650) | 0.03006 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/experimental_shape_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 7 | release/parity_gain_noise | release_profile | diagnostic-only | 3/20 (0.150) | 0.01804 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gain_noise_profile.release.json [amodel_gain_hypothesis_benchmark.json] |
+| 8 | release/parity_fit | release_profile | parity-valid | 3/20 (0.150) | 0.01863 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_fit_profile.release.json [amodel_gray_texture_series_penalty_benchmark.json] |
+| 9 | release/parity_gain_shape | release_profile | diagnostic-only | 3/20 (0.150) | 0.01877 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gain_shape_profile.release.json [amodel_gray_texture_benchmark.json] |
+| 10 | release/parity_gray_shape | release_profile | diagnostic-only | 3/20 (0.150) | 0.03119 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_gray_shape_profile.release.json [amodel_gray_texture_benchmark.json] |
+| 11 | release/recommended | release_profile | parity-valid | 3/20 (0.150) | 0.06618 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/recommended_profile.release.json [amodel_gain_trend_benchmark.json] |
+| 12 | release/parity_texture_shape | release_profile | diagnostic-only | 3/20 (0.150) | 0.11212 | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/parity_texture_shape_profile.release.json [amodel_gray_texture_benchmark.json] |
+| 13 | direct/issue63_empirical_linearization | direct_method_branch | diagnostic-only | - | - | 0.03163 | 0.01310 | 0.01234 | 0.01211 | 0.02207 | 0.01031 | 0.00865 | 0.03805 | 0.04422 | 0.02159 | 1.52185 | algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_empirical_linearization_profile.json [issue63_empirical_linearization_psd_benchmark.json, issue63_empirical_linearization_acutance_benchmark.json] |
+| 14 | direct/issue65_chart_prior_inverse_linearization | direct_method_branch | archived / exhausted | - | - | 0.03190 | 0.01307 | 0.01234 | 0.01205 | 0.02198 | 0.01031 | 0.00867 | 0.04278 | 0.04903 | 0.02159 | 1.53177 | algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_chart_prior_slope_m006_anchored_hf_psd_roi_reference_only_empirical_linearization_profile.json [issue65_chart_prior_inverse_linearization_psd_benchmark.json, issue65_chart_prior_inverse_linearization_acutance_benchmark.json] |
+| 15 | direct/issue67_readout_policy | direct_method_branch | archived / exhausted | - | - | 0.03190 | 0.01307 | 0.01234 | 0.01205 | 0.02198 | 0.01031 | 0.00867 | 0.04351 | 0.04947 | 0.02450 | 1.53177 | algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_chart_prior_slope_m006_anchored_hf_psd_roi_reference_only_empirical_linearization_readout7_profile.json [issue67_readout_policy_psd_benchmark.json, issue67_readout_policy_acutance_benchmark.json] |
+| 16 | direct/issue56_empirical_frequency_scale | direct_method_branch | archived / exhausted | - | - | 0.03666 | 0.03699 | 0.01681 | 0.05424 | 0.04494 | 0.03035 | 0.03863 | 0.03158 | 0.04783 | 0.02157 | 1.45823 | /tmp/issue56_freqscale_1095.json [issue56_empirical_frequency_scale_psd_benchmark.json, issue56_empirical_frequency_scale_acutance_benchmark.json] |
+| 17 | direct/issue29_anchored_hf_psd | direct_method_branch | parity-valid | - | - | 0.03679 | 0.04249 | 0.01380 | 0.05267 | 0.04794 | 0.04670 | 0.05133 | 0.03301 | 0.03694 | 0.00933 | 1.22150 | algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_profile.json [issue29_anchored_high_frequency_psd_benchmark.json, issue29_anchored_high_frequency_acutance_benchmark.json] |
+| 18 | direct/issue52_roi_reference | direct_method_branch | diagnostic-only | - | - | 0.03680 | 0.04131 | 0.01291 | 0.05350 | 0.04800 | 0.04409 | 0.04803 | 0.02659 | 0.02903 | 0.00921 | 1.26357 | algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json [issue52_roi_reference_psd_benchmark.json, issue52_roi_reference_acutance_benchmark.json] |
+| 19 | direct/issue58_chart_sensor_comp | direct_method_branch | diagnostic-only | - | - | 0.03684 | 0.04126 | 0.01290 | 0.05352 | 0.04795 | 0.04397 | 0.04795 | 0.02678 | 0.02913 | 0.00923 | 1.26266 | algo/deadleaf_13b10_imatest_chart_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_profile.json [issue58_chart_sensor_compensation_psd_benchmark.json, issue58_chart_sensor_compensation_acutance_benchmark.json] |
+| 20 | direct/issue54_observable_bins | direct_method_branch | archived / exhausted | - | - | 0.03691 | 0.04093 | 0.01263 | 0.05327 | 0.04763 | 0.04348 | 0.04763 | 0.02109 | 0.02921 | 0.00943 | 1.27229 | algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_observable_bins_profile.json [issue54_observable_frequency_bins_psd_benchmark.json, issue54_observable_frequency_bins_acutance_benchmark.json] |
+| 21 | direct/issue61_isp_family | direct_method_branch | diagnostic-only | - | - | 0.03711 | 0.04159 | 0.01289 | 0.05369 | 0.04809 | 0.04469 | 0.04861 | 0.02659 | 0.02903 | 0.00921 | 1.26115 | algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_hf_noise_share_shape_profile.json [issue61_isp_family_psd_benchmark.json, issue61_isp_family_acutance_benchmark.json] |
+| 22 | release/imatest_parity_sensor_comp | release_profile | diagnostic-only | - | - | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_profile.release.json |
+| 23 | release/imatest_parity_sensor_comp_toe | release_profile | diagnostic-only | - | - | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_toe_profile.release.json |
+| 24 | release/legacy_linear | release_profile | archived / exhausted | - | - | - | - | - | - | - | - | - | - | - | - | - | release/deadleaf_13b10_release/config/legacy_linear_profile.release.json |
+
+## Current Readout
+
+- Top tracked trend row: `release/imatest_parity` with `16/20 (0.800)` and series error `0.05838`; status = `diagnostic-only`.
+- Top tracked direct-method row by the fixed sort: `direct/issue63_empirical_linearization` with `curve_mae_mean = 0.03163` and `overall_quality_loss_mae_mean = 1.52185`; status = `diagnostic-only`.
+- Best still-parity-valid direct-method row: `direct/issue29_anchored_hf_psd` with `curve_mae_mean = 0.03679` and `overall_quality_loss_mae_mean = 1.22150`.
+- Explicit archived / exhausted lines in the current scoreboard: `direct/issue65_chart_prior_inverse_linearization`, `direct/issue67_readout_policy`, `direct/issue56_empirical_frequency_scale`, `direct/issue54_observable_bins`, `release/legacy_linear`.
+
+The machine-readable companion artifact at `artifacts/canonical_parity_scoreboard.json` keeps the full status reasons, per-preset values, and provenance paths for later issues to cite directly.
