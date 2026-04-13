@@ -670,7 +670,7 @@
         "doc_paths": [
           "docs/issue56_empirical_frequency_scale_followup.md"
         ],
-        "primary_path": "/tmp/issue56_freqscale_1095.json"
+        "primary_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_freqscale_1095_profile.json"
       },
       "status": "archived / exhausted",
       "status_reason": "Closed empirical frequency-scale line; threshold-only gain did not transfer to the full parity objective.",

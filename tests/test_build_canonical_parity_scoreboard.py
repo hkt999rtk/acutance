@@ -24,6 +24,15 @@ class BuildCanonicalParityScoreboardTest(unittest.TestCase):
             by_id["direct_issue29_anchored_hf_psd"]["overall_quality_loss_mae_mean"],
             1.2214989544377113,
         )
+        self.assertEqual(
+            by_id["direct_issue56_empirical_frequency_scale"]["sources"]["primary_path"],
+            (
+                "algo/"
+                "deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_"
+                "curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_"
+                "psd_roi_reference_only_freqscale_1095_profile.json"
+            ),
+        )
 
     def test_trend_ranking_prefers_direction_match_then_series_error(self) -> None:
         scoreboard = build_scoreboard(repo_root=self.repo_root())
@@ -51,6 +60,12 @@ class BuildCanonicalParityScoreboardTest(unittest.TestCase):
         self.assertIn("release/parity_gray_texture_shape", markdown)
         self.assertIn("direct/issue29_anchored_hf_psd", markdown)
         self.assertIn("archived / exhausted", markdown)
+        self.assertNotIn("/tmp/", markdown)
+
+    def test_scoreboard_sources_do_not_leak_temp_paths(self) -> None:
+        scoreboard = build_scoreboard(repo_root=self.repo_root())
+        for row in scoreboard["rows"]:
+            self.assertNotIn("/tmp/", row["sources"]["primary_path"])
 
     @staticmethod
     def repo_root():
