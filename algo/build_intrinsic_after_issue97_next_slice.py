@@ -156,6 +156,19 @@ def select_profile(payload: dict[str, Any], expected_profile_path: str) -> dict[
     )
 
 
+def assert_record_matches(
+    *,
+    source: dict[str, Any],
+    embedded: dict[str, Any],
+    label: str,
+    artifact_label: str,
+) -> None:
+    if source != embedded:
+        raise ValueError(
+            f"{artifact_label} embedded {label} record diverges from the declared source artifact"
+        )
+
+
 def band_signatures(profile: dict[str, Any]) -> dict[str, float]:
     return {
         band: float(summary["signed_rel_mean"])
@@ -187,10 +200,29 @@ def build_payload(
     issue93_psd_artifact = load_json(resolve_path(repo_root, issue93_psd_artifact_path))
     issue97_psd_artifact = load_json(resolve_path(repo_root, issue97_psd_artifact_path))
 
+    issue93_source_current_best = issue93_artifact["profiles"][CURRENT_BEST_LABEL]
+    issue93_source_issue93 = issue93_artifact["profiles"][ISSUE93_LABEL]
+    issue97_embedded_current_best = issue97_artifact["profiles"][CURRENT_BEST_LABEL]
+    issue97_embedded_issue93 = issue97_artifact["profiles"][ISSUE93_LABEL]
+    issue97_record = issue97_artifact["profiles"][ISSUE97_LABEL]
+
+    assert_record_matches(
+        source=issue93_source_current_best,
+        embedded=issue97_embedded_current_best,
+        label=CURRENT_BEST_LABEL,
+        artifact_label="issue97_artifact",
+    )
+    assert_record_matches(
+        source=issue93_source_issue93,
+        embedded=issue97_embedded_issue93,
+        label=ISSUE93_LABEL,
+        artifact_label="issue97_artifact",
+    )
+
     comparison_records = {
-        CURRENT_BEST_LABEL: issue97_artifact["profiles"][CURRENT_BEST_LABEL],
-        ISSUE93_LABEL: issue97_artifact["profiles"][ISSUE93_LABEL],
-        ISSUE97_LABEL: issue97_artifact["profiles"][ISSUE97_LABEL],
+        CURRENT_BEST_LABEL: issue93_source_current_best,
+        ISSUE93_LABEL: issue93_source_issue93,
+        ISSUE97_LABEL: issue97_record,
     }
     current_best = comparison_records[CURRENT_BEST_LABEL]
     issue93 = comparison_records[ISSUE93_LABEL]
