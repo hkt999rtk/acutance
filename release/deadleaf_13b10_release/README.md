@@ -12,7 +12,8 @@
 - `config/`
   - release 專用設定檔
 - `data/20260318_deadleaf_13b10/`
-  - 驗證資料集
+  - 原始資料預留路徑
+  - 對客戶交付時可不隨包提供；請將既有資料放到這個路徑，或用 `--dataset-root` 指定實際位置
 - `scripts/run_release_batch.py`
   - 批次跑完整資料集並產出 JSON 結果
 - `scripts/run_release.sh`
@@ -21,6 +22,11 @@
   - 執行後的輸出目錄
 
 ## 執行
+
+如果交付包未包含原始資料，請先擇一完成：
+
+1. 將客戶既有資料放到 `data/20260318_deadleaf_13b10/`
+2. 執行時加上 `--dataset-root /path/to/20260318_deadleaf_13b10`
 
 在 release 根目錄下執行：
 
@@ -51,6 +57,14 @@
 ```bash
 python3 scripts/run_release_batch.py \
   --profile config/parity_fit_profile.release.json
+```
+
+若資料不在預設位置：
+
+```bash
+python3 scripts/run_release_batch.py \
+  --profile config/parity_fit_profile.release.json \
+  --dataset-root /path/to/20260318_deadleaf_13b10
 ```
 
 保留的 split-workaround reference profile：
