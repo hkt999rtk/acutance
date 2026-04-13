@@ -422,6 +422,8 @@ def profile_payload(
             estimate.frequencies_cpp,
             scale=effective_frequency_scale,
         )
+        readout_scaled_frequencies = np.asarray(scaled_frequencies, dtype=np.float64).copy()
+        acutance_scaled_frequencies = np.asarray(scaled_frequencies, dtype=np.float64).copy()
         compensated_mtf, _ = apply_mtf_compensation(
             estimate.mtf,
             scaled_frequencies,
@@ -452,6 +454,7 @@ def profile_payload(
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -500,7 +503,10 @@ def profile_payload(
                     registration_mode=profile.intrinsic_full_reference_registration_mode,
                     transfer_mode=profile.intrinsic_full_reference_transfer_mode,
                 )
-                scaled_frequencies = np.asarray(ori_reference.frequencies_cpp, dtype=np.float64)
+                intrinsic_scaled_frequencies = np.asarray(
+                    ori_reference.frequencies_cpp, dtype=np.float64
+                )
+                acutance_scaled_frequencies = intrinsic_scaled_frequencies
                 intrinsic_mtf = np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
                 compensated_mtf_for_acutance = intrinsic_mtf.copy()
                 if profile.intrinsic_full_reference_scope in {
@@ -509,6 +515,7 @@ def profile_payload(
                     "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                     "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                 }:
+                    readout_scaled_frequencies = intrinsic_scaled_frequencies
                     compensated_mtf = intrinsic_mtf
         if profile.matched_ori_reference_anchor:
             if capture_key in ori_reference_map:
@@ -629,7 +636,10 @@ def profile_payload(
                     == "readout_reconnect_quality_loss_isolation_matched_ori_graft"
                     or (
                         profile.intrinsic_full_reference_scope
-                        != "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only"
+                        not in {
+                            "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                            "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
+                        }
                         and profile.matched_ori_anchor_mode != "acutance_only"
                     )
                 )
@@ -638,11 +648,12 @@ def profile_payload(
                     not in {
                         "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                         "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                        "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
                     }
                 )
                 if apply_readout_correction:
                     compensated_mtf = apply_reference_correction_curve(
-                        scaled_frequencies,
+                        readout_scaled_frequencies,
                         compensated_mtf,
                         correction_frequencies,
                         correction_curve,
@@ -658,7 +669,7 @@ def profile_payload(
                 )
                 if apply_acutance_correction:
                     compensated_mtf_for_acutance = apply_reference_correction_curve(
-                        scaled_frequencies,
+                        acutance_scaled_frequencies,
                         compensated_mtf_for_acutance,
                         correction_frequencies,
                         acutance_correction_curve,
@@ -673,7 +684,7 @@ def profile_payload(
                         strength_curve_values=profile.matched_ori_strength_curve_values,
                     )
         metrics = compute_mtf_metrics(
-            scaled_frequencies,
+            readout_scaled_frequencies,
             compensated_mtf,
             smoothing_window=profile.readout_smoothing_window,
             interpolation_mode=profile.readout_interpolation,
@@ -689,7 +700,7 @@ def profile_payload(
         )
 
         curve = acutance_curve_from_mtf(
-            scaled_frequencies,
+            acutance_scaled_frequencies,
             compensated_mtf_for_acutance,
             picture_height_cm=40.0,
             viewing_distances_cm=np.arange(1.0, 101.0, 1.0),
@@ -702,7 +713,7 @@ def profile_payload(
             by_mixup.setdefault(key, []).append(float(curve_cmp["mae"]))
 
         presets = acutance_presets_from_mtf(
-            scaled_frequencies,
+            acutance_scaled_frequencies,
             compensated_mtf_for_acutance,
             pixels_along_picture_height=estimate.roi.height,
         )
@@ -711,7 +722,7 @@ def profile_payload(
             preset_errors.setdefault(key, []).append(float(values["abs_error"]))
 
         estimate_on_reference = resample_curve(
-            scaled_frequencies,
+            readout_scaled_frequencies,
             compensated_mtf,
             reference.frequencies_cpp,
         )

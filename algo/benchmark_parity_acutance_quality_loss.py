@@ -689,6 +689,7 @@ def summarize_profile(
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -844,6 +845,7 @@ def summarize_profile(
                     not in {
                         "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                         "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                        "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
                     }
                 ):
                     compensated_mtf_for_acutance = apply_reference_correction_curve(
@@ -926,6 +928,7 @@ def summarize_profile(
             not in {
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
             }
         ):
             curve, acutance = maybe_anchor_acutance_results(
@@ -943,6 +946,7 @@ def summarize_profile(
                 "readout_reconnect_quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
             }
         ):
             quality_loss_curve = acutance_curve_from_mtf(
