@@ -1,0 +1,860 @@
+{
+  "candidate_slices": [
+    {
+      "acceptance_criteria_for_next_issue": [
+        "The next intrinsic scope preserves the issue-81 curve and focus-preset Acutance gains closely enough that `curve_mae_mean` and `focus_preset_acutance_mae_mean` are no worse than issue #81.",
+        "The same implementation improves reported-MTF/readout metrics versus issue #81, with `mtf_abs_signed_rel_mean` reduced and the MTF-threshold errors moving materially toward the current PR #30 branch.",
+        "The downstream `overall_quality_loss_mae_mean` does not regress versus issue #81.",
+        "All new fitted intrinsic artifacts stay under `algo/` or `artifacts/`, not under golden/reference roots or release-facing config roots."
+      ],
+      "comparison_basis": {
+        "issue81_vs_current_best_pr30": {
+          "delta": {
+            "curve_mae_mean": -0.0039872260971888646,
+            "focus_preset_acutance_mae_mean": -0.013566304809976663,
+            "mtf_abs_signed_rel_mean": 0.29245982822483063,
+            "mtf_threshold_mae": {
+              "mtf20": 0.04154629091167393,
+              "mtf30": 0.038759987740504105,
+              "mtf50": 0.025286656638221876
+            },
+            "overall_quality_loss_mae_mean": 6.799042218904894
+          }
+        },
+        "issue81_vs_issue34": {
+          "curve_mae_non_worse_than_issue34": true,
+          "delta": {
+            "curve_mae_mean": -0.003071652990807701,
+            "focus_preset_acutance_mae_mean": -0.002731701180414395,
+            "mtf_abs_signed_rel_mean": 0.17286071204786402,
+            "mtf_threshold_mae": {
+              "mtf20": -0.008282371132811162,
+              "mtf30": 0.03775732272357057,
+              "mtf50": 0.029590344350634352
+            },
+            "overall_quality_loss_mae_mean": 3.4525320176690215
+          },
+          "focus_preset_acutance_non_worse_than_issue34": true
+        },
+        "issue81_vs_issue47": {
+          "curve_mae_non_worse_than_issue47": true,
+          "delta": {
+            "curve_mae_mean": 0.0,
+            "focus_preset_acutance_mae_mean": 0.0,
+            "mtf_abs_signed_rel_mean": 0.23923621156787914,
+            "mtf_threshold_mae": {
+              "mtf20": -0.011209288393153813,
+              "mtf30": 0.057804834625092644,
+              "mtf50": 0.027423184663686383
+            },
+            "overall_quality_loss_mae_mean": -6.455217672689061
+          },
+          "focus_preset_acutance_non_worse_than_issue47": true,
+          "overall_quality_loss_improved": true
+        }
+      },
+      "decision": "advance",
+      "explicitly_do_not_change": [
+        "Do not change the matched-ori anchor family or the PR #30 release-facing direct-method profile in this slice.",
+        "Do not move fitted profiles, transfer tables, or benchmark outputs under `20260318_deadleaf_13b10` or `release/deadleaf_13b10_release/data/20260318_deadleaf_13b10`.",
+        "Do not promote any intrinsic config into release-facing config until the next bounded implementation actually beats the current guardrails."
+      ],
+      "label": "reconnect phase-retained intrinsic to the reported-MTF/readout path while keeping downstream Quality Loss isolated",
+      "minimum_implementation_boundary": [
+        "Add one new intrinsic scope or equivalent code path that feeds the phase-retained intrinsic branch into `compensated_mtf` for reported-MTF/readout metrics.",
+        "Keep the issue-81 `quality_loss_isolation` downstream routing so Quality Loss still evaluates on the non-intrinsic branch.",
+        "Preserve `phase_correlation` registration and `radial_real_mean` transfer mode from issue #46 / PR #47 and issue #81 / PR #82.",
+        "Do not reopen measured OECF, affine registration, or a generic intrinsic multi-family sweep in that implementation issue."
+      ],
+      "repo_evidence": [
+        "Issue #81 preserved the issue-47 intrinsic curve / focus-preset Acutance gains exactly while materially improving overall Quality Loss, so the unresolved gap is no longer the upstream intrinsic transfer itself.",
+        "The remaining large gap versus PR #30 is concentrated in `mtf_abs_signed_rel_mean` and the MTF-threshold readouts, which means the next slice should target the readout boundary rather than reopening measured OECF or generic direct-method retunes.",
+        "Issue #81 worsens `mtf_abs_signed_rel_mean` from 0.13994 to 0.37917 versus issue #47, even though its curve / focus metrics stay identical. That asymmetry points to the PSD/readout path rather than the intrinsic curve path.",
+        "The quality-loss benchmark already keeps a separate `quality_loss_*` branch under `quality_loss_isolation`, so reconnecting the reported-MTF/readout path can stay bounded instead of replaying the whole intrinsic family."
+      ],
+      "runtime_boundary_evidence": [
+        {
+          "file_path": "algo/benchmark_parity_psd_mtf.py",
+          "line_range": "650-691",
+          "observations": [
+            "`compute_mtf_metrics(...)` derives the reported MTF thresholds from `compensated_mtf`.",
+            "`acutance_curve_from_mtf(...)` and `acutance_presets_from_mtf(...)` derive curve/preset outputs from `compensated_mtf_for_acutance` instead.",
+            "`resample_curve(...)` also publishes the PSD/readout comparison from `compensated_mtf`, so issue #81 can preserve curve/preset gains while leaving reported-MTF readouts on a different branch."
+          ]
+        },
+        {
+          "file_path": "algo/benchmark_parity_acutance_quality_loss.py",
+          "line_range": "675-743, 920-936",
+          "observations": [
+            "`quality_loss_scaled_frequencies` and `quality_loss_compensated_mtf_for_acutance` are split out as a dedicated downstream Quality Loss branch.",
+            "Under `quality_loss_isolation`, the intrinsic transfer is applied to the main acutance path, but the quality-loss-specific branch is only replaced for `replace_all`.",
+            "That existing split means the next bounded implementation can reconnect the reported-MTF/readout path without forcing downstream Quality Loss back onto the intrinsic branch."
+          ]
+        }
+      ],
+      "selected_summary": "Keep the phase-retained intrinsic branch for both the acutance path and the reported-MTF/readout path, but leave the downstream Quality Loss path isolated on the non-intrinsic branch.",
+      "slice_id": "phase_retained_intrinsic_readout_reconnect_with_quality_loss_isolation",
+      "technical_narrowing_point": "issue81_quality_loss_isolation_kept_curve_and_focus_on_the_intrinsic_path_but_left_reported_mtf_readouts_on_compensated_mtf",
+      "validation_plan_for_next_issue": [
+        "Run `python3 -m algo.benchmark_parity_psd_mtf ...` on the phase-retained intrinsic profile plus the new readout-reconnect scope.",
+        "Run `python3 -m algo.benchmark_parity_acutance_quality_loss ...` on the same profile/scope pair to confirm Quality Loss remains isolated.",
+        "Add focused tests around the split between `compensated_mtf`, `compensated_mtf_for_acutance`, and the quality-loss-specific branch."
+      ]
+    },
+    {
+      "decision": "exclude",
+      "exclusion_reasons": [
+        "Issue #81 is a real positive bounded record, but its `overall_quality_loss_mae_mean` and reported-MTF/readout metrics are still far worse than the current PR #30 branch.",
+        "Treating issue #81 as promotable without narrowing the remaining readout boundary would skip the exact unresolved technical gap this issue was created to isolate."
+      ],
+      "label": "promote issue-81 scope as-is",
+      "slice_id": "promote_issue81_as_is"
+    },
+    {
+      "decision": "exclude",
+      "exclusion_reasons": [
+        "Measured OECF already closed as a bounded negative in issue #77 / PR #78, and issue #83 explicitly forbids reopening that family.",
+        "The issue-81 evidence points to an intrinsic-side readout boundary, not to missing measured-OECF data or retuning."
+      ],
+      "label": "reopen measured OECF",
+      "slice_id": "reopen_measured_oecf_family"
+    },
+    {
+      "decision": "exclude",
+      "exclusion_reasons": [
+        "Affine registration was already dominated by the simpler intrinsic baseline and is explicitly out of scope for issue #83.",
+        "The post-issue81 gap is narrower than registration choice: the surviving mismatch is the split between readout and downstream Quality Loss branches."
+      ],
+      "label": "rerun affine-registration intrinsic variant",
+      "slice_id": "rerun_affine_registration_intrinsic"
+    },
+    {
+      "decision": "exclude",
+      "exclusion_reasons": [
+        "Issue #83 is a developer-discovery narrowing pass, not a new multi-family search.",
+        "The repo already contains enough evidence to name one bounded implementation slice directly, so broad family churn would be workflow regress rather than progress."
+      ],
+      "label": "restart an unbounded intrinsic family search",
+      "slice_id": "restart_unbounded_intrinsic_inventory"
+    }
+  ],
+  "comparison_records": {
+    "current_best_pr30_branch": {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "high_frequency_noise_share_quadratic",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration_anchored.json",
+        "chart_fill_factor": 1.0,
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": 0.36,
+        "intrinsic_full_reference_clip_hi": 1.5,
+        "intrinsic_full_reference_clip_lo": 0.5,
+        "intrinsic_full_reference_mode": "none",
+        "intrinsic_full_reference_registration_mode": "phase_correlation",
+        "intrinsic_full_reference_scope": "replace_all",
+        "intrinsic_full_reference_transfer_mode": "magnitude_ratio",
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_delta_power": 1.0,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_curve_correction_clip_hi": 1.04,
+        "matched_ori_acutance_curve_correction_clip_hi_relative_scales": [
+          0.0,
+          0.25,
+          0.6,
+          0.8,
+          1.6,
+          2.5
+        ],
+        "matched_ori_acutance_curve_correction_clip_hi_values": [
+          1.02,
+          1.03,
+          0.895,
+          0.895,
+          1.05,
+          1.06
+        ],
+        "matched_ori_acutance_curve_correction_clip_lo": null,
+        "matched_ori_acutance_curve_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_lo_values": null,
+        "matched_ori_acutance_curve_correction_delta_power": 0.95,
+        "matched_ori_acutance_preset_correction_clip_hi": null,
+        "matched_ori_acutance_preset_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_hi_values": null,
+        "matched_ori_acutance_preset_correction_clip_lo": null,
+        "matched_ori_acutance_preset_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_lo_values": null,
+        "matched_ori_acutance_preset_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_delta_power_relative_scales": [
+          0.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "matched_ori_acutance_preset_correction_delta_power_values": [
+          1.05,
+          1.05,
+          1.85,
+          1.85
+        ],
+        "matched_ori_acutance_preset_strength_curve_relative_scales": [
+          0.0,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "matched_ori_acutance_preset_strength_curve_values": [
+          1.0,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "matched_ori_acutance_reference_anchor": true,
+        "matched_ori_acutance_strength_curve_relative_scales": [
+          0.0,
+          0.2,
+          0.8,
+          1.6,
+          2.5
+        ],
+        "matched_ori_acutance_strength_curve_values": [
+          0.7,
+          0.69,
+          0.64,
+          0.62,
+          0.6
+        ],
+        "matched_ori_anchor_mode": "acutance_only",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_oecf_quantiles": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          0.9,
+          1.0
+        ],
+        "matched_ori_oecf_reference": false,
+        "matched_ori_oecf_strength": 1.0,
+        "matched_ori_reference_anchor": true,
+        "matched_ori_strength_curve_frequencies": [
+          0.0,
+          0.12,
+          0.22,
+          0.35,
+          0.5
+        ],
+        "matched_ori_strength_curve_values": [
+          1.0,
+          1.0,
+          0.82,
+          0.95,
+          1.0
+        ],
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "sensor_aperture_sinc",
+        "mtf_shape_correction_mode": "none",
+        "quality_loss_coefficients": [
+          37.240228358776136,
+          26.54550669779819,
+          0.4538662637619741
+        ],
+        "quality_loss_om_ceiling": 0.8851,
+        "quality_loss_preset_overrides": {
+          "5.5\" Phone Display Quality Loss": {
+            "coefficients": [
+              -110912321.41149135,
+              50461107.51563171,
+              -9079490.127807735,
+              815148.8697247265,
+              -37712.984407641874,
+              854.6941149036079,
+              -6.261149027919645
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Computer Monitor Quality Loss": {
+            "coefficients": [
+              5677361.198044325,
+              -16715685.9524707,
+              20317567.326582585,
+              -13046703.33912079,
+              4667794.619228022,
+              -882296.9160375095,
+              68863.59709647154
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Large Print Quality Loss": {
+            "coefficients": [
+              2355074.475971866,
+              -5276146.244338096,
+              4846781.143787682,
+              -2336594.295523967,
+              623766.4933095274,
+              -87476.30712136331,
+              5049.882965558553
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Small Print Quality Loss": {
+            "coefficients": [
+              6690980.837239251,
+              -12955277.716404187,
+              10300283.291740375,
+              -4303759.200708971,
+              996904.2653558743,
+              -121409.71509269004,
+              6084.6471373306085
+            ],
+            "om_ceiling": 0.8851
+          },
+          "UHDTV Display Quality Loss": {
+            "coefficients": [
+              1783462.6221675149,
+              -3813432.5606394163,
+              3326218.4642961356,
+              -1514886.1959663907,
+              380334.163146246,
+              -49956.87092015135,
+              2692.9566508574017
+            ],
+            "om_ceiling": 0.8851
+          }
+        },
+        "readout_interpolation": "linear",
+        "readout_smoothing_window": 1,
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.5,
+        "texture_support_scale": true
+      },
+      "curve_mae_mean": 0.03678903166100513,
+      "focus_preset_acutance_mae_mean": 0.042486831218701795,
+      "label": "current_best_pr30_branch",
+      "mtf_abs_signed_rel_mean": 0.08671416893394165,
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2214989544377113,
+      "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_profile.json"
+    },
+    "issue34_intrinsic_full_reference": {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "chart_fill_factor": 1.0,
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": null,
+        "intrinsic_full_reference_clip_hi": 1.5,
+        "intrinsic_full_reference_clip_lo": 0.5,
+        "intrinsic_full_reference_mode": "paired_ori_transfer",
+        "intrinsic_full_reference_registration_mode": "phase_correlation",
+        "intrinsic_full_reference_scope": "replace_all",
+        "intrinsic_full_reference_transfer_mode": "magnitude_ratio",
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_delta_power": 1.0,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_curve_correction_clip_hi": null,
+        "matched_ori_acutance_curve_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_hi_values": null,
+        "matched_ori_acutance_curve_correction_clip_lo": null,
+        "matched_ori_acutance_curve_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_lo_values": null,
+        "matched_ori_acutance_curve_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_clip_hi": null,
+        "matched_ori_acutance_preset_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_hi_values": null,
+        "matched_ori_acutance_preset_correction_clip_lo": null,
+        "matched_ori_acutance_preset_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_lo_values": null,
+        "matched_ori_acutance_preset_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_delta_power_relative_scales": null,
+        "matched_ori_acutance_preset_correction_delta_power_values": null,
+        "matched_ori_acutance_preset_strength_curve_relative_scales": null,
+        "matched_ori_acutance_preset_strength_curve_values": null,
+        "matched_ori_acutance_reference_anchor": false,
+        "matched_ori_acutance_strength_curve_relative_scales": null,
+        "matched_ori_acutance_strength_curve_values": null,
+        "matched_ori_anchor_mode": "all",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_oecf_quantiles": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          0.9,
+          1.0
+        ],
+        "matched_ori_oecf_reference": false,
+        "matched_ori_oecf_strength": 1.0,
+        "matched_ori_reference_anchor": false,
+        "matched_ori_strength_curve_frequencies": null,
+        "matched_ori_strength_curve_values": null,
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "none",
+        "mtf_shape_correction_mode": "none",
+        "quality_loss_coefficients": [
+          37.240228358776136,
+          26.54550669779819,
+          0.4538662637619741
+        ],
+        "quality_loss_om_ceiling": 0.8851,
+        "quality_loss_preset_overrides": {
+          "5.5\" Phone Display Quality Loss": {
+            "coefficients": [
+              -110912321.41149135,
+              50461107.51563171,
+              -9079490.127807735,
+              815148.8697247265,
+              -37712.984407641874,
+              854.6941149036079,
+              -6.261149027919645
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Computer Monitor Quality Loss": {
+            "coefficients": [
+              5677361.198044325,
+              -16715685.9524707,
+              20317567.326582585,
+              -13046703.33912079,
+              4667794.619228022,
+              -882296.9160375095,
+              68863.59709647154
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Large Print Quality Loss": {
+            "coefficients": [
+              2355074.475971866,
+              -5276146.244338096,
+              4846781.143787682,
+              -2336594.295523967,
+              623766.4933095274,
+              -87476.30712136331,
+              5049.882965558553
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Small Print Quality Loss": {
+            "coefficients": [
+              6690980.837239251,
+              -12955277.716404187,
+              10300283.291740375,
+              -4303759.200708971,
+              996904.2653558743,
+              -121409.71509269004,
+              6084.6471373306085
+            ],
+            "om_ceiling": 0.8851
+          },
+          "UHDTV Display Quality Loss": {
+            "coefficients": [
+              1783462.6221675149,
+              -3813432.5606394163,
+              3326218.4642961356,
+              -1514886.1959663907,
+              380334.163146246,
+              -49956.87092015135,
+              2692.9566508574017
+            ],
+            "om_ceiling": 0.8851
+          }
+        },
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.0,
+        "texture_support_scale": false
+      },
+      "curve_mae_mean": 0.03587345855462397,
+      "focus_preset_acutance_mae_mean": 0.03165222758913953,
+      "label": "issue34_intrinsic_full_reference",
+      "mtf_abs_signed_rel_mean": 0.2063132851109083,
+      "mtf_threshold_mae": {
+        "mtf20": 0.08283943347415898,
+        "mtf30": 0.037939058443613165,
+        "mtf50": 0.005028927723658685
+      },
+      "overall_quality_loss_mae_mean": 4.568009155673584,
+      "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_profile.json"
+    },
+    "issue47_phase_retained_replace_all": {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "chart_fill_factor": 1.0,
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": null,
+        "intrinsic_full_reference_clip_hi": 1.5,
+        "intrinsic_full_reference_clip_lo": 0.5,
+        "intrinsic_full_reference_mode": "paired_ori_transfer",
+        "intrinsic_full_reference_registration_mode": "phase_correlation",
+        "intrinsic_full_reference_scope": "replace_all",
+        "intrinsic_full_reference_transfer_mode": "radial_real_mean",
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_delta_power": 1.0,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_curve_correction_clip_hi": null,
+        "matched_ori_acutance_curve_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_hi_values": null,
+        "matched_ori_acutance_curve_correction_clip_lo": null,
+        "matched_ori_acutance_curve_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_lo_values": null,
+        "matched_ori_acutance_curve_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_clip_hi": null,
+        "matched_ori_acutance_preset_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_hi_values": null,
+        "matched_ori_acutance_preset_correction_clip_lo": null,
+        "matched_ori_acutance_preset_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_lo_values": null,
+        "matched_ori_acutance_preset_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_delta_power_relative_scales": null,
+        "matched_ori_acutance_preset_correction_delta_power_values": null,
+        "matched_ori_acutance_preset_strength_curve_relative_scales": null,
+        "matched_ori_acutance_preset_strength_curve_values": null,
+        "matched_ori_acutance_reference_anchor": false,
+        "matched_ori_acutance_strength_curve_relative_scales": null,
+        "matched_ori_acutance_strength_curve_values": null,
+        "matched_ori_anchor_mode": "all",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_oecf_quantiles": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          0.9,
+          1.0
+        ],
+        "matched_ori_oecf_reference": false,
+        "matched_ori_oecf_strength": 1.0,
+        "matched_ori_reference_anchor": false,
+        "matched_ori_strength_curve_frequencies": null,
+        "matched_ori_strength_curve_values": null,
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "none",
+        "mtf_shape_correction_mode": "none",
+        "quality_loss_coefficients": [
+          37.240228358776136,
+          26.54550669779819,
+          0.4538662637619741
+        ],
+        "quality_loss_om_ceiling": 0.8851,
+        "quality_loss_preset_overrides": {
+          "5.5\" Phone Display Quality Loss": {
+            "coefficients": [
+              -110912321.41149135,
+              50461107.51563171,
+              -9079490.127807735,
+              815148.8697247265,
+              -37712.984407641874,
+              854.6941149036079,
+              -6.261149027919645
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Computer Monitor Quality Loss": {
+            "coefficients": [
+              5677361.198044325,
+              -16715685.9524707,
+              20317567.326582585,
+              -13046703.33912079,
+              4667794.619228022,
+              -882296.9160375095,
+              68863.59709647154
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Large Print Quality Loss": {
+            "coefficients": [
+              2355074.475971866,
+              -5276146.244338096,
+              4846781.143787682,
+              -2336594.295523967,
+              623766.4933095274,
+              -87476.30712136331,
+              5049.882965558553
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Small Print Quality Loss": {
+            "coefficients": [
+              6690980.837239251,
+              -12955277.716404187,
+              10300283.291740375,
+              -4303759.200708971,
+              996904.2653558743,
+              -121409.71509269004,
+              6084.6471373306085
+            ],
+            "om_ceiling": 0.8851
+          },
+          "UHDTV Display Quality Loss": {
+            "coefficients": [
+              1783462.6221675149,
+              -3813432.5606394163,
+              3326218.4642961356,
+              -1514886.1959663907,
+              380334.163146246,
+              -49956.87092015135,
+              2692.9566508574017
+            ],
+            "om_ceiling": 0.8851
+          }
+        },
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.0,
+        "texture_support_scale": false
+      },
+      "curve_mae_mean": 0.03280180556381627,
+      "focus_preset_acutance_mae_mean": 0.028920526408725132,
+      "label": "issue47_phase_retained_replace_all",
+      "mtf_abs_signed_rel_mean": 0.13993778559089318,
+      "mtf_threshold_mae": {
+        "mtf20": 0.08576635073450163,
+        "mtf30": 0.017891546542091085,
+        "mtf50": 0.007196087410606654
+      },
+      "overall_quality_loss_mae_mean": 14.475758846031667,
+      "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_profile.json"
+    },
+    "issue81_quality_loss_isolation_candidate": {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "chart_fill_factor": 1.0,
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": null,
+        "intrinsic_full_reference_clip_hi": 1.5,
+        "intrinsic_full_reference_clip_lo": 0.5,
+        "intrinsic_full_reference_mode": "paired_ori_transfer",
+        "intrinsic_full_reference_registration_mode": "phase_correlation",
+        "intrinsic_full_reference_scope": "quality_loss_isolation",
+        "intrinsic_full_reference_transfer_mode": "radial_real_mean",
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_delta_power": 1.0,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_curve_correction_clip_hi": null,
+        "matched_ori_acutance_curve_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_hi_values": null,
+        "matched_ori_acutance_curve_correction_clip_lo": null,
+        "matched_ori_acutance_curve_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_lo_values": null,
+        "matched_ori_acutance_curve_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_clip_hi": null,
+        "matched_ori_acutance_preset_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_hi_values": null,
+        "matched_ori_acutance_preset_correction_clip_lo": null,
+        "matched_ori_acutance_preset_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_lo_values": null,
+        "matched_ori_acutance_preset_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_delta_power_relative_scales": null,
+        "matched_ori_acutance_preset_correction_delta_power_values": null,
+        "matched_ori_acutance_preset_strength_curve_relative_scales": null,
+        "matched_ori_acutance_preset_strength_curve_values": null,
+        "matched_ori_acutance_reference_anchor": false,
+        "matched_ori_acutance_strength_curve_relative_scales": null,
+        "matched_ori_acutance_strength_curve_values": null,
+        "matched_ori_anchor_mode": "all",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_oecf_quantiles": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          0.9,
+          1.0
+        ],
+        "matched_ori_oecf_reference": false,
+        "matched_ori_oecf_strength": 1.0,
+        "matched_ori_reference_anchor": false,
+        "matched_ori_strength_curve_frequencies": null,
+        "matched_ori_strength_curve_values": null,
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "none",
+        "mtf_shape_correction_mode": "none",
+        "quality_loss_coefficients": [
+          37.240228358776136,
+          26.54550669779819,
+          0.4538662637619741
+        ],
+        "quality_loss_om_ceiling": 0.8851,
+        "quality_loss_preset_overrides": {
+          "5.5\" Phone Display Quality Loss": {
+            "coefficients": [
+              -110912321.41149135,
+              50461107.51563171,
+              -9079490.127807735,
+              815148.8697247265,
+              -37712.984407641874,
+              854.6941149036079,
+              -6.261149027919645
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Computer Monitor Quality Loss": {
+            "coefficients": [
+              5677361.198044325,
+              -16715685.9524707,
+              20317567.326582585,
+              -13046703.33912079,
+              4667794.619228022,
+              -882296.9160375095,
+              68863.59709647154
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Large Print Quality Loss": {
+            "coefficients": [
+              2355074.475971866,
+              -5276146.244338096,
+              4846781.143787682,
+              -2336594.295523967,
+              623766.4933095274,
+              -87476.30712136331,
+              5049.882965558553
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Small Print Quality Loss": {
+            "coefficients": [
+              6690980.837239251,
+              -12955277.716404187,
+              10300283.291740375,
+              -4303759.200708971,
+              996904.2653558743,
+              -121409.71509269004,
+              6084.6471373306085
+            ],
+            "om_ceiling": 0.8851
+          },
+          "UHDTV Display Quality Loss": {
+            "coefficients": [
+              1783462.6221675149,
+              -3813432.5606394163,
+              3326218.4642961356,
+              -1514886.1959663907,
+              380334.163146246,
+              -49956.87092015135,
+              2692.9566508574017
+            ],
+            "om_ceiling": 0.8851
+          }
+        },
+        "readout_interpolation": "linear",
+        "readout_smoothing_window": 1,
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.0,
+        "texture_support_scale": false
+      },
+      "curve_mae_mean": 0.03280180556381627,
+      "focus_preset_acutance_mae_mean": 0.028920526408725132,
+      "label": "issue81_quality_loss_isolation_candidate",
+      "mtf_abs_signed_rel_mean": 0.3791739971587723,
+      "mtf_threshold_mae": {
+        "mtf20": 0.07455706234134782,
+        "mtf30": 0.07569638116718373,
+        "mtf50": 0.03461927207429304
+      },
+      "overall_quality_loss_mae_mean": 8.020541173342606,
+      "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_quality_loss_isolation_profile.json"
+    }
+  },
+  "issue": 83,
+  "selected_slice_id": "phase_retained_intrinsic_readout_reconnect_with_quality_loss_isolation",
+  "selected_summary": "Keep the phase-retained intrinsic branch for both the acutance path and the reported-MTF/readout path, but leave the downstream Quality Loss path isolated on the non-intrinsic branch.",
+  "source_artifacts": {
+    "issue81_conclusion_status": "issue81_acceptance_passed_but_not_current_best",
+    "issue81_summary_artifact": "artifacts/intrinsic_phase_retained_quality_loss_isolation_benchmark.json"
+  },
+  "storage_policy": {
+    "fitted_artifact_roots": [
+      "algo/*.json",
+      "artifacts/*.json"
+    ],
+    "golden_reference_roots": [
+      "20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10"
+    ],
+    "new_fitted_artifact_paths": [
+      "artifacts/intrinsic_after_issue81_next_slice_benchmark.json"
+    ],
+    "release_config_roots": [
+      "release/deadleaf_13b10_release/config/*.json"
+    ],
+    "rules": [
+      "Keep this issue's discovery outputs under `docs/` and `artifacts/` only.",
+      "Do not write new fitted intrinsic profiles, transfer tables, or benchmark outputs under the golden/reference roots.",
+      "Do not touch release-facing configs until a later bounded intrinsic implementation actually clears the current readme-facing guardrails."
+    ]
+  },
+  "summary_kind": "intrinsic_after_issue81_next_slice"
+}
