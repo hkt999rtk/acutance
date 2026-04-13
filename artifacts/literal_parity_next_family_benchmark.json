@@ -1,0 +1,199 @@
+{
+  "candidates": [
+    {
+      "benchmark_evidence": [
+        {
+          "acutance_focus_preset_mae_mean": 0.06822674618968269,
+          "artifact_path": "artifacts/imatest_parity_oecf_sensor_compensation_benchmark.json",
+          "curve_mae_mean": 0.03812380998255692,
+          "overall_quality_loss_mae_mean": 3.0115812176005083,
+          "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_profile.json"
+        },
+        {
+          "acutance_focus_preset_mae_mean": 0.09694636206373371,
+          "artifact_path": "artifacts/imatest_parity_oetf_family_benchmark.json",
+          "curve_mae_mean": 0.09127437991286672,
+          "overall_quality_loss_mae_mean": 4.389934020500666,
+          "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_srgb_profile.json"
+        },
+        {
+          "acutance_focus_preset_mae_mean": 0.09380981479236032,
+          "artifact_path": "artifacts/imatest_parity_oetf_family_benchmark.json",
+          "curve_mae_mean": 0.08788426226493597,
+          "overall_quality_loss_mae_mean": 4.260834545130558,
+          "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_rec709_profile.json"
+        }
+      ],
+      "decision": "advance",
+      "doc_paths": [
+        "docs/dead_leaves_black_box_research.md",
+        "docs/imatest_parity_oecf_sensor_compensation_followup.md",
+        "docs/imatest_parity_oetf_family_followup.md"
+      ],
+      "family_id": "literal_measured_oecf_on_sensor_comp",
+      "label": "literal/measured_oecf_on_sensor_comp",
+      "rank": 1,
+      "rationale_for_adoption": [
+        "The literal parity sensor-plus-toe proxy branch is the strongest checked-in literal route on curve and overall Quality Loss metrics.",
+        "The standard inverse-OETF controls are already checked in and are materially worse, so the open path is a measured OECF family rather than another generic OETF swap.",
+        "This family naturally supports strict separation between golden/reference data and new fitted OECF artifacts."
+      ],
+      "rationale_for_exclusion": [],
+      "source_summary": "Imatest gamma/OECF guidance plus the dead-leaves literature both point to measured linearization as a missing family; the checked-in toe proxy is only an engineering stand-in for that missing measured OECF.",
+      "source_types": [
+        "official_imatest_doc",
+        "peer_reviewed_paper"
+      ],
+      "storage": {
+        "fitted_profile_paths": [
+          "algo/deadleaf_13b10_imatest_sensor_comp_toe_profile.json"
+        ],
+        "next_fitted_artifact_targets": [
+          "algo/*.json",
+          "artifacts/*.json",
+          "release/deadleaf_13b10_release/config/*.json"
+        ],
+        "release_config_paths": [
+          "release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_toe_profile.release.json"
+        ]
+      }
+    },
+    {
+      "benchmark_evidence": [
+        {
+          "acutance_focus_preset_mae_mean": 0.03165222758913953,
+          "artifact_path": "artifacts/imatest_parity_intrinsic_full_reference_benchmark.json",
+          "curve_mae_mean": 0.03587345855462397,
+          "overall_quality_loss_mae_mean": 4.568009155673957,
+          "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_profile.json"
+        },
+        {
+          "acutance_focus_preset_mae_mean": 0.028920526408725132,
+          "artifact_path": "artifacts/issue46_intrinsic_phase_retention_acutance_benchmark.json",
+          "curve_mae_mean": 0.03280180556381627,
+          "overall_quality_loss_mae_mean": 14.475758846031667,
+          "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_profile.json"
+        }
+      ],
+      "decision": "defer",
+      "doc_paths": [
+        "docs/dead_leaves_black_box_research.md",
+        "docs/imatest_parity_intrinsic_full_reference_followup.md",
+        "docs/issue46_intrinsic_phase_retention_followup.md"
+      ],
+      "family_id": "literal_intrinsic_full_reference",
+      "label": "literal/intrinsic_full_reference",
+      "rank": 2,
+      "rationale_for_adoption": [
+        "Intrinsic/full-reference is still a legitimate missing family in the repo's source inventory.",
+        "It materially improves curve fit and non-Phone/focus-preset Acutance on the checked-in experiments."
+      ],
+      "rationale_for_exclusion": [
+        "The current intrinsic implementations still break downstream Quality Loss too severely to be the next literal route.",
+        "The remaining work is more naturally a later family once the literal linearization boundary and fitted-artifact separation are fixed."
+      ],
+      "source_summary": "Imatest Random-Cross and the intrinsic dead-leaves literature make the full-reference path a real source-backed family rather than a free-form retune.",
+      "source_types": [
+        "official_imatest_doc",
+        "peer_reviewed_paper"
+      ],
+      "storage": {
+        "fitted_profile_paths": [
+          "algo/deadleaf_13b10_imatest_intrinsic_full_reference_profile.json",
+          "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_profile.json"
+        ],
+        "next_fitted_artifact_targets": [
+          "algo/*.json",
+          "artifacts/*.json"
+        ],
+        "release_config_paths": []
+      }
+    },
+    {
+      "benchmark_evidence": [
+        {
+          "acutance_focus_preset_mae_mean": 0.06881027266335023,
+          "artifact_path": "artifacts/imatest_parity_sensor_compensation_benchmark.json",
+          "curve_mae_mean": 0.05521879824557698,
+          "overall_quality_loss_mae_mean": 3.3773010114893984,
+          "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_profile.json"
+        }
+      ],
+      "decision": "defer",
+      "doc_paths": [
+        "docs/dead_leaves_black_box_research.md",
+        "docs/imatest_parity_sensor_compensation_followup.md"
+      ],
+      "family_id": "literal_chart_sensor_compensation_only",
+      "label": "literal/chart_sensor_compensation_only",
+      "rank": 3,
+      "rationale_for_adoption": [
+        "The compensation-only branch removes a meaningful portion of the literal high-frequency underfit and improves threshold readouts."
+      ],
+      "rationale_for_exclusion": [
+        "Compensation alone regresses focus-preset Acutance and overall Quality Loss.",
+        "The sensor-comp-only path is already superseded by the stronger literal sensor-plus-OECF-proxy branch."
+      ],
+      "source_summary": "Imatest MTF-compensation guidance and the dead-leaves literature both support chart and sensor compensation as a missing literal-parity family.",
+      "source_types": [
+        "official_imatest_doc",
+        "peer_reviewed_paper"
+      ],
+      "storage": {
+        "fitted_profile_paths": [
+          "algo/deadleaf_13b10_imatest_sensor_comp_profile.json"
+        ],
+        "next_fitted_artifact_targets": [
+          "algo/*.json",
+          "artifacts/*.json",
+          "release/deadleaf_13b10_release/config/*.json"
+        ],
+        "release_config_paths": [
+          "release/deadleaf_13b10_release/config/imatest_parity_sensor_comp_profile.release.json"
+        ]
+      }
+    }
+  ],
+  "excluded_retune_lines": [
+    {
+      "doc_paths": [
+        "docs/imatest_parity_oetf_family_followup.md"
+      ],
+      "label": "generic standard inverse-OETF swaps",
+      "reason": "The checked-in `sRGB` and `Rec.709` literal branches are source-backed controls, but both are already worse than the toe proxy and therefore should not be reopened as the next family.",
+      "status": "excluded"
+    },
+    {
+      "doc_paths": [
+        "docs/issue56_empirical_frequency_scale_followup.md",
+        "docs/issue67_readout_policy_followup.md",
+        "docs/phone_preset_gap_followup.md"
+      ],
+      "label": "generic direct-method retunes without new source basis",
+      "reason": "Issue #71 explicitly forbids reopening exhausted generic direct-method retunes without a new source basis, and the issue-56 / issue-67 / issue-70 chain already closed those paths.",
+      "status": "excluded"
+    }
+  ],
+  "issue": 71,
+  "selected_family_id": "literal_measured_oecf_on_sensor_comp",
+  "selected_label": "literal/measured_oecf_on_sensor_comp",
+  "selection_summary": "Advance the measured OECF-driven linearization family on top of the literal sensor-compensation route, keep intrinsic/full-reference as a later family, and do not reopen generic direct-method retunes or generic standard-OETF swaps.",
+  "storage_policy": {
+    "fitted_artifact_roots": [
+      "algo/*.json",
+      "artifacts/*.json"
+    ],
+    "golden_reference_roots": [
+      "20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10"
+    ],
+    "release_config_roots": [
+      "release/deadleaf_13b10_release/config/*.json"
+    ],
+    "rules": [
+      "Do not write fitted profiles, calibrations, or benchmark outputs under the golden/reference roots.",
+      "Keep new fitted profiles and calibrations in algo/ and measured benchmark outputs in artifacts/.",
+      "Only add release-facing configs under release/deadleaf_13b10_release/config/ after a family is chosen for release-facing validation."
+    ]
+  }
+}
