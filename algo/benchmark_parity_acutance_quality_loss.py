@@ -686,6 +686,7 @@ def summarize_profile(
                 "replace_all",
                 "acutance_only",
                 "quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -920,7 +921,11 @@ def summarize_profile(
         if (
             profile.intrinsic_full_reference_mode != "none"
             and profile.intrinsic_full_reference_scope
-            in {"acutance_only", "quality_loss_isolation"}
+            in {
+                "acutance_only",
+                "quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation",
+            }
         ):
             quality_loss_curve = acutance_curve_from_mtf(
                 quality_loss_scaled_frequencies,

@@ -501,6 +501,111 @@ class BenchmarkParityPsdMtfTest(unittest.TestCase):
             np.testing.assert_allclose(compute_metrics.call_args.args[1], [1.0, 1.0, 1.0, 1.0])
             np.testing.assert_allclose(acutance_from_mtf.call_args.args[1], [2.0, 2.0, 2.0, 2.0])
 
+    def test_intrinsic_scope_can_reconnect_readout_while_leaving_acutance_intrinsic(self) -> None:
+        capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
+        with tempfile.TemporaryDirectory() as tmpdir:
+            dataset_root = Path(tmpdir)
+            variant_root = dataset_root / "OV13B10_AI_NR_OV13B10_ppqpkl_0.10"
+            results_dir = variant_root / "Results"
+            results_dir.mkdir(parents=True)
+            stem = f"{capture_key}_variantA"
+            (results_dir / f"{stem}_R_Random.csv").write_text("", encoding="utf-8")
+            (variant_root / f"{stem}.raw").write_bytes(b"")
+
+            reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.02, 0.1, 0.25, 0.4], dtype=np.float64),
+                mtf=np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float64),
+                acutance_table=[
+                    AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=1.0)
+                ],
+                reported_acutance={'5.5" Phone Display Acutance': 1.0},
+            )
+            ori_reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.02, 0.1, 0.25, 0.4], dtype=np.float64),
+                mtf=np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float64),
+                acutance_table=reference.acutance_table,
+                reported_acutance=reference.reported_acutance,
+            )
+            estimate = SimpleNamespace(
+                roi=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.02, 0.1, 0.25, 0.4], dtype=np.float64),
+                mtf=np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float64),
+                mtf_for_acutance=np.array([1.0, 1.0, 1.0, 1.0], dtype=np.float64),
+            )
+            profile = Profile(
+                name="test",
+                calibration_file="calibration.json",
+                roi_source="reference",
+                intrinsic_full_reference_mode="paired_ori_transfer",
+                intrinsic_full_reference_scope="readout_reconnect_quality_loss_isolation",
+            )
+
+            def parse_csv(path: Path):
+                return ori_reference if path.name == "ori.csv" else reference
+
+            with (
+                patch("algo.benchmark_parity_psd_mtf.load_ideal_psd_calibration", return_value=None),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.build_ori_reference_map",
+                    return_value={capture_key: (dataset_root / "ori.csv", dataset_root / "ori.raw")},
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.parse_imatest_random_csv",
+                    side_effect=parse_csv,
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.load_raw_u16",
+                    side_effect=lambda path, width, height: np.zeros((height, width), dtype=np.uint16),
+                ),
+                patch("algo.benchmark_parity_psd_mtf.extract_analysis_plane", side_effect=lambda raw, **_: raw),
+                patch("algo.benchmark_parity_psd_mtf.normalize_for_analysis", side_effect=lambda plane, **_: plane),
+                patch("algo.benchmark_parity_psd_mtf.estimate_dead_leaves_mtf", return_value=estimate),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.apply_mtf_compensation",
+                    side_effect=lambda mtf, freqs, **_: (
+                        np.asarray(mtf, dtype=np.float64),
+                        np.asarray(freqs, dtype=np.float64),
+                    ),
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.derive_intrinsic_transfer_curve",
+                    return_value=np.array([2.0, 2.0, 2.0, 2.0], dtype=np.float64),
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.compute_mtf_metrics",
+                    return_value=SimpleNamespace(mtf50=0.1, mtf30=0.1, mtf20=0.1),
+                ) as compute_metrics,
+                patch("algo.benchmark_parity_psd_mtf.interpolate_threshold", return_value=0.1),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.acutance_curve_from_mtf",
+                    return_value=reference.acutance_table,
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.compare_acutance_curves",
+                    return_value={"count": 1, "mae": 0.0},
+                ),
+                patch(
+                    "algo.benchmark_parity_psd_mtf.acutance_presets_from_mtf",
+                    return_value=reference.reported_acutance,
+                ) as acutance_from_mtf,
+                patch(
+                    "algo.benchmark_parity_psd_mtf.compare_acutance_presets",
+                    return_value={'5.5" Phone Display Acutance': {"abs_error": 0.0}},
+                ),
+            ):
+                profile_payload(
+                    dataset_root=dataset_root,
+                    profile_path=dataset_root / "profile.json",
+                    profile=profile,
+                    width=2,
+                    height=2,
+                )
+
+            np.testing.assert_allclose(compute_metrics.call_args.args[1], [2.0, 2.0, 2.0, 2.0])
+            np.testing.assert_allclose(acutance_from_mtf.call_args.args[1], [2.0, 2.0, 2.0, 2.0])
+
 
 if __name__ == "__main__":
     unittest.main()

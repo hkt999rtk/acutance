@@ -449,6 +449,7 @@ def profile_payload(
                 "replace_all",
                 "acutance_only",
                 "quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -500,7 +501,10 @@ def profile_payload(
                 scaled_frequencies = np.asarray(ori_reference.frequencies_cpp, dtype=np.float64)
                 intrinsic_mtf = np.asarray(ori_reference.mtf, dtype=np.float64) * transfer_curve
                 compensated_mtf_for_acutance = intrinsic_mtf.copy()
-                if profile.intrinsic_full_reference_scope == "replace_all":
+                if profile.intrinsic_full_reference_scope in {
+                    "replace_all",
+                    "readout_reconnect_quality_loss_isolation",
+                }:
                     compensated_mtf = intrinsic_mtf
         if profile.matched_ori_reference_anchor:
             if capture_key in ori_reference_map:
