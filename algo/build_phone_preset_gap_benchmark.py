@@ -118,6 +118,20 @@ def metric_delta(candidate: float, baseline: float) -> float:
     return float(candidate - baseline)
 
 
+def primary_gates_pass(acceptance: dict[str, bool]) -> bool:
+    return all(
+        (
+            acceptance["phone_acutance_improved"],
+            acceptance["phone_quality_loss_improved"],
+            acceptance["curve_mae_mean_improved"],
+            acceptance["focus_preset_acutance_mae_mean_improved"],
+            acceptance["overall_quality_loss_mae_mean_improved"],
+            acceptance["mtf_thresholds_non_worse"],
+            acceptance["trend_correctness_not_regressed"],
+        )
+    )
+
+
 def build_phone_preset_gap_benchmark(
     *,
     repo_root: Path,
@@ -202,16 +216,7 @@ def build_phone_preset_gap_benchmark(
         ),
         "trend_correctness_not_regressed": True,
     }
-    acceptance["all_primary_gates_pass"] = all(
-        (
-            acceptance["phone_acutance_improved"],
-            acceptance["phone_quality_loss_improved"],
-            acceptance["curve_mae_mean_improved"],
-            acceptance["overall_quality_loss_mae_mean_improved"],
-            acceptance["mtf_thresholds_non_worse"],
-            acceptance["trend_correctness_not_regressed"],
-        )
-    )
+    acceptance["all_primary_gates_pass"] = primary_gates_pass(acceptance)
 
     return {
         "issue": 70,

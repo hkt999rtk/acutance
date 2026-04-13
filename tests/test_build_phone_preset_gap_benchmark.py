@@ -3,7 +3,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from algo.build_phone_preset_gap_benchmark import build_phone_preset_gap_benchmark
+from algo.build_phone_preset_gap_benchmark import (
+    build_phone_preset_gap_benchmark,
+    primary_gates_pass,
+)
 
 
 class BuildPhonePresetGapBenchmarkTest(unittest.TestCase):
@@ -47,6 +50,19 @@ class BuildPhonePresetGapBenchmarkTest(unittest.TestCase):
         self.assertFalse(payload["acceptance"]["curve_mae_mean_improved"])
         self.assertTrue(payload["acceptance"]["mtf_thresholds_non_worse"])
         self.assertFalse(payload["acceptance"]["all_primary_gates_pass"])
+
+    def test_primary_gates_fail_when_only_focus_preset_acutance_regresses(self) -> None:
+        acceptance = {
+            "phone_acutance_improved": True,
+            "phone_quality_loss_improved": True,
+            "curve_mae_mean_improved": True,
+            "focus_preset_acutance_mae_mean_improved": False,
+            "overall_quality_loss_mae_mean_improved": True,
+            "mtf_thresholds_non_worse": True,
+            "trend_correctness_not_regressed": True,
+        }
+
+        self.assertFalse(primary_gates_pass(acceptance))
 
     @staticmethod
     def repo_root() -> Path:
