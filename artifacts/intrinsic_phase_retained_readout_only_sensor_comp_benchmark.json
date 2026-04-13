@@ -522,6 +522,8 @@
           }
         },
         "readout_interpolation": "linear",
+        "readout_mtf_compensation_mode": "sensor_aperture_sinc",
+        "readout_sensor_fill_factor": 1.5,
         "readout_smoothing_window": 1,
         "roi_source": "reference_refined",
         "sensor_fill_factor": 1.0,

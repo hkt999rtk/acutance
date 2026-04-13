@@ -90,10 +90,14 @@ def summarize_profile(
     acutance_profile = select_profile(acutance_payload, profile_path)
     psd_overall = psd_profile["overall"]
     acutance_overall = acutance_profile["overall"]
+    analysis_pipeline = dict(acutance_profile["analysis_pipeline"])
+    for key in ("readout_mtf_compensation_mode", "readout_sensor_fill_factor"):
+        if key in psd_profile["analysis_pipeline"]:
+            analysis_pipeline[key] = psd_profile["analysis_pipeline"][key]
     return {
         "label": label,
         "profile_path": profile_path,
-        "analysis_pipeline": acutance_profile["analysis_pipeline"],
+        "analysis_pipeline": analysis_pipeline,
         "curve_mae_mean": float(acutance_overall["curve_mae_mean"]),
         "focus_preset_acutance_mae_mean": float(acutance_overall["acutance_focus_preset_mae_mean"]),
         "overall_quality_loss_mae_mean": float(acutance_overall["overall_quality_loss_mae_mean"]),

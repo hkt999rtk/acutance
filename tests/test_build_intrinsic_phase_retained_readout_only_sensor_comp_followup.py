@@ -37,6 +37,14 @@ class BuildIntrinsicPhaseRetainedReadoutOnlySensorCompFollowupTest(unittest.Test
         self.assertIn("sensor_aperture_sinc", payload["implementation_change"]["change"])
         self.assertIn("mtf30_improved_vs_issue97", payload["acceptance"])
         self.assertIn("mtf50_improved_vs_issue97", payload["acceptance"])
+        self.assertEqual(
+            payload["profiles"][CANDIDATE_LABEL]["analysis_pipeline"]["readout_mtf_compensation_mode"],
+            "sensor_aperture_sinc",
+        )
+        self.assertEqual(
+            payload["profiles"][CANDIDATE_LABEL]["analysis_pipeline"]["readout_sensor_fill_factor"],
+            1.5,
+        )
         self.assertNotEqual(
             payload["profiles"][CANDIDATE_LABEL]["profile_path"],
             payload["profiles"][ISSUE97_LABEL]["profile_path"],
