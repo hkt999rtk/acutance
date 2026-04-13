@@ -687,6 +687,7 @@ def summarize_profile(
                 "acutance_only",
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation_matched_ori_graft",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -837,21 +838,25 @@ def summarize_profile(
                         ),
                     )
                 correction_frequencies, correction_curve = correction_cache[capture_key]
-                compensated_mtf_for_acutance = apply_reference_correction_curve(
-                    scaled_frequencies,
-                    compensated_mtf_for_acutance,
-                    correction_frequencies,
-                    correction_curve,
-                    strength=profile.matched_ori_correction_strength,
-                    blend_start_cpp=profile.matched_ori_blend_start_cpp,
-                    blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
-                    strength_low=profile.matched_ori_strength_low,
-                    strength_high=profile.matched_ori_strength_high,
-                    strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
-                    strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
-                    strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
-                    strength_curve_values=profile.matched_ori_strength_curve_values,
-                )
+                if (
+                    profile.intrinsic_full_reference_scope
+                    != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+                ):
+                    compensated_mtf_for_acutance = apply_reference_correction_curve(
+                        scaled_frequencies,
+                        compensated_mtf_for_acutance,
+                        correction_frequencies,
+                        correction_curve,
+                        strength=profile.matched_ori_correction_strength,
+                        blend_start_cpp=profile.matched_ori_blend_start_cpp,
+                        blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
+                        strength_low=profile.matched_ori_strength_low,
+                        strength_high=profile.matched_ori_strength_high,
+                        strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
+                        strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
+                        strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
+                        strength_curve_values=profile.matched_ori_strength_curve_values,
+                    )
                 quality_loss_compensated_mtf_for_acutance = apply_reference_correction_curve(
                     quality_loss_scaled_frequencies,
                     quality_loss_compensated_mtf_for_acutance,
@@ -912,12 +917,16 @@ def summarize_profile(
             pixels_along_picture_height=estimate.roi.height,
             presets=presets,
         )
-        curve, acutance = maybe_anchor_acutance_results(
-            capture_key=capture_key,
-            curve=curve,
-            acutance=acutance,
-            roi_height=estimate.roi.height,
-        )
+        if (
+            profile.intrinsic_full_reference_scope
+            != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+        ):
+            curve, acutance = maybe_anchor_acutance_results(
+                capture_key=capture_key,
+                curve=curve,
+                acutance=acutance,
+                roi_height=estimate.roi.height,
+            )
         if (
             profile.intrinsic_full_reference_mode != "none"
             and profile.intrinsic_full_reference_scope
@@ -925,6 +934,7 @@ def summarize_profile(
                 "acutance_only",
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation_matched_ori_graft",
             }
         ):
             quality_loss_curve = acutance_curve_from_mtf(

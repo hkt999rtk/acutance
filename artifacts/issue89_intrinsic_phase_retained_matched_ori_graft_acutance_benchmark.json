@@ -1,0 +1,249 @@
+{
+  "dataset_root": "20260318_deadleaf_13b10",
+  "profiles": [
+    {
+      "analysis_pipeline": {
+        "acutance_noise_scale_mode": "fixed",
+        "acutance_preset_overrides": null,
+        "bayer_mode": "demosaic_red",
+        "bayer_pattern": "RGGB",
+        "calibration_file": "algo/deadleaf_13b10_psd_calibration.json",
+        "chart_fill_factor": 1.0,
+        "frequency_scale": 1.0,
+        "gamma": 0.5,
+        "high_frequency_guard_start_cpp": null,
+        "intrinsic_full_reference_clip_hi": 1.5,
+        "intrinsic_full_reference_clip_lo": 0.5,
+        "intrinsic_full_reference_mode": "paired_ori_transfer",
+        "intrinsic_full_reference_registration_mode": "phase_correlation",
+        "intrinsic_full_reference_scope": "readout_reconnect_quality_loss_isolation_matched_ori_graft",
+        "intrinsic_full_reference_transfer_mode": "radial_real_mean",
+        "linearization_mode": "toe_power",
+        "linearization_toe": 0.12,
+        "matched_ori_acutance_blend_start_relative_scale": 0.0,
+        "matched_ori_acutance_blend_stop_relative_scale": 0.0,
+        "matched_ori_acutance_correction_clip_hi": 1.1,
+        "matched_ori_acutance_correction_clip_lo": 0.9,
+        "matched_ori_acutance_correction_delta_power": 1.0,
+        "matched_ori_acutance_correction_strength": 1.0,
+        "matched_ori_acutance_curve_correction_clip_hi": 1.04,
+        "matched_ori_acutance_curve_correction_clip_hi_relative_scales": [
+          0.0,
+          0.25,
+          0.6,
+          0.8,
+          1.6,
+          2.5
+        ],
+        "matched_ori_acutance_curve_correction_clip_hi_values": [
+          1.02,
+          1.03,
+          0.895,
+          0.895,
+          1.05,
+          1.06
+        ],
+        "matched_ori_acutance_curve_correction_clip_lo": null,
+        "matched_ori_acutance_curve_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_curve_correction_clip_lo_values": null,
+        "matched_ori_acutance_curve_correction_delta_power": 0.95,
+        "matched_ori_acutance_preset_correction_clip_hi": null,
+        "matched_ori_acutance_preset_correction_clip_hi_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_hi_values": null,
+        "matched_ori_acutance_preset_correction_clip_lo": null,
+        "matched_ori_acutance_preset_correction_clip_lo_relative_scales": null,
+        "matched_ori_acutance_preset_correction_clip_lo_values": null,
+        "matched_ori_acutance_preset_correction_delta_power": null,
+        "matched_ori_acutance_preset_correction_delta_power_relative_scales": [
+          0.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "matched_ori_acutance_preset_correction_delta_power_values": [
+          1.05,
+          1.05,
+          1.85,
+          1.85
+        ],
+        "matched_ori_acutance_preset_strength_curve_relative_scales": [
+          0.0,
+          3.0,
+          4.5,
+          5.8,
+          6.2
+        ],
+        "matched_ori_acutance_preset_strength_curve_values": [
+          1.0,
+          1.0,
+          0.85,
+          0.45,
+          0.45
+        ],
+        "matched_ori_acutance_reference_anchor": true,
+        "matched_ori_acutance_strength_curve_relative_scales": [
+          0.0,
+          0.2,
+          0.8,
+          1.6,
+          2.5
+        ],
+        "matched_ori_acutance_strength_curve_values": [
+          0.7,
+          0.69,
+          0.64,
+          0.62,
+          0.6
+        ],
+        "matched_ori_anchor_mode": "all",
+        "matched_ori_blend_start_cpp": 0.0,
+        "matched_ori_blend_stop_cpp": 0.0,
+        "matched_ori_correction_clip_hi": 2.0,
+        "matched_ori_correction_clip_lo": 0.5,
+        "matched_ori_correction_strength": 1.0,
+        "matched_ori_oecf_quantiles": [
+          0.0,
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          0.9,
+          1.0
+        ],
+        "matched_ori_oecf_reference": false,
+        "matched_ori_oecf_strength": 1.0,
+        "matched_ori_reference_anchor": true,
+        "matched_ori_strength_curve_frequencies": [
+          0.0,
+          0.12,
+          0.22,
+          0.35,
+          0.5
+        ],
+        "matched_ori_strength_curve_values": [
+          1.0,
+          1.0,
+          0.82,
+          0.95,
+          1.0
+        ],
+        "matched_ori_strength_high": null,
+        "matched_ori_strength_low": null,
+        "matched_ori_strength_ramp_start_cpp": 0.0,
+        "matched_ori_strength_ramp_stop_cpp": 0.0,
+        "mtf_compensation_mode": "none",
+        "mtf_shape_correction_mode": "none",
+        "quality_loss_coefficients": [
+          37.240228358776136,
+          26.54550669779819,
+          0.4538662637619741
+        ],
+        "quality_loss_om_ceiling": 0.8851,
+        "quality_loss_preset_overrides": {
+          "5.5\" Phone Display Quality Loss": {
+            "coefficients": [
+              -110912321.41149135,
+              50461107.51563171,
+              -9079490.127807735,
+              815148.8697247265,
+              -37712.984407641874,
+              854.6941149036079,
+              -6.261149027919645
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Computer Monitor Quality Loss": {
+            "coefficients": [
+              5677361.198044325,
+              -16715685.9524707,
+              20317567.326582585,
+              -13046703.33912079,
+              4667794.619228022,
+              -882296.9160375095,
+              68863.59709647154
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Large Print Quality Loss": {
+            "coefficients": [
+              2355074.475971866,
+              -5276146.244338096,
+              4846781.143787682,
+              -2336594.295523967,
+              623766.4933095274,
+              -87476.30712136331,
+              5049.882965558553
+            ],
+            "om_ceiling": 0.8851
+          },
+          "Small Print Quality Loss": {
+            "coefficients": [
+              6690980.837239251,
+              -12955277.716404187,
+              10300283.291740375,
+              -4303759.200708971,
+              996904.2653558743,
+              -121409.71509269004,
+              6084.6471373306085
+            ],
+            "om_ceiling": 0.8851
+          },
+          "UHDTV Display Quality Loss": {
+            "coefficients": [
+              1783462.6221675149,
+              -3813432.5606394163,
+              3326218.4642961356,
+              -1514886.1959663907,
+              380334.163146246,
+              -49956.87092015135,
+              2692.9566508574017
+            ],
+            "om_ceiling": 0.8851
+          }
+        },
+        "readout_interpolation": "linear",
+        "readout_smoothing_window": 1,
+        "roi_source": "reference_refined",
+        "sensor_fill_factor": 1.0,
+        "texture_support_scale": false
+      },
+      "by_mixup_curve_mae_mean": {
+        "0.15": 0.029378599163150443,
+        "0.25": 0.02479729017929424,
+        "0.4": 0.019363342842858032,
+        "0.65": 0.011953815251775047,
+        "0.8": 0.04482380483621107,
+        "ori": 0.07933816634336006
+      },
+      "by_mixup_quality_loss_mae_mean": {
+        "0.15": 5.7514955234347775,
+        "0.25": 1.7142053163536248,
+        "0.4": 1.469541276127594,
+        "0.65": 0.5506448123272694,
+        "0.8": 1.2211750416990212,
+        "ori": 18.610816211263952
+      },
+      "overall": {
+        "acutance_focus_preset_mae_mean": 0.028920526408725132,
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.035256377739795786,
+          "Computer Monitor Acutance": 0.024146307932311834,
+          "Large Print Acutance": 0.028624302638652583,
+          "Small Print Acutance": 0.031726251556383624,
+          "UHDTV Display Acutance": 0.024849392176481848
+        },
+        "curve_mae_mean": 0.03280180556381627,
+        "overall_quality_loss_mae_mean": 3.9474295338821266,
+        "quality_loss_focus_preset_mae_mean": 3.9474295338821266,
+        "quality_loss_preset_mae": {
+          "5.5\" Phone Display Quality Loss": 4.122316176755632,
+          "Computer Monitor Quality Loss": 6.1264243907692375,
+          "Large Print Quality Loss": 2.079928486542698,
+          "Small Print Quality Loss": 3.490178763693591,
+          "UHDTV Display Quality Loss": 3.918299851649472
+        }
+      },
+      "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_readout_reconnect_quality_loss_isolation_matched_ori_graft_profile.json"
+    }
+  ]
+}

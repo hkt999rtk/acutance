@@ -450,6 +450,7 @@ def profile_payload(
                 "acutance_only",
                 "quality_loss_isolation",
                 "readout_reconnect_quality_loss_isolation",
+                "readout_reconnect_quality_loss_isolation_matched_ori_graft",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -504,6 +505,7 @@ def profile_payload(
                 if profile.intrinsic_full_reference_scope in {
                     "replace_all",
                     "readout_reconnect_quality_loss_isolation",
+                    "readout_reconnect_quality_loss_isolation_matched_ori_graft",
                 }:
                     compensated_mtf = intrinsic_mtf
         if profile.matched_ori_reference_anchor:
@@ -620,7 +622,16 @@ def profile_payload(
                 correction_frequencies, correction_curve, acutance_correction_curve = correction_cache[
                     capture_key
                 ]
-                if profile.matched_ori_anchor_mode != "acutance_only":
+                apply_readout_correction = (
+                    profile.intrinsic_full_reference_scope
+                    == "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+                    or profile.matched_ori_anchor_mode != "acutance_only"
+                )
+                apply_acutance_correction = (
+                    profile.intrinsic_full_reference_scope
+                    != "readout_reconnect_quality_loss_isolation_matched_ori_graft"
+                )
+                if apply_readout_correction:
                     compensated_mtf = apply_reference_correction_curve(
                         scaled_frequencies,
                         compensated_mtf,
@@ -636,21 +647,22 @@ def profile_payload(
                     strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
                     strength_curve_values=profile.matched_ori_strength_curve_values,
                 )
-                compensated_mtf_for_acutance = apply_reference_correction_curve(
-                    scaled_frequencies,
-                    compensated_mtf_for_acutance,
-                    correction_frequencies,
-                    acutance_correction_curve,
-                    strength=profile.matched_ori_correction_strength,
-                    blend_start_cpp=profile.matched_ori_blend_start_cpp,
-                    blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
-                    strength_low=profile.matched_ori_strength_low,
-                    strength_high=profile.matched_ori_strength_high,
-                    strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
-                    strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
-                    strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
-                    strength_curve_values=profile.matched_ori_strength_curve_values,
-                )
+                if apply_acutance_correction:
+                    compensated_mtf_for_acutance = apply_reference_correction_curve(
+                        scaled_frequencies,
+                        compensated_mtf_for_acutance,
+                        correction_frequencies,
+                        acutance_correction_curve,
+                        strength=profile.matched_ori_correction_strength,
+                        blend_start_cpp=profile.matched_ori_blend_start_cpp,
+                        blend_stop_cpp=profile.matched_ori_blend_stop_cpp,
+                        strength_low=profile.matched_ori_strength_low,
+                        strength_high=profile.matched_ori_strength_high,
+                        strength_ramp_start_cpp=profile.matched_ori_strength_ramp_start_cpp,
+                        strength_ramp_stop_cpp=profile.matched_ori_strength_ramp_stop_cpp,
+                        strength_curve_frequencies=profile.matched_ori_strength_curve_frequencies,
+                        strength_curve_values=profile.matched_ori_strength_curve_values,
+                    )
         metrics = compute_mtf_metrics(
             scaled_frequencies,
             compensated_mtf,
