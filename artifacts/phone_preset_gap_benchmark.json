@@ -1,0 +1,72 @@
+{
+  "acceptance": {
+    "all_primary_gates_pass": false,
+    "curve_mae_mean_improved": false,
+    "focus_preset_acutance_mae_mean_improved": false,
+    "mtf_thresholds_non_worse": true,
+    "overall_quality_loss_mae_mean_improved": false,
+    "phone_acutance_improved": true,
+    "phone_quality_loss_improved": true,
+    "trend_correctness_not_regressed": true
+  },
+  "baseline": {
+    "curve_mae_mean": 0.03678903166100513,
+    "focus_preset_acutance_mae_mean": 0.042486831218701795,
+    "mtf_threshold_mae": {
+      "mtf20": 0.03301077142967389,
+      "mtf30": 0.03693639342667963,
+      "mtf50": 0.009332615436071163
+    },
+    "overall_quality_loss_mae_mean": 1.2214989544377113,
+    "phone_acutance_mae": 0.013802247905288301,
+    "phone_quality_loss_mae": 0.14297991495607307,
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_profile.json"
+  },
+  "candidate": {
+    "curve_mae_mean": 0.037131420349290546,
+    "focus_preset_acutance_mae_mean": 0.04284079903300695,
+    "mtf_threshold_mae": {
+      "mtf20": 0.03301077142967389,
+      "mtf30": 0.03693639342667963,
+      "mtf50": 0.009332615436071163
+    },
+    "overall_quality_loss_mae_mean": 1.2313185651184224,
+    "phone_acutance_mae": 0.013785370948158788,
+    "phone_quality_loss_mae": 0.14145355062203685,
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_hf_noise_share_shape_profile.json"
+  },
+  "dataset_root": "20260318_deadleaf_13b10",
+  "delta": {
+    "curve_mae_mean": 0.0003423886882854138,
+    "focus_preset_acutance_mae_mean": 0.0003539678143051547,
+    "mtf_threshold_mae": {
+      "mtf20": 0.0,
+      "mtf30": 0.0,
+      "mtf50": 0.0
+    },
+    "overall_quality_loss_mae_mean": 0.009819610680711133,
+    "phone_acutance_mae": -1.6876957129513537e-05,
+    "phone_quality_loss_mae": -0.0015263643340362176
+  },
+  "issue": 70,
+  "sources": {
+    "acutance_artifact_path": "artifacts/issue70_phone_preset_gap_acutance_benchmark.json",
+    "psd_artifact_path": "artifacts/issue70_phone_preset_gap_psd_benchmark.json"
+  },
+  "summary_kind": "phone_preset_gap_followup",
+  "trend_guard": {
+    "artifact_paths": [
+      "artifacts/amodel_gray_texture_series_penalty_benchmark.json"
+    ],
+    "changed_by_issue70": false,
+    "gain_trend_delta_mae_mean": 0.018148882951082922,
+    "gain_trend_series_shape_error": 0.018628257751567734,
+    "note": "Issue #70 only changes the direct-method upstream parity branch. The tracked release trend guard therefore remains the current parity-fit release row.",
+    "profile_path": "release/deadleaf_13b10_release/config/parity_fit_profile.release.json",
+    "trend_correctness": {
+      "group_count": 20,
+      "match_count": 3,
+      "match_rate": 0.15
+    }
+  }
+}
