@@ -634,6 +634,54 @@
     },
     {
       "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.035256377739795786,
+        "Computer Monitor Acutance": 0.024146307932311834,
+        "Large Print Acutance": 0.028624302638652583,
+        "Small Print Acutance": 0.031726251556383624,
+        "UHDTV Display Acutance": 0.024849392176481848
+      },
+      "curve_mae_mean": 0.03280180556381627,
+      "dead_leaves_coverage": true,
+      "family_id": "direct_issue118_quality_loss_boundary",
+      "family_type": "direct_method_branch",
+      "focus_preset_acutance_mae_mean": 0.028920526408725132,
+      "gain_trend_delta_mae_mean": null,
+      "gain_trend_series_shape_error": null,
+      "label": "direct/issue118_quality_loss_boundary",
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2043596866693975,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.23804277891732473,
+        "Computer Monitor Quality Loss": 2.906111784076103,
+        "Large Print Quality Loss": 0.9547911309308169,
+        "Small Print Quality Loss": 0.6076983310559123,
+        "UHDTV Display Quality Loss": 1.3151544083668303
+      },
+      "rank": 16,
+      "sources": {
+        "artifact_paths": [
+          "artifacts/issue118_large_print_quality_loss_boundary_psd_benchmark.json",
+          "artifacts/issue118_large_print_quality_loss_boundary_acutance_benchmark.json"
+        ],
+        "doc_paths": [
+          "docs/intrinsic_after_issue116_quality_loss_boundary.md",
+          "docs/issue120_current_best_readme_gate_summary.md"
+        ],
+        "primary_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only_computer_monitor_small_print_large_print_pr30_input_profile.json"
+      },
+      "status": "parity-valid",
+      "status_reason": "Current best canonical-target candidate from issue #118 / PR #119: it beats the PR #30 branch on overall Quality Loss while preserving the reported-MTF, curve, and focus-preset gains from the intrinsic issue-116 line. It remains candidate-only because README gates still miss on curve MAE and Small Print Acutance.",
+      "trend_coverage": false,
+      "trend_direction_group_count": null,
+      "trend_direction_match_count": null,
+      "trend_direction_match_rate": null
+    },
+    {
+      "acutance_preset_mae": {
         "5.5\" Phone Display Acutance": 0.016810511427410642,
         "Computer Monitor Acutance": 0.054237735168271614,
         "Large Print Acutance": 0.03862844832111008,
@@ -661,7 +709,7 @@
         "Small Print Quality Loss": 0.7457710410703663,
         "UHDTV Display Quality Loss": 1.7426615714628597
       },
-      "rank": 16,
+      "rank": 17,
       "sources": {
         "artifact_paths": [
           "artifacts/issue56_empirical_frequency_scale_psd_benchmark.json",
@@ -708,7 +756,7 @@
         "Small Print Quality Loss": 0.6076935256225349,
         "UHDTV Display Quality Loss": 1.4990982272108502
       },
-      "rank": 17,
+      "rank": 18,
       "sources": {
         "artifact_paths": [
           "artifacts/issue29_anchored_high_frequency_psd_benchmark.json",
@@ -755,7 +803,7 @@
         "Small Print Quality Loss": 0.6445598500524008,
         "UHDTV Display Quality Loss": 1.5392652594897804
       },
-      "rank": 18,
+      "rank": 19,
       "sources": {
         "artifact_paths": [
           "artifacts/issue52_roi_reference_psd_benchmark.json",
@@ -802,7 +850,7 @@
         "Small Print Quality Loss": 0.6442552253418805,
         "UHDTV Display Quality Loss": 1.5416363836055424
       },
-      "rank": 19,
+      "rank": 20,
       "sources": {
         "artifact_paths": [
           "artifacts/issue58_chart_sensor_compensation_psd_benchmark.json",
@@ -849,7 +897,7 @@
         "Small Print Quality Loss": 0.6463902403067138,
         "UHDTV Display Quality Loss": 1.5557478963550824
       },
-      "rank": 20,
+      "rank": 21,
       "sources": {
         "artifact_paths": [
           "artifacts/issue54_observable_frequency_bins_psd_benchmark.json",
@@ -896,7 +944,7 @@
         "Small Print Quality Loss": 0.6408136977961201,
         "UHDTV Display Quality Loss": 1.5544840142768457
       },
-      "rank": 21,
+      "rank": 22,
       "sources": {
         "artifact_paths": [
           "artifacts/issue61_isp_family_psd_benchmark.json",
@@ -937,7 +985,7 @@
       },
       "overall_quality_loss_mae_mean": null,
       "quality_loss_preset_mae": {},
-      "rank": 22,
+      "rank": 23,
       "sources": {
         "artifact_paths": [],
         "doc_paths": [
@@ -975,7 +1023,7 @@
       },
       "overall_quality_loss_mae_mean": null,
       "quality_loss_preset_mae": {},
-      "rank": 23,
+      "rank": 24,
       "sources": {
         "artifact_paths": [],
         "doc_paths": [
@@ -1013,7 +1061,7 @@
       },
       "overall_quality_loss_mae_mean": null,
       "quality_loss_preset_mae": {},
-      "rank": 24,
+      "rank": 25,
       "sources": {
         "artifact_paths": [],
         "doc_paths": [
