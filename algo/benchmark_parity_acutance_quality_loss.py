@@ -173,6 +173,7 @@ class Profile:
     quality_loss_om_ceiling: float = 0.8851
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
     quality_loss_preset_overrides: dict[str, dict[str, object]] | None = None
+    quality_loss_preset_input_profile_overrides: dict[str, str] | None = None
     acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
@@ -292,6 +293,61 @@ def build_acutance_presets(
     return tuple(presets)
 
 
+def resolve_profile_override_path(profile_path: Path, override_path: str) -> Path:
+    candidate = Path(override_path)
+    if candidate.is_absolute() or candidate.exists():
+        return candidate
+    sibling = profile_path.parent / candidate.name
+    if sibling.exists():
+        return sibling
+    return candidate
+
+
+def build_quality_loss_input_override_records(
+    *,
+    dataset_root: Path,
+    profile_path: Path,
+    profile: Profile,
+    width: int,
+    height: int,
+    override_stack: frozenset[str],
+) -> dict[str, dict[str, float]]:
+    overrides = profile.quality_loss_preset_input_profile_overrides or {}
+    records_by_preset: dict[str, dict[str, float]] = {}
+    for quality_loss_preset, override_profile_path_text in overrides.items():
+        override_profile_path = resolve_profile_override_path(
+            profile_path,
+            override_profile_path_text,
+        )
+        override_key = str(override_profile_path)
+        if override_key in override_stack:
+            raise ValueError(
+                "Recursive quality-loss input profile override detected for "
+                f"{override_profile_path_text!r}"
+            )
+        override_payload = summarize_profile(
+            dataset_root=dataset_root,
+            profile_path=override_profile_path,
+            profile=load_profile(override_profile_path),
+            width=width,
+            height=height,
+            include_quality_loss_records=True,
+            override_stack=override_stack | {override_key},
+        )
+        preset_records = {
+            str(record["csv_path"]): float(record["predicted_acutance"])
+            for record in override_payload["quality_loss_records"]
+            if record["preset_name"] == quality_loss_preset
+        }
+        if not preset_records:
+            raise ValueError(
+                f"Quality Loss preset {quality_loss_preset!r} not found in "
+                f"override profile {override_profile_path_text!r}"
+            )
+        records_by_preset[quality_loss_preset] = preset_records
+    return records_by_preset
+
+
 def summarize_profile(
     *,
     dataset_root: Path,
@@ -301,6 +357,7 @@ def summarize_profile(
     height: int,
     include_acutance_records: bool = False,
     include_quality_loss_records: bool = False,
+    override_stack: frozenset[str] = frozenset(),
 ) -> dict[str, object]:
     calibration = load_ideal_psd_calibration(profile.calibration_file)
     use_ori_reference = any(
@@ -325,6 +382,14 @@ def summarize_profile(
     by_mixup_quality_loss_mae: dict[str, list[float]] = {}
     acutance_records: list[dict[str, object]] = []
     quality_loss_records: list[dict[str, object]] = []
+    quality_loss_input_override_records = build_quality_loss_input_override_records(
+        dataset_root=dataset_root,
+        profile_path=profile_path,
+        profile=profile,
+        width=width,
+        height=height,
+        override_stack=override_stack | {str(profile_path)},
+    )
 
     def maybe_anchor_acutance_results(
         *,
@@ -977,7 +1042,13 @@ def summarize_profile(
                 roi_height=estimate.roi.height,
             )
         else:
-            quality_loss_acutance = acutance
+            quality_loss_acutance = dict(acutance)
+        for quality_loss_preset, override_records in quality_loss_input_override_records.items():
+            override_acutance = override_records.get(str(csv_path))
+            if override_acutance is None:
+                continue
+            acutance_preset = quality_loss_preset.replace("Quality Loss", "Acutance")
+            quality_loss_acutance[acutance_preset] = override_acutance
         curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
         if curve_cmp.get("count", 0):
             curve_mae.append(float(curve_cmp["mae"]))
@@ -1120,6 +1191,9 @@ def summarize_profile(
             "quality_loss_om_ceiling": profile.quality_loss_om_ceiling,
             "quality_loss_coefficients": profile.quality_loss_coefficients,
             "quality_loss_preset_overrides": profile.quality_loss_preset_overrides,
+            "quality_loss_preset_input_profile_overrides": (
+                profile.quality_loss_preset_input_profile_overrides
+            ),
             "frequency_scale": profile.frequency_scale,
             "readout_smoothing_window": profile.readout_smoothing_window,
             "readout_interpolation": profile.readout_interpolation,

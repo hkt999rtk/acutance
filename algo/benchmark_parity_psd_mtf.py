@@ -167,6 +167,7 @@ class Profile:
     quality_loss_om_ceiling: float = 0.8851
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
     quality_loss_preset_overrides: dict[str, dict[str, object]] | None = None
+    quality_loss_preset_input_profile_overrides: dict[str, str] | None = None
     acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
 
 
@@ -830,6 +831,9 @@ def profile_payload(
             "calibration_file": profile.calibration_file,
             "mtf_compensation_mode": profile.mtf_compensation_mode,
             "sensor_fill_factor": profile.sensor_fill_factor,
+            "quality_loss_preset_input_profile_overrides": (
+                profile.quality_loss_preset_input_profile_overrides
+            ),
             "readout_mtf_compensation_mode": readout_mtf_compensation_mode,
             "readout_sensor_fill_factor": readout_sensor_fill_factor,
             "chart_fill_factor": profile.chart_fill_factor,
