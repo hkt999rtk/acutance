@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -87,6 +88,19 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(profile.readout_smoothing_window, 7)
         self.assertEqual(profile.readout_interpolation, "linear")
 
+    def test_profile_allows_quality_loss_preset_input_overrides(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            quality_loss_preset_input_profile_overrides={
+                "Computer Monitor Quality Loss": "algo/pr30_anchor.json",
+            },
+        )
+        self.assertEqual(
+            profile.quality_loss_preset_input_profile_overrides,
+            {"Computer Monitor Quality Loss": "algo/pr30_anchor.json"},
+        )
+
     def test_choose_roi_reference_refined_uses_reference_seed(self) -> None:
         image = np.zeros((20, 20), dtype=np.float32)
         reference = SimpleNamespace(lrtb=RoiBounds(left=4, right=9, top=5, bottom=10))
@@ -99,6 +113,154 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             actual = choose_roi(profile, reference, image)
         self.assertEqual(actual, expected)
         self.assertEqual(refine.call_args.kwargs["seed_roi"], reference.lrtb)
+
+    def test_quality_loss_preset_input_override_substitutes_only_target_preset(self) -> None:
+        capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
+        preset_names = (
+            '5.5" Phone Display Acutance',
+            "Computer Monitor Acutance",
+            "UHDTV Display Acutance",
+            "Small Print Acutance",
+            "Large Print Acutance",
+        )
+        quality_names = tuple(name.replace("Acutance", "Quality Loss") for name in preset_names)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            dataset_root = Path(tmpdir)
+            variant_root = dataset_root / "OV13B10_AI_NR_OV13B10_ppqpkl_0.10"
+            results_dir = variant_root / "Results"
+            results_dir.mkdir(parents=True)
+            stem = f"{capture_key}_variantA"
+            csv_path = results_dir / f"{stem}_R_Random.csv"
+            raw_path = variant_root / f"{stem}.raw"
+            csv_path.write_text("", encoding="utf-8")
+            raw_path.write_bytes(b"")
+            override_path = dataset_root / "override_profile.json"
+            override_path.write_text(
+                json.dumps({"name": "override", "calibration_file": "override_calibration"}),
+                encoding="utf-8",
+            )
+
+            reference = SimpleNamespace(
+                lrtb=RoiBounds(left=0, right=1, top=0, bottom=1),
+                frequencies_cpp=np.array([0.02, 0.1, 0.25, 0.4], dtype=np.float64),
+                mtf=np.array([1.0, 0.9, 0.8, 0.7], dtype=np.float64),
+                acutance_table=[
+                    AcutancePoint(print_height_cm=40.0, viewing_distance_cm=10.0, acutance=0.0)
+                ],
+                reported_acutance={name: 0.0 for name in preset_names},
+                reported_quality_loss={name: 0.0 for name in quality_names},
+            )
+
+            def estimate_side_effect(*_args, **kwargs):
+                value = 2.0 if kwargs["ideal_psd_calibration"] == "override_calibration" else 1.0
+                return SimpleNamespace(
+                    roi=RoiBounds(left=0, right=1, top=0, bottom=1),
+                    frequencies_cpp=np.array([0.02, 0.1], dtype=np.float64),
+                    mtf_for_acutance=np.array([value, value], dtype=np.float64),
+                    acutance_high_frequency_noise_share=0.0,
+                )
+
+            def acutance_from_mtf(_frequencies, mtf, **_kwargs):
+                value = float(np.asarray(mtf, dtype=np.float64)[0])
+                return {name: value for name in preset_names}
+
+            profile = Profile(
+                name="candidate",
+                calibration_file="candidate_calibration",
+                quality_loss_preset_input_profile_overrides={
+                    "Computer Monitor Quality Loss": str(override_path),
+                },
+            )
+            with (
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_ideal_psd_calibration",
+                    side_effect=lambda path: path,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.parse_imatest_random_csv",
+                    return_value=reference,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.load_raw_u16",
+                    return_value=np.zeros((2, 2), dtype=np.uint16),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.extract_analysis_plane",
+                    return_value=np.zeros((2, 2), dtype=np.float32),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.normalize_for_analysis",
+                    return_value=np.zeros((2, 2), dtype=np.float32),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.detect_texture_roi",
+                    return_value=RoiBounds(left=0, right=1, top=0, bottom=1),
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.estimate_dead_leaves_mtf",
+                    side_effect=estimate_side_effect,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_curve_from_mtf",
+                    return_value=[
+                        AcutancePoint(
+                            print_height_cm=40.0,
+                            viewing_distance_cm=10.0,
+                            acutance=1.0,
+                        )
+                    ],
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.acutance_presets_from_mtf",
+                    side_effect=acutance_from_mtf,
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_curves",
+                    return_value={"count": 1, "mae": 0.0},
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.compare_acutance_presets",
+                    side_effect=lambda estimate_map, reference_map: {
+                        name: {
+                            "abs_error": abs(float(estimate_map[name]) - float(reference_map[name])),
+                            "estimate": float(estimate_map[name]),
+                            "reference": float(reference_map[name]),
+                        }
+                        for name in estimate_map
+                    },
+                ),
+                patch(
+                    "algo.benchmark_parity_acutance_quality_loss.quality_loss_presets_from_acutance",
+                    side_effect=lambda acutance, **_kwargs: {
+                        name.replace("Acutance", "Quality Loss"): value
+                        for name, value in acutance.items()
+                    },
+                ),
+            ):
+                payload = summarize_profile(
+                    dataset_root=dataset_root,
+                    profile_path=dataset_root / "candidate_profile.json",
+                    profile=profile,
+                    width=2,
+                    height=2,
+                )
+
+            self.assertEqual(
+                payload["overall"]["acutance_preset_mae"]["Computer Monitor Acutance"],
+                1.0,
+            )
+            self.assertEqual(
+                payload["overall"]["quality_loss_preset_mae"]["Computer Monitor Quality Loss"],
+                2.0,
+            )
+            self.assertEqual(
+                payload["overall"]["quality_loss_preset_mae"]['5.5" Phone Display Quality Loss'],
+                1.0,
+            )
+            self.assertEqual(
+                payload["analysis_pipeline"]["quality_loss_preset_input_profile_overrides"],
+                {"Computer Monitor Quality Loss": str(override_path)},
+            )
 
     def test_summarize_profile_uses_observable_table_frequency_bins(self) -> None:
         capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
