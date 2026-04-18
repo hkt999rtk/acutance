@@ -5,7 +5,7 @@ This note records the issue `#105` developer-discovery pass after issue `#102` /
 ## Selected Slice
 
 - Selected slice: `issue102_topology_graft_pr30_observable_stack_onto_observed_branches`
-- Summary: Keep issue #102's intrinsic main-acutance branch and readout-only sensor-aperture compensation record intact, but move the observed-branch consumers that still lag PR #30 onto one bounded PR30-style observable-stack bundle: anchored calibration, `texture_support_scale`, and `high_frequency_guard_start_cpp=0.36` for the reported-MTF/readout path and the downstream Quality Loss branch only.
+- Summary: Keep issue #102's intrinsic main-acutance branch and readout-only sensor-aperture compensation record intact, but move the observed-branch consumers that still lag PR #30 onto one bounded PR30-style observable-stack bundle: anchored calibration, `mtf_compensation_mode=sensor_aperture_sinc`, `sensor_fill_factor=1.5`, `texture_support_scale`, and `high_frequency_guard_start_cpp=0.36` for the reported-MTF/readout path and downstream Quality Loss branch only.
 - Prior narrowing lineage: issue `#99` / PR `#100` / PR `#101` selected the readout-only compensation slice, and issue `#102` / PR `#103` / PR `#104` completed it cleanly enough to expose the next remaining boundary.
 - Remaining gap location: after issue `#102`, the intrinsic main branch and the readout-only compensation boundary are both bounded. The large residual gap now sits on the observed-branch observable stack that still feeds reported-MTF and downstream Quality Loss differently from PR `#30`.
 
@@ -28,6 +28,8 @@ This note records the issue `#105` developer-discovery pass after issue `#102` /
 - Issue #102 still trails PR #30 on `mtf_abs_signed_rel_mean`: `True`
 - Issue #102 already beats PR #30 on `mtf20`: `True`
 - Issue #93 / #97 / #102 keep the same downstream Quality Loss record: `True`
+- Issue #102 still differs from PR #30 on live downstream `mtf_compensation_mode`: `True`
+- Issue #102 still differs from PR #30 on live downstream `sensor_fill_factor`: `True`
 
 ## Pipeline Delta Summary
 
@@ -47,13 +49,14 @@ This note records the issue `#105` developer-discovery pass after issue `#102` /
 
 - Issue #102 proved the readout-only sensor-aperture compensation boundary and already improved all tracked readout metrics versus issue #97, so another single-knob readout retune is no longer the highest-signal follow-up.
 - `overall_quality_loss_mae_mean` never changed across issue `#93`, issue `#97`, and issue `#102`, which means the residual large PR30 gap still sits on the downstream observed-branch family rather than the issue-102 intrinsic main branch.
-- The remaining pipeline deltas that can hit both reported-MTF and downstream Quality Loss without discarding the issue-102 intrinsic main branch are PR30's anchored calibration, `texture_support_scale`, and `high_frequency_guard_start_cpp` on the observed branch.
+- The remaining pipeline deltas that can hit both reported-MTF and downstream Quality Loss without discarding the issue-102 intrinsic main branch are PR30's anchored calibration, `mtf_compensation_mode`, `sensor_fill_factor`, `texture_support_scale`, and `high_frequency_guard_start_cpp` on the observed branch.
+- `mtf_compensation_mode` and `sensor_fill_factor` are explicitly in scope because the acutance/Quality Loss benchmark seeds `quality_loss_compensated_mtf_for_acutance` from the globally compensated MTF before the issue-102 branch logic runs.
 - PR #104 changed only summary-artifact provenance, so the post-issue102 narrowing should treat PR #103 and PR #104 as the same benchmark record.
 
 ## Selected Implementation Boundary
 
 - Keep issue #102's intrinsic main-acutance branch, `intrinsic_full_reference_scope`, and readout-only sensor-aperture compensation (`sensor_aperture_sinc`) unchanged.
-- Introduce one observed-branch bundle for the reported-MTF/readout path and the downstream Quality Loss branch that uses PR #30's anchored calibration file, `texture_support_scale=True`, and `high_frequency_guard_start_cpp=0.36`.
+- Introduce one observed-branch bundle for the reported-MTF/readout path and the downstream Quality Loss branch that uses PR #30's `calibration_file=algo/deadleaf_13b10_psd_calibration_anchored.json`, `mtf_compensation_mode=sensor_aperture_sinc`, `sensor_fill_factor=1.5`, `texture_support_scale=True`, and `high_frequency_guard_start_cpp=0.36`.
 - Do not move the main acutance branch back to PR #30's non-intrinsic topology, and do not promote release-facing PR30 configs directly.
 
 ## Explicit Non-Changes
@@ -87,7 +90,7 @@ This note records the issue `#105` developer-discovery pass after issue `#102` /
 
 - Run `python3 -m algo.benchmark_parity_psd_mtf ...` on an issue-102-based profile that keeps readout-only sensor-aperture compensation but adds the PR30 observable-stack bundle on the observed readout branch, then compare `mtf_abs_signed_rel_mean`, `mtf20`, `mtf30`, and `mtf50` against issue #102 and PR #30.
 - Run `python3 -m algo.benchmark_parity_acutance_quality_loss ...` on the same bounded scope to confirm `curve_mae_mean` and `focus_preset_acutance_mae_mean` stay no worse than issue #102 while `overall_quality_loss_mae_mean` improves materially.
-- Add focused tests that prove anchored calibration, `texture_support_scale`, and `high_frequency_guard_start_cpp` affect only the observed reported-MTF / downstream Quality Loss consumers and not the issue-102 intrinsic main-acutance branch.
+- Add focused tests that prove anchored calibration, `mtf_compensation_mode`, `sensor_fill_factor`, `texture_support_scale`, and `high_frequency_guard_start_cpp` affect only the observed reported-MTF / downstream Quality Loss consumers and not the issue-102 intrinsic main-acutance branch.
 
 ## Storage Separation
 

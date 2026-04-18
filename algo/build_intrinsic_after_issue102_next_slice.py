@@ -13,6 +13,13 @@ ISSUE93_LABEL = "issue93_downstream_matched_ori_only_candidate"
 ISSUE97_LABEL = "issue97_reported_mtf_disconnect_candidate"
 ISSUE102_LABEL = "issue102_readout_only_sensor_comp_candidate"
 SELECTED_SLICE_ID = "issue102_topology_graft_pr30_observable_stack_onto_observed_branches"
+PR30_OBSERVED_BRANCH_BUNDLE_KEYS = (
+    "calibration_file",
+    "mtf_compensation_mode",
+    "sensor_fill_factor",
+    "texture_support_scale",
+    "high_frequency_guard_start_cpp",
+)
 GOLDEN_REFERENCE_ROOTS = (
     "20260318_deadleaf_13b10",
     "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10",
@@ -216,6 +223,38 @@ def build_payload(
                 "overall_quality_loss_mae_mean"
             ],
         },
+        "downstream_quality_loss_live_compensation_pair_differs_from_pr30": {
+            "mtf_compensation_mode_differs": (
+                issue102["analysis_pipeline"].get("mtf_compensation_mode")
+                != current_best["analysis_pipeline"].get("mtf_compensation_mode")
+            ),
+            "sensor_fill_factor_differs": (
+                issue102["analysis_pipeline"].get("sensor_fill_factor")
+                != current_best["analysis_pipeline"].get("sensor_fill_factor")
+            ),
+            "issue102_values": {
+                "mtf_compensation_mode": issue102["analysis_pipeline"].get(
+                    "mtf_compensation_mode"
+                ),
+                "sensor_fill_factor": issue102["analysis_pipeline"].get("sensor_fill_factor"),
+            },
+            "current_best_pr30_values": {
+                "mtf_compensation_mode": current_best["analysis_pipeline"].get(
+                    "mtf_compensation_mode"
+                ),
+                "sensor_fill_factor": current_best["analysis_pipeline"].get(
+                    "sensor_fill_factor"
+                ),
+            },
+            "why_live_for_next_slice": (
+                "`benchmark_parity_acutance_quality_loss` applies "
+                "`profile.mtf_compensation_mode` and `profile.sensor_fill_factor` to "
+                "`compensated_mtf_for_acutance`, then seeds "
+                "`quality_loss_compensated_mtf_for_acutance` from that array before the "
+                "issue-102 intrinsic-scope branch logic runs. The pair is therefore still "
+                "part of the downstream Quality Loss boundary."
+            ),
+        },
         "issue102_keeps_intrinsic_main_branch_better_than_pr30": {
             "curve_mae_mean_better_than_current_best_pr30": (
                 issue102["curve_mae_mean"] < current_best["curve_mae_mean"]
@@ -242,15 +281,16 @@ def build_payload(
                 "Keep issue #102's intrinsic main-acutance branch and readout-only sensor-aperture "
                 "compensation record intact, but move the observed-branch consumers that still lag "
                 "PR #30 onto one bounded PR30-style observable-stack bundle: anchored calibration, "
+                "`mtf_compensation_mode=sensor_aperture_sinc`, `sensor_fill_factor=1.5`, "
                 "`texture_support_scale`, and `high_frequency_guard_start_cpp=0.36` for the "
-                "reported-MTF/readout path and the downstream Quality Loss branch only."
+                "reported-MTF/readout path and downstream Quality Loss branch only."
             ),
             "repo_evidence": [
                 "Issue #102 preserves issue #97 exactly on `curve_mae_mean`, `focus_preset_acutance_mae_mean`, and `overall_quality_loss_mae_mean`, so the issue-97 intrinsic main branch is no longer the unstable part of the stack.",
                 "Issue #102 improves every tracked readout metric versus issue #97, which proves the single-knob readout compensation boundary was real, but the branch still trails PR #30 on `mtf_abs_signed_rel_mean`, `mtf30`, and `mtf50`.",
                 "Issue #102's `mtf20` already beats PR #30 while `mtf30` and `mtf50` still lag, so the remaining readout gap is no longer a uniform amplitude miss. It now looks like an upstream observable-shape / high-frequency-tail boundary.",
                 "The downstream Quality Loss record is invariant across issue #93, issue #97, and issue #102 at `overall_quality_loss_mae_mean = 3.94743`, while PR #30 is much lower at `1.22150`. That proves the residual large gap does not live in the issue-102 readout-only compensation change and still sits on the observed/downstream branch family.",
-                "Compared with PR #30, issue #102 still differs on the observed-branch observable-stack knobs `calibration_file`, `texture_support_scale`, and `high_frequency_guard_start_cpp`, while the intrinsic-topology differences are the same knobs that currently preserve issue-102's stronger curve and focus-preset Acutance record."
+                "Compared with PR #30, issue #102 still differs on the observed-branch observable-stack knobs `calibration_file`, `mtf_compensation_mode`, `sensor_fill_factor`, `texture_support_scale`, and `high_frequency_guard_start_cpp`, while the intrinsic-topology differences are the same knobs that currently preserve issue-102's stronger curve and focus-preset Acutance record."
             ],
             "comparison_basis": {
                 "pr30_issue102_delta": issue102_vs_current_best,
@@ -270,7 +310,7 @@ def build_payload(
             },
             "minimum_implementation_boundary": [
                 "Keep issue #102's intrinsic main-acutance branch, `intrinsic_full_reference_scope`, and readout-only sensor-aperture compensation (`sensor_aperture_sinc`) unchanged.",
-                "Introduce one observed-branch bundle for the reported-MTF/readout path and the downstream Quality Loss branch that uses PR #30's anchored calibration file, `texture_support_scale=True`, and `high_frequency_guard_start_cpp=0.36`.",
+                "Introduce one observed-branch bundle for the reported-MTF/readout path and the downstream Quality Loss branch that uses PR #30's `calibration_file=algo/deadleaf_13b10_psd_calibration_anchored.json`, `mtf_compensation_mode=sensor_aperture_sinc`, `sensor_fill_factor=1.5`, `texture_support_scale=True`, and `high_frequency_guard_start_cpp=0.36`.",
                 "Do not move the main acutance branch back to PR #30's non-intrinsic topology, and do not promote release-facing PR30 configs directly."
             ],
             "explicitly_do_not_change": [
@@ -282,7 +322,7 @@ def build_payload(
             "validation_plan_for_next_issue": [
                 "Run `python3 -m algo.benchmark_parity_psd_mtf ...` on an issue-102-based profile that keeps readout-only sensor-aperture compensation but adds the PR30 observable-stack bundle on the observed readout branch, then compare `mtf_abs_signed_rel_mean`, `mtf20`, `mtf30`, and `mtf50` against issue #102 and PR #30.",
                 "Run `python3 -m algo.benchmark_parity_acutance_quality_loss ...` on the same bounded scope to confirm `curve_mae_mean` and `focus_preset_acutance_mae_mean` stay no worse than issue #102 while `overall_quality_loss_mae_mean` improves materially.",
-                "Add focused tests that prove anchored calibration, `texture_support_scale`, and `high_frequency_guard_start_cpp` affect only the observed reported-MTF / downstream Quality Loss consumers and not the issue-102 intrinsic main-acutance branch."
+                "Add focused tests that prove anchored calibration, `mtf_compensation_mode`, `sensor_fill_factor`, `texture_support_scale`, and `high_frequency_guard_start_cpp` affect only the observed reported-MTF / downstream Quality Loss consumers and not the issue-102 intrinsic main-acutance branch."
             ],
         },
         {
@@ -322,6 +362,7 @@ def build_payload(
         "comparison_records": comparison_records,
         "residual_gap_evidence": residual_gap_evidence,
         "pipeline_delta_summary": pipeline_delta(issue102, current_best),
+        "selected_pr30_observed_branch_bundle_keys": list(PR30_OBSERVED_BRANCH_BUNDLE_KEYS),
         "candidate_slices": candidate_slices,
         "source_artifacts": {
             "issue99_artifact": str(issue99_artifact_path),
@@ -384,6 +425,8 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"- Issue #102 still trails PR #30 on `mtf_abs_signed_rel_mean`: `{payload['residual_gap_evidence']['issue102_readout_improves_but_does_not_close_pr30_gap']['mtf_abs_signed_rel_still_worse_than_current_best_pr30']}`",
         f"- Issue #102 already beats PR #30 on `mtf20`: `{payload['residual_gap_evidence']['issue102_readout_improves_but_does_not_close_pr30_gap']['mtf20_beats_current_best_pr30']}`",
         f"- Issue #93 / #97 / #102 keep the same downstream Quality Loss record: `{payload['residual_gap_evidence']['issue93_issue97_issue102_quality_loss_record_is_invariant']['issue93_equals_issue102']}`",
+        f"- Issue #102 still differs from PR #30 on live downstream `mtf_compensation_mode`: `{payload['residual_gap_evidence']['downstream_quality_loss_live_compensation_pair_differs_from_pr30']['mtf_compensation_mode_differs']}`",
+        f"- Issue #102 still differs from PR #30 on live downstream `sensor_fill_factor`: `{payload['residual_gap_evidence']['downstream_quality_loss_live_compensation_pair_differs_from_pr30']['sensor_fill_factor_differs']}`",
         "",
         "## Pipeline Delta Summary",
         "",
@@ -399,7 +442,8 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "",
             "- Issue #102 proved the readout-only sensor-aperture compensation boundary and already improved all tracked readout metrics versus issue #97, so another single-knob readout retune is no longer the highest-signal follow-up.",
             "- `overall_quality_loss_mae_mean` never changed across issue `#93`, issue `#97`, and issue `#102`, which means the residual large PR30 gap still sits on the downstream observed-branch family rather than the issue-102 intrinsic main branch.",
-            "- The remaining pipeline deltas that can hit both reported-MTF and downstream Quality Loss without discarding the issue-102 intrinsic main branch are PR30's anchored calibration, `texture_support_scale`, and `high_frequency_guard_start_cpp` on the observed branch.",
+            "- The remaining pipeline deltas that can hit both reported-MTF and downstream Quality Loss without discarding the issue-102 intrinsic main branch are PR30's anchored calibration, `mtf_compensation_mode`, `sensor_fill_factor`, `texture_support_scale`, and `high_frequency_guard_start_cpp` on the observed branch.",
+            "- `mtf_compensation_mode` and `sensor_fill_factor` are explicitly in scope because the acutance/Quality Loss benchmark seeds `quality_loss_compensated_mtf_for_acutance` from the globally compensated MTF before the issue-102 branch logic runs.",
             "- PR #104 changed only summary-artifact provenance, so the post-issue102 narrowing should treat PR #103 and PR #104 as the same benchmark record.",
             "",
             "## Selected Implementation Boundary",
