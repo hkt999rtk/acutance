@@ -119,6 +119,7 @@ class Profile:
     matched_ori_acutance_preset_correction_delta_power_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
+    curve_only_acutance_anchor_mixups: tuple[str, ...] | None = None
     frequency_bin_source: str = "reference_bins"
     frequency_scale: float = 1.0
     readout_smoothing_window: int = 1
@@ -820,6 +821,7 @@ def profile_payload(
             "matched_ori_acutance_preset_correction_delta_power_values": profile.matched_ori_acutance_preset_correction_delta_power_values,
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
+            "curve_only_acutance_anchor_mixups": profile.curve_only_acutance_anchor_mixups,
             "frequency_scale": profile.frequency_scale,
             "readout_smoothing_window": profile.readout_smoothing_window,
             "readout_interpolation": profile.readout_interpolation,

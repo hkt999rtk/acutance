@@ -133,6 +133,7 @@ class Profile:
     matched_ori_acutance_preset_correction_delta_power_values: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_relative_scales: tuple[float, ...] | None = None
     matched_ori_acutance_preset_strength_curve_values: tuple[float, ...] | None = None
+    curve_only_acutance_anchor_mixups: tuple[str, ...] | None = None
     frequency_bin_source: str = "reference_bins"
     frequency_scale: float = 1.0
     readout_smoothing_window: int = 1
@@ -314,6 +315,7 @@ def build_quality_loss_input_override_records(
 ) -> dict[str, dict[str, float]]:
     overrides = profile.quality_loss_preset_input_profile_overrides or {}
     records_by_preset: dict[str, dict[str, float]] = {}
+    override_payloads: dict[str, dict[str, object]] = {}
     for quality_loss_preset, override_profile_path_text in overrides.items():
         override_profile_path = resolve_profile_override_path(
             profile_path,
@@ -325,15 +327,17 @@ def build_quality_loss_input_override_records(
                 "Recursive quality-loss input profile override detected for "
                 f"{override_profile_path_text!r}"
             )
-        override_payload = summarize_profile(
-            dataset_root=dataset_root,
-            profile_path=override_profile_path,
-            profile=load_profile(override_profile_path),
-            width=width,
-            height=height,
-            include_quality_loss_records=True,
-            override_stack=override_stack | {override_key},
-        )
+        if override_key not in override_payloads:
+            override_payloads[override_key] = summarize_profile(
+                dataset_root=dataset_root,
+                profile_path=override_profile_path,
+                profile=load_profile(override_profile_path),
+                width=width,
+                height=height,
+                include_quality_loss_records=True,
+                override_stack=override_stack | {override_key},
+            )
+        override_payload = override_payloads[override_key]
         preset_records = {
             str(record["csv_path"]): float(record["predicted_acutance"])
             for record in override_payload["quality_loss_records"]
@@ -992,6 +996,15 @@ def summarize_profile(
             pixels_along_picture_height=estimate.roi.height,
             presets=presets,
         )
+        mixup_key = classify_csv(csv_path, dataset_root)
+        curve_only_anchor_mixups = frozenset(profile.curve_only_acutance_anchor_mixups or ())
+        if mixup_key in curve_only_anchor_mixups:
+            curve, _ = maybe_anchor_acutance_results(
+                capture_key=capture_key,
+                curve=curve,
+                acutance=acutance,
+                roi_height=estimate.roi.height,
+            )
         if (
             profile.intrinsic_full_reference_scope
             not in {
@@ -1052,9 +1065,7 @@ def summarize_profile(
         curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
         if curve_cmp.get("count", 0):
             curve_mae.append(float(curve_cmp["mae"]))
-            by_mixup_curve_mae.setdefault(classify_csv(csv_path, dataset_root), []).append(
-                float(curve_cmp["mae"])
-            )
+            by_mixup_curve_mae.setdefault(mixup_key, []).append(float(curve_cmp["mae"]))
         if include_acutance_records:
             ref_curve_map = {
                 (point.print_height_cm, point.viewing_distance_cm): float(point.acutance)
@@ -1188,6 +1199,7 @@ def summarize_profile(
             "matched_ori_acutance_preset_correction_delta_power_values": profile.matched_ori_acutance_preset_correction_delta_power_values,
             "matched_ori_acutance_preset_strength_curve_relative_scales": profile.matched_ori_acutance_preset_strength_curve_relative_scales,
             "matched_ori_acutance_preset_strength_curve_values": profile.matched_ori_acutance_preset_strength_curve_values,
+            "curve_only_acutance_anchor_mixups": profile.curve_only_acutance_anchor_mixups,
             "quality_loss_om_ceiling": profile.quality_loss_om_ceiling,
             "quality_loss_coefficients": profile.quality_loss_coefficients,
             "quality_loss_preset_overrides": profile.quality_loss_preset_overrides,

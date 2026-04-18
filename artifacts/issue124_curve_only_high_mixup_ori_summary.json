@@ -1,0 +1,260 @@
+{
+  "acceptance": {
+    "all_readme_gates_pass": false,
+    "curve_mae_reduced_vs_pr119": true,
+    "focus_preset_acutance_gate_pass": true,
+    "overall_quality_loss_preserved": true,
+    "reported_mtf_preserved": true,
+    "small_print_acutance_preserved": true
+  },
+  "baseline_current_best": {
+    "issue": 118,
+    "label": "issue118_large_print_quality_loss_input_boundary_candidate",
+    "merge_commit": "52bbca7",
+    "metrics": {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.035256377739795786,
+        "Computer Monitor Acutance": 0.024146307932311834,
+        "Large Print Acutance": 0.028624302638652583,
+        "Small Print Acutance": 0.031726251556383624,
+        "UHDTV Display Acutance": 0.024849392176481848
+      },
+      "curve_mae_mean": 0.03280180556381627,
+      "focus_preset_acutance_mae_mean": 0.028920526408725132,
+      "mtf_abs_signed_rel_mean": 0.08671416893394165,
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2043596866693975
+    },
+    "pr": 119,
+    "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only_computer_monitor_small_print_large_print_pr30_input_profile.json",
+    "source_artifacts": [
+      "artifacts/intrinsic_after_issue116_quality_loss_boundary_benchmark.json",
+      "artifacts/issue118_large_print_quality_loss_boundary_acutance_benchmark.json",
+      "artifacts/issue118_large_print_quality_loss_boundary_psd_benchmark.json"
+    ]
+  },
+  "baseline_pr30": {
+    "issue": 29,
+    "label": "current_best_pr30_branch",
+    "metrics": {
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.013802247905288301,
+        "Computer Monitor Acutance": 0.052665183748573804,
+        "Large Print Acutance": 0.05132586418527154,
+        "Small Print Acutance": 0.046702107662187464,
+        "UHDTV Display Acutance": 0.04793875259218785
+      },
+      "curve_mae_mean": 0.03678903166100513,
+      "focus_preset_acutance_mae_mean": 0.042486831218701795,
+      "mtf_abs_signed_rel_mean": 0.08671416893394165,
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2214989544377113
+    },
+    "pr": 30,
+    "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_profile.json"
+  },
+  "candidate": {
+    "curve_only_acutance_anchor_mixups": [
+      "0.8",
+      "ori"
+    ],
+    "label": "issue124_curve_only_high_mixup_ori_candidate",
+    "metrics": {
+      "acutance_focus_preset_mae_mean": 0.028920526408725132,
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.035256377739795786,
+        "Computer Monitor Acutance": 0.024146307932311834,
+        "Large Print Acutance": 0.028624302638652583,
+        "Small Print Acutance": 0.031726251556383624,
+        "UHDTV Display Acutance": 0.024849392176481848
+      },
+      "curve_mae_mean": 0.024251518035735907,
+      "mtf_abs_signed_rel_mean": 0.08671416893394165,
+      "mtf_threshold_mae": {
+        "mtf20": 0.03301077142967389,
+        "mtf30": 0.03693639342667963,
+        "mtf50": 0.009332615436071163
+      },
+      "overall_quality_loss_mae_mean": 1.2043596866693975,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.23804277891732473,
+        "Computer Monitor Quality Loss": 2.906111784076103,
+        "Large Print Quality Loss": 0.9547911309308169,
+        "Small Print Quality Loss": 0.6076983310559123,
+        "UHDTV Display Quality Loss": 1.3151544083668303
+      }
+    },
+    "profile_path": "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only_computer_monitor_small_print_large_print_pr30_input_curve_only_high_mixup_ori_profile.json",
+    "source_artifacts": [
+      "artifacts/issue124_curve_only_high_mixup_ori_acutance_benchmark.json",
+      "artifacts/issue124_curve_only_high_mixup_ori_psd_benchmark.json",
+      "artifacts/issue120_current_best_readme_gate_summary.json",
+      "artifacts/intrinsic_after_issue120_next_slice_benchmark.json"
+    ]
+  },
+  "comparisons": {
+    "candidate_vs_pr119": {
+      "delta": {
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.0,
+          "Computer Monitor Acutance": 0.0,
+          "Large Print Acutance": 0.0,
+          "Small Print Acutance": 0.0,
+          "UHDTV Display Acutance": 0.0
+        },
+        "curve_mae_mean": -0.00855028752808036,
+        "focus_preset_acutance_mae_mean": 0.0,
+        "mtf_abs_signed_rel_mean": 0.0,
+        "mtf_threshold_mae": {
+          "mtf20": 0.0,
+          "mtf30": 0.0,
+          "mtf50": 0.0
+        },
+        "overall_quality_loss_mae_mean": 0.0
+      }
+    },
+    "candidate_vs_pr30": {
+      "delta": {
+        "acutance_preset_mae": {
+          "5.5\" Phone Display Acutance": 0.021454129834507486,
+          "Computer Monitor Acutance": -0.02851887581626197,
+          "Large Print Acutance": -0.022701561546618957,
+          "Small Print Acutance": -0.01497585610580384,
+          "UHDTV Display Acutance": -0.023089360415706
+        },
+        "curve_mae_mean": -0.012537513625269225,
+        "focus_preset_acutance_mae_mean": -0.013566304809976663,
+        "mtf_abs_signed_rel_mean": 0.0,
+        "mtf_threshold_mae": {
+          "mtf20": 0.0,
+          "mtf30": 0.0,
+          "mtf50": 0.0
+        },
+        "overall_quality_loss_mae_mean": -0.01713926776831376
+      }
+    }
+  },
+  "curve_tail_result": {
+    "by_mixup_after": {
+      "0.15": 0.029378599163150443,
+      "0.25": 0.02479729017929424,
+      "0.4": 0.019363342842858032,
+      "0.65": 0.011953815251775047,
+      "0.8": 0.0188398331534736,
+      "ori": 0.045803234428031414
+    },
+    "by_mixup_before": {
+      "0.15": 0.029378599163150443,
+      "0.25": 0.02479729017929424,
+      "0.4": 0.019363342842858032,
+      "0.65": 0.011953815251775047,
+      "0.8": 0.04482380483621107,
+      "ori": 0.07933816634336006
+    },
+    "by_mixup_delta": {
+      "0.15": 0.0,
+      "0.25": 0.0,
+      "0.4": 0.0,
+      "0.65": 0.0,
+      "0.8": -0.02598397168273747,
+      "ori": -0.03353493191532865
+    },
+    "high_mixup_weighted_curve_mae_after": 0.008348290073497862,
+    "selected_mixups": [
+      "0.8",
+      "ori"
+    ],
+    "weighted_curve_mae_after": 0.02425151803573591,
+    "weighted_curve_mae_matches_candidate": true
+  },
+  "issue": 124,
+  "next_result": {
+    "recommended_follow_up": "Do not broaden this issue into Small Print preset work. If PM splits another engineering pass, target the remaining curve residual now visible in `ori`, `0.15`, and `0.25`, while preserving the issue #124 curve-only isolation.",
+    "remaining_misses": [
+      "curve_mae_mean",
+      "non_phone_acutance_preset_mae_max"
+    ],
+    "summary": "The high-mixup/ori curve-only anchor is a positive partial result: it materially lowers curve MAE while preserving reported-MTF, preset Acutance, and Quality Loss, but the README curve gate still misses."
+  },
+  "readme_gate_summary": {
+    "all_readme_gates_pass": false,
+    "failed_gates": [
+      "curve_mae_mean",
+      "non_phone_acutance_preset_mae_max"
+    ],
+    "gates": {
+      "5.5\" Phone Display Acutance": {
+        "delta_to_gate": -0.014743622260204217,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 0.05,
+        "value": 0.035256377739795786
+      },
+      "curve_mae_mean": {
+        "delta_to_gate": 0.0042515180357359066,
+        "operator": "<=",
+        "pass": false,
+        "threshold": 0.02,
+        "value": 0.024251518035735907
+      },
+      "focus_preset_acutance_mae_mean": {
+        "delta_to_gate": -0.0010794735912748668,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 0.03,
+        "value": 0.028920526408725132
+      },
+      "non_phone_acutance_preset_mae_max": {
+        "by_preset": {
+          "Computer Monitor Acutance": 0.024146307932311834,
+          "Large Print Acutance": 0.028624302638652583,
+          "Small Print Acutance": 0.031726251556383624,
+          "UHDTV Display Acutance": 0.024849392176481848
+        },
+        "delta_to_gate": 0.0017262515563836248,
+        "operator": "<=",
+        "pass": false,
+        "threshold": 0.03,
+        "value": 0.031726251556383624,
+        "worst_preset": "Small Print Acutance"
+      },
+      "overall_quality_loss_mae_mean": {
+        "delta_to_gate": -0.09564031333060252,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 1.3,
+        "value": 1.2043596866693975
+      }
+    }
+  },
+  "refs": {
+    "baseline_pr": 30,
+    "current_best_issue": 118,
+    "current_best_pr": 119,
+    "current_issue": 124,
+    "umbrella_issue": 29
+  },
+  "release_separation": {
+    "candidate_is_release_config": false,
+    "golden_reference_roots": [
+      "20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/config"
+    ],
+    "rules": [
+      "The candidate profile is canonical-target research only.",
+      "No fitted outputs are written under golden/reference data roots.",
+      "No release-facing config is promoted in this issue."
+    ]
+  },
+  "result_kind": "positive_partial_not_promotable",
+  "summary_kind": "issue124_curve_only_high_mixup_ori_summary"
+}
