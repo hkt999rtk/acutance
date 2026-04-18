@@ -458,6 +458,7 @@ def profile_payload(
                 "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                 "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
                 "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
+                "reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only",
             }:
                 raise ValueError(
                     f"Unsupported intrinsic full-reference scope: {profile.intrinsic_full_reference_scope}"
@@ -658,6 +659,7 @@ def profile_payload(
                             "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                             "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
                             "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
+                            "reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only",
                         }
                         and profile.matched_ori_anchor_mode != "acutance_only"
                     )
@@ -669,6 +671,7 @@ def profile_payload(
                         "readout_reconnect_quality_loss_isolation_downstream_matched_ori_only",
                         "reported_mtf_disconnect_quality_loss_isolation_downstream_matched_ori_only",
                         "reported_mtf_disconnect_readout_only_sensor_comp_quality_loss_isolation_downstream_matched_ori_only",
+                        "reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_matched_ori_only",
                     }
                 )
                 if apply_readout_correction:
