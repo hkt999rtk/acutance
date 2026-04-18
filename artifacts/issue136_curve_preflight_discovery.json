@@ -1,0 +1,315 @@
+{
+  "acceptance": {
+    "no_full_curve_candidate_selected": true,
+    "no_source_backed_current_topology_preflight_found": true,
+    "records_post_pr135_readme_gates": true,
+    "records_pr129_015_negative": true,
+    "release_separation_preserved": true,
+    "requires_015_preflight": true,
+    "result_is_developer_discovery_not_pm_question": true
+  },
+  "current_best": {
+    "by_mixup_curve_mae_mean": {
+      "0.15": 0.029378599163150443,
+      "0.25": 0.02479729017929424,
+      "0.4": 0.019363342842858032,
+      "0.65": 0.011953815251775047,
+      "0.8": 0.0188398331534736,
+      "ori": 0.045803234428031414
+    },
+    "implementation_head": "c490e27",
+    "issue": 132,
+    "merge_commit": "3f57758",
+    "metrics": {
+      "acutance_focus_preset_mae_mean": 0.028365693596289134,
+      "acutance_preset_mae": {
+        "5.5\" Phone Display Acutance": 0.035256377739795786,
+        "Computer Monitor Acutance": 0.024146307932311834,
+        "Large Print Acutance": 0.028624302638652583,
+        "Small Print Acutance": 0.028952087494203603,
+        "UHDTV Display Acutance": 0.024849392176481848
+      },
+      "curve_mae_mean": 0.024251518035735907,
+      "overall_quality_loss_mae_mean": 1.2043596866693975,
+      "quality_loss_focus_preset_mae_mean": 1.2043596866693975,
+      "quality_loss_preset_mae": {
+        "5.5\" Phone Display Quality Loss": 0.23804277891732473,
+        "Computer Monitor Quality Loss": 2.906111784076103,
+        "Large Print Quality Loss": 0.9547911309308169,
+        "Small Print Quality Loss": 0.6076983310559123,
+        "UHDTV Display Quality Loss": 1.3151544083668303
+      }
+    },
+    "pr": 135,
+    "profile_path": "algo/issue132_small_print_acutance_parity_input_profile.json",
+    "source_artifacts": [
+      "artifacts/issue132_small_print_acutance_boundary_summary.json",
+      "artifacts/issue132_small_print_acutance_boundary_acutance_benchmark.json"
+    ]
+  },
+  "evidence_base": {
+    "apparent_015_improvement_examples": [
+      {
+        "accepted_as_source_backed_current_topology_preflight": false,
+        "artifact_path": "artifacts/parity_acutance_quality_loss_benchmark.json",
+        "classification": "fitted_release_workaround_not_source_backed_current_topology",
+        "curve_mae_mean": 0.01969850082492993,
+        "focus_preset_acutance_mae_mean": 0.029114246447526998,
+        "mixup_015_curve_mae": 0.025673827782072948,
+        "mixup_015_delta_vs_issue132": -0.003704771381077495,
+        "mixup_ori_curve_mae": 0.029539915614656298,
+        "overall_quality_loss_mae_mean": 1.2762052145901726,
+        "profile_path": "algo/deadleaf_13b10_parity_psd_mtf_profile.json",
+        "readme_gate_summary": {
+          "all_readme_gates_pass": true,
+          "failed_gates": [],
+          "gates": {
+            "5.5\" Phone Display Acutance": {
+              "delta_to_gate": -0.0017517830042937665,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.05,
+              "value": 0.048248216995706236
+            },
+            "curve_mae_mean": {
+              "delta_to_gate": -0.00030149917507006976,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.02,
+              "value": 0.01969850082492993
+            },
+            "focus_preset_acutance_mae_mean": {
+              "delta_to_gate": -0.0008857535524730009,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.03,
+              "value": 0.029114246447526998
+            },
+            "non_phone_acutance_preset_mae_max": {
+              "by_preset": {
+                "Computer Monitor Acutance": 0.024747720107661214,
+                "Large Print Acutance": 0.022229647508049944,
+                "Small Print Acutance": 0.028952087494203603,
+                "UHDTV Display Acutance": 0.021393560132013982
+              },
+              "delta_to_gate": -0.0010479125057963959,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.03,
+              "value": 0.028952087494203603,
+              "worst_preset": "Small Print Acutance"
+            },
+            "overall_quality_loss_mae_mean": {
+              "delta_to_gate": -0.02379478540982749,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 1.3,
+              "value": 1.2762052145901726
+            }
+          }
+        },
+        "rejection_reason": "The release parity-fit profile numerically improves `0.15`, but issue #29 explicitly keeps that profile separated as a workaround rather than a source-backed canonical model-family slice."
+      },
+      {
+        "accepted_as_source_backed_current_topology_preflight": false,
+        "artifact_path": "artifacts/issue63_empirical_linearization_acutance_benchmark.json",
+        "classification": "historical_non_current_topology_with_protected_gate_regression",
+        "curve_mae_mean": 0.031630678550997944,
+        "focus_preset_acutance_mae_mean": 0.013096453705606729,
+        "mixup_015_curve_mae": 0.017427314851735876,
+        "mixup_015_delta_vs_issue132": -0.011951284311414567,
+        "mixup_ori_curve_mae": 0.06931437781269942,
+        "overall_quality_loss_mae_mean": 1.521854122812337,
+        "profile_path": "algo/deadleaf_13b10_imatest_sensor_comp_power_reference_anchor_acutance_only_curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_anchored_hf_psd_roi_reference_only_empirical_linearization_profile.json",
+        "readme_gate_summary": {
+          "all_readme_gates_pass": false,
+          "failed_gates": [
+            "curve_mae_mean",
+            "overall_quality_loss_mae_mean"
+          ],
+          "gates": {
+            "5.5\" Phone Display Acutance": {
+              "delta_to_gate": -0.03766027390320025,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.05,
+              "value": 0.012339726096799753
+            },
+            "curve_mae_mean": {
+              "delta_to_gate": 0.011630678550997944,
+              "operator": "<=",
+              "pass": false,
+              "threshold": 0.02,
+              "value": 0.031630678550997944
+            },
+            "focus_preset_acutance_mae_mean": {
+              "delta_to_gate": -0.016903546294393272,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.03,
+              "value": 0.013096453705606729
+            },
+            "non_phone_acutance_preset_mae_max": {
+              "by_preset": {
+                "Computer Monitor Acutance": 0.01211298333455687,
+                "Large Print Acutance": 0.008652070267904098,
+                "Small Print Acutance": 0.010307146668849663,
+                "UHDTV Display Acutance": 0.022070342159923255
+              },
+              "delta_to_gate": -0.007929657840076744,
+              "operator": "<=",
+              "pass": true,
+              "threshold": 0.03,
+              "value": 0.022070342159923255,
+              "worst_preset": "UHDTV Display Acutance"
+            },
+            "overall_quality_loss_mae_mean": {
+              "delta_to_gate": 0.22185412281233696,
+              "operator": "<=",
+              "pass": false,
+              "threshold": 1.3,
+              "value": 1.521854122812337
+            }
+          }
+        },
+        "rejection_reason": "The historical empirical-linearization profile improves `0.15`, but it is not a post-PR #135 current-topology preflight and fails the current overall Quality Loss gate."
+      }
+    ],
+    "issue126_curve_requirement": {
+      "ori_and_015_if_reduced_to_gate_curve_mae": 0.019795474760302682,
+      "ori_and_025_if_reduced_to_gate_curve_mae": 0.020711736557073923,
+      "selected_minimum_gate_clear_mixups": [
+        "ori",
+        "0.15"
+      ]
+    },
+    "issue128_direct_015_negative": {
+      "aggregate_curve_delta_vs_pr125": 0.00121550907398911,
+      "baseline_015_curve_mae": 0.029378599163150443,
+      "candidate_015_curve_mae": 0.03545614453309601,
+      "candidate_boundary": "Adds `0.15` to the existing issue #124 curve-only Acutance anchor mask; `0.25` and preset Acutance remain untouched.",
+      "delta_vs_pr125": 0.006077545369945564,
+      "moves_015_in_wrong_direction": true,
+      "protected_metrics_preserved": {
+        "focus_preset_acutance": true,
+        "overall_quality_loss": true,
+        "release_separation": true,
+        "reported_mtf": true
+      }
+    },
+    "issue130_curve_rule": {
+      "current_best_curve_mae_mean": 0.024251518035735907,
+      "curve_gate": 0.02,
+      "delta_to_curve_gate": 0.0042515180357359066,
+      "do_not_continue_broadening_issue124_anchor_mask": true,
+      "future_curve_prerequisite": "Before another full curve benchmark candidate, require a narrow preflight artifact showing `0.15` improves under a concrete per-mixup or shape-family boundary.",
+      "reason": "Issue #128 proved that directly broadening the issue #124 curve-only anchor mask moves `0.15` in the wrong direction. Checked-in evidence does not identify a source-backed per-mixup or shape-family variant that first proves `0.15` improves.",
+      "status": "not_selected_for_direct_implementation"
+    },
+    "issue132_non_curve_gate_result": {
+      "non_phone_gate_pass": true,
+      "remaining_failed_gates": [
+        "curve_mae_mean"
+      ],
+      "small_print_gate_pass": true
+    },
+    "source_artifacts": [
+      "artifacts/issue126_residual_curve_discovery.json",
+      "artifacts/issue128_ori_015_curve_shape_summary.json",
+      "artifacts/issue130_next_slice_discovery.json",
+      "artifacts/issue132_small_print_acutance_boundary_summary.json",
+      "artifacts/issue132_small_print_acutance_boundary_acutance_benchmark.json",
+      "artifacts/parity_acutance_quality_loss_benchmark.json",
+      "artifacts/issue63_empirical_linearization_acutance_benchmark.json"
+    ]
+  },
+  "issue": 136,
+  "preflight_decision": {
+    "do_not_open_full_curve_candidate": true,
+    "reason": "The only current-topology `0.15` implementation evidence is PR #129, which worsened `0.15`. Older apparent improvements are either fitted workaround profiles or non-current-topology artifacts that fail protected issue #136 constraints, so they do not satisfy the source-backed preflight gate.",
+    "required_to_resume_curve_work": [
+      "A post-PR #135 current-topology preflight artifact that lowers `0.15` versus 0.029378599163150443.",
+      "A source-backed model-family explanation for that preflight, not a fitted release-workaround graft.",
+      "Preservation, or explicitly measured bounded tradeoff, for reported-MTF, focus-preset Acutance, overall Quality Loss, non-Phone Acutance, and release separation."
+    ],
+    "selected_follow_up": null,
+    "status": "no_source_backed_current_topology_015_preflight_found"
+  },
+  "readme_gate_status": {
+    "all_readme_gates_pass": false,
+    "failed_gates": [
+      "curve_mae_mean"
+    ],
+    "gates": {
+      "5.5\" Phone Display Acutance": {
+        "delta_to_gate": -0.014743622260204217,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 0.05,
+        "value": 0.035256377739795786
+      },
+      "curve_mae_mean": {
+        "delta_to_gate": 0.0042515180357359066,
+        "operator": "<=",
+        "pass": false,
+        "threshold": 0.02,
+        "value": 0.024251518035735907
+      },
+      "focus_preset_acutance_mae_mean": {
+        "delta_to_gate": -0.0016343064037108654,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 0.03,
+        "value": 0.028365693596289134
+      },
+      "non_phone_acutance_preset_mae_max": {
+        "by_preset": {
+          "Computer Monitor Acutance": 0.024146307932311834,
+          "Large Print Acutance": 0.028624302638652583,
+          "Small Print Acutance": 0.028952087494203603,
+          "UHDTV Display Acutance": 0.024849392176481848
+        },
+        "delta_to_gate": -0.0010479125057963959,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 0.03,
+        "value": 0.028952087494203603,
+        "worst_preset": "Small Print Acutance"
+      },
+      "overall_quality_loss_mae_mean": {
+        "delta_to_gate": -0.09564031333060252,
+        "operator": "<=",
+        "pass": true,
+        "threshold": 1.3,
+        "value": 1.2043596866693975
+      }
+    }
+  },
+  "refs": {
+    "baseline_pr": 30,
+    "current_best_issue": 132,
+    "current_best_pr": 135,
+    "current_issue": 136,
+    "pr125": 125,
+    "pr127": 127,
+    "pr129": 129,
+    "pr131": 131,
+    "umbrella_issue": 29
+  },
+  "release_separation": {
+    "candidate_is_release_config": false,
+    "golden_reference_roots": [
+      "20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10",
+      "release/deadleaf_13b10_release/config"
+    ],
+    "rules": [
+      "Discovery records checked-in evidence only.",
+      "No fitted outputs are promoted into release-facing configs.",
+      "No golden/reference data roots are modified by this discovery."
+    ]
+  },
+  "result_kind": "technical_discovery_no_source_backed_next_curve_slice",
+  "selected_discovery_id": "post_issue132_curve_015_preflight_discovery",
+  "summary_kind": "issue136_curve_preflight_discovery"
+}
