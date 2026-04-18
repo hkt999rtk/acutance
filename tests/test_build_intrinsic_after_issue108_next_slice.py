@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -88,6 +90,43 @@ class BuildIntrinsicAfterIssue108NextSliceTest(unittest.TestCase):
         self.assertIn("Quality Loss coefficients", markdown)
         self.assertIn("UHDTV Quality Loss", markdown)
         self.assertIn("Storage Separation", markdown)
+
+    def test_by_mixup_evidence_is_independent_of_raw_profile_order(self) -> None:
+        repo_root = self.repo_root()
+        raw_path = (
+            repo_root
+            / "artifacts/issue108_intrinsic_phase_retained_pr30_observed_bundle_acutance_benchmark.json"
+        )
+        raw_payload = json.loads(raw_path.read_text(encoding="utf-8"))
+        raw_payload["profiles"] = list(reversed(raw_payload["profiles"]))
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            reordered_path = Path(tmp_dir) / "reordered_issue108_acutance.json"
+            reordered_path.write_text(json.dumps(raw_payload, sort_keys=True), encoding="utf-8")
+
+            baseline = build_payload(
+                repo_root,
+                issue108_summary_path=Path(
+                    "artifacts/intrinsic_phase_retained_pr30_observed_bundle_benchmark.json"
+                ),
+                issue108_acutance_artifact_path=Path(
+                    "artifacts/issue108_intrinsic_phase_retained_pr30_observed_bundle_acutance_benchmark.json"
+                ),
+                issue105_summary_path=Path("artifacts/intrinsic_after_issue102_next_slice_benchmark.json"),
+            )
+            reordered = build_payload(
+                repo_root,
+                issue108_summary_path=Path(
+                    "artifacts/intrinsic_phase_retained_pr30_observed_bundle_benchmark.json"
+                ),
+                issue108_acutance_artifact_path=reordered_path,
+                issue105_summary_path=Path("artifacts/intrinsic_after_issue102_next_slice_benchmark.json"),
+            )
+
+        self.assertEqual(
+            baseline["residual_quality_loss_boundaries"]["by_mixup_quality_loss_deltas"],
+            reordered["residual_quality_loss_boundaries"]["by_mixup_quality_loss_deltas"],
+        )
 
     @staticmethod
     def repo_root() -> Path:

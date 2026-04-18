@@ -11,6 +11,15 @@ CURRENT_BEST_LABEL = "current_best_pr30_branch"
 ISSUE102_LABEL = "issue102_readout_only_sensor_comp_candidate"
 ISSUE108_LABEL = "issue108_pr30_observed_bundle_candidate"
 SELECTED_SLICE_ID = "issue108_computer_monitor_quality_loss_preset_boundary"
+RAW_CURRENT_BEST_PROFILE_PATH = (
+    "algo/deadleaf_13b10_imatest_sensor_comp_toe_reference_anchor_acutance_only_"
+    "curve_preset_qualityfit_allpreset_sextic_curve_midclip0895_profile.json"
+)
+RAW_ISSUE108_PROFILE_PATH = (
+    "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_"
+    "reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_"
+    "downstream_matched_ori_only_profile.json"
+)
 GOLDEN_REFERENCE_ROOTS = (
     "20260318_deadleaf_13b10",
     "release/deadleaf_13b10_release/data/20260318_deadleaf_13b10",
@@ -135,9 +144,32 @@ def acutance_preset_deltas(
     ]
 
 
-def by_mixup_quality_loss_deltas(raw_acutance_artifact: dict[str, Any]) -> list[dict[str, Any]]:
-    current_best = raw_acutance_artifact["profiles"][0]["by_mixup_quality_loss_mae_mean"]
-    issue108 = raw_acutance_artifact["profiles"][2]["by_mixup_quality_loss_mae_mean"]
+def select_raw_profile(
+    raw_acutance_artifact: dict[str, Any],
+    *,
+    profile_path: str,
+) -> dict[str, Any]:
+    for profile in raw_acutance_artifact["profiles"]:
+        if profile["profile_path"] == profile_path:
+            return profile
+    available = ", ".join(profile["profile_path"] for profile in raw_acutance_artifact["profiles"])
+    raise ValueError(f"Raw acutance profile {profile_path!r} not found. Available: {available}")
+
+
+def by_mixup_quality_loss_deltas(
+    raw_acutance_artifact: dict[str, Any],
+    *,
+    current_best_profile_path: str = RAW_CURRENT_BEST_PROFILE_PATH,
+    issue108_profile_path: str = RAW_ISSUE108_PROFILE_PATH,
+) -> list[dict[str, Any]]:
+    current_best = select_raw_profile(
+        raw_acutance_artifact,
+        profile_path=current_best_profile_path,
+    )["by_mixup_quality_loss_mae_mean"]
+    issue108 = select_raw_profile(
+        raw_acutance_artifact,
+        profile_path=issue108_profile_path,
+    )["by_mixup_quality_loss_mae_mean"]
     rows = [
         {
             "mixup": mixup,
