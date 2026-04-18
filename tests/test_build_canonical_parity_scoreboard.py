@@ -12,10 +12,15 @@ class BuildCanonicalParityScoreboardTest(unittest.TestCase):
 
         self.assertIn("release_parity_fit", by_id)
         self.assertIn("release_parity_gray_texture_shape", by_id)
+        self.assertIn("direct_issue118_quality_loss_boundary", by_id)
         self.assertIn("direct_issue29_anchored_hf_psd", by_id)
         self.assertIn("direct_issue67_readout_policy", by_id)
 
         self.assertEqual(by_id["release_parity_fit"]["status"], "parity-valid")
+        self.assertEqual(
+            by_id["direct_issue118_quality_loss_boundary"]["status"],
+            "parity-valid",
+        )
         self.assertEqual(
             by_id["direct_issue67_readout_policy"]["status"],
             "archived / exhausted",
@@ -23,6 +28,18 @@ class BuildCanonicalParityScoreboardTest(unittest.TestCase):
         self.assertAlmostEqual(
             by_id["direct_issue29_anchored_hf_psd"]["overall_quality_loss_mae_mean"],
             1.2214989544377113,
+        )
+        self.assertAlmostEqual(
+            by_id["direct_issue118_quality_loss_boundary"]["overall_quality_loss_mae_mean"],
+            1.2043596866693975,
+        )
+        self.assertEqual(
+            by_id["direct_issue118_quality_loss_boundary"]["sources"]["primary_path"],
+            (
+                "algo/deadleaf_13b10_imatest_intrinsic_full_reference_phase_retained_real_"
+                "reported_mtf_disconnect_pr30_observed_bundle_quality_loss_isolation_downstream_"
+                "matched_ori_only_computer_monitor_small_print_large_print_pr30_input_profile.json"
+            ),
         )
         self.assertEqual(
             by_id["direct_issue56_empirical_frequency_scale"]["sources"]["primary_path"],
@@ -58,6 +75,7 @@ class BuildCanonicalParityScoreboardTest(unittest.TestCase):
         self.assertIn("# Canonical Parity Scoreboard", markdown)
         self.assertIn("| Rank | Family | Type | Status | Trend match |", markdown)
         self.assertIn("release/parity_gray_texture_shape", markdown)
+        self.assertIn("direct/issue118_quality_loss_boundary", markdown)
         self.assertIn("direct/issue29_anchored_hf_psd", markdown)
         self.assertIn("archived / exhausted", markdown)
         self.assertNotIn("/tmp/", markdown)

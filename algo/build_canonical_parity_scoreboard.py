@@ -194,6 +194,25 @@ RELEASE_FAMILIES = (
 
 DIRECT_METHOD_FAMILIES = (
     DirectMethodSpec(
+        family_id="direct_issue118_quality_loss_boundary",
+        label="direct/issue118_quality_loss_boundary",
+        status="parity-valid",
+        status_reason=(
+            "Current best canonical-target candidate from issue #118 / PR #119: it beats the "
+            "PR #30 branch on overall Quality Loss while preserving the reported-MTF, curve, "
+            "and focus-preset gains from the intrinsic issue-116 line. It remains candidate-only "
+            "because README gates still miss on curve MAE and Small Print Acutance."
+        ),
+        doc_paths=(
+            "docs/intrinsic_after_issue116_quality_loss_boundary.md",
+            "docs/issue120_current_best_readme_gate_summary.md",
+        ),
+        psd_artifact_path="artifacts/issue118_large_print_quality_loss_boundary_psd_benchmark.json",
+        acutance_artifact_path=(
+            "artifacts/issue118_large_print_quality_loss_boundary_acutance_benchmark.json"
+        ),
+    ),
+    DirectMethodSpec(
         family_id="direct_issue29_anchored_hf_psd",
         label="direct/issue29_anchored_hf_psd",
         status="parity-valid",
