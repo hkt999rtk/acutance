@@ -175,6 +175,7 @@ class Profile:
     quality_loss_coefficients: tuple[float, float, float] = (64.99250542, 9.37974246, 0.72233291)
     quality_loss_preset_overrides: dict[str, dict[str, object]] | None = None
     quality_loss_preset_input_profile_overrides: dict[str, str] | None = None
+    acutance_preset_input_profile_overrides: dict[str, str] | None = None
     acutance_preset_overrides: dict[str, dict[str, float | str | None]] | None = None
     texture_support_scale: bool = False
     mtf_compensation_mode: str = "none"
@@ -352,6 +353,54 @@ def build_quality_loss_input_override_records(
     return records_by_preset
 
 
+def build_acutance_input_override_records(
+    *,
+    dataset_root: Path,
+    profile_path: Path,
+    profile: Profile,
+    width: int,
+    height: int,
+    override_stack: frozenset[str],
+) -> dict[str, dict[str, float]]:
+    overrides = profile.acutance_preset_input_profile_overrides or {}
+    records_by_preset: dict[str, dict[str, float]] = {}
+    override_payloads: dict[str, dict[str, object]] = {}
+    for acutance_preset, override_profile_path_text in overrides.items():
+        override_profile_path = resolve_profile_override_path(
+            profile_path,
+            override_profile_path_text,
+        )
+        override_key = str(override_profile_path)
+        if override_key in override_stack:
+            raise ValueError(
+                "Recursive Acutance input profile override detected for "
+                f"{override_profile_path_text!r}"
+            )
+        if override_key not in override_payloads:
+            override_payloads[override_key] = summarize_profile(
+                dataset_root=dataset_root,
+                profile_path=override_profile_path,
+                profile=load_profile(override_profile_path),
+                width=width,
+                height=height,
+                include_acutance_records=True,
+                override_stack=override_stack | {override_key},
+            )
+        override_payload = override_payloads[override_key]
+        preset_records = {
+            str(record["csv_path"]): float(record["predicted_acutance"])
+            for record in override_payload["acutance_records"]
+            if record["record_type"] == "preset" and record["preset_name"] == acutance_preset
+        }
+        if not preset_records:
+            raise ValueError(
+                f"Acutance preset {acutance_preset!r} not found in "
+                f"override profile {override_profile_path_text!r}"
+            )
+        records_by_preset[acutance_preset] = preset_records
+    return records_by_preset
+
+
 def summarize_profile(
     *,
     dataset_root: Path,
@@ -387,6 +436,14 @@ def summarize_profile(
     acutance_records: list[dict[str, object]] = []
     quality_loss_records: list[dict[str, object]] = []
     quality_loss_input_override_records = build_quality_loss_input_override_records(
+        dataset_root=dataset_root,
+        profile_path=profile_path,
+        profile=profile,
+        width=width,
+        height=height,
+        override_stack=override_stack | {str(profile_path)},
+    )
+    acutance_input_override_records = build_acutance_input_override_records(
         dataset_root=dataset_root,
         profile_path=profile_path,
         profile=profile,
@@ -1062,6 +1119,11 @@ def summarize_profile(
                 continue
             acutance_preset = quality_loss_preset.replace("Quality Loss", "Acutance")
             quality_loss_acutance[acutance_preset] = override_acutance
+        for acutance_preset, override_records in acutance_input_override_records.items():
+            override_acutance = override_records.get(str(csv_path))
+            if override_acutance is None:
+                continue
+            acutance[acutance_preset] = override_acutance
         curve_cmp = compare_acutance_curves(curve, reference.acutance_table)
         if curve_cmp.get("count", 0):
             curve_mae.append(float(curve_cmp["mae"]))
@@ -1205,6 +1267,9 @@ def summarize_profile(
             "quality_loss_preset_overrides": profile.quality_loss_preset_overrides,
             "quality_loss_preset_input_profile_overrides": (
                 profile.quality_loss_preset_input_profile_overrides
+            ),
+            "acutance_preset_input_profile_overrides": (
+                profile.acutance_preset_input_profile_overrides
             ),
             "frequency_scale": profile.frequency_scale,
             "readout_smoothing_window": profile.readout_smoothing_window,

@@ -101,6 +101,19 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             {"Computer Monitor Quality Loss": "algo/pr30_anchor.json"},
         )
 
+    def test_profile_allows_acutance_preset_input_overrides(self) -> None:
+        profile = Profile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            acutance_preset_input_profile_overrides={
+                "Small Print Acutance": "algo/pr30_anchor.json",
+            },
+        )
+        self.assertEqual(
+            profile.acutance_preset_input_profile_overrides,
+            {"Small Print Acutance": "algo/pr30_anchor.json"},
+        )
+
     def test_choose_roi_reference_refined_uses_reference_seed(self) -> None:
         image = np.zeros((20, 20), dtype=np.float32)
         reference = SimpleNamespace(lrtb=RoiBounds(left=4, right=9, top=5, bottom=10))
@@ -114,7 +127,7 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual(refine.call_args.kwargs["seed_roi"], reference.lrtb)
 
-    def test_quality_loss_preset_input_override_substitutes_only_target_preset(self) -> None:
+    def test_preset_input_overrides_substitute_only_target_metric_family(self) -> None:
         capture_key = "OV13b10_AG8_ET5500_deadleaf_12M_40"
         preset_names = (
             '5.5" Phone Display Acutance',
@@ -169,6 +182,9 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
                 calibration_file="candidate_calibration",
                 quality_loss_preset_input_profile_overrides={
                     "Computer Monitor Quality Loss": str(override_path),
+                },
+                acutance_preset_input_profile_overrides={
+                    "Small Print Acutance": str(override_path),
                 },
             )
             with (
@@ -250,6 +266,14 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
                 1.0,
             )
             self.assertEqual(
+                payload["overall"]["acutance_preset_mae"]["Small Print Acutance"],
+                2.0,
+            )
+            self.assertEqual(
+                payload["overall"]["quality_loss_preset_mae"]["Small Print Quality Loss"],
+                1.0,
+            )
+            self.assertEqual(
                 payload["overall"]["quality_loss_preset_mae"]["Computer Monitor Quality Loss"],
                 2.0,
             )
@@ -260,6 +284,10 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             self.assertEqual(
                 payload["analysis_pipeline"]["quality_loss_preset_input_profile_overrides"],
                 {"Computer Monitor Quality Loss": str(override_path)},
+            )
+            self.assertEqual(
+                payload["analysis_pipeline"]["acutance_preset_input_profile_overrides"],
+                {"Small Print Acutance": str(override_path)},
             )
 
     def test_summarize_profile_uses_observable_table_frequency_bins(self) -> None:
@@ -776,6 +804,19 @@ class BenchmarkParityAcutanceQualityLossTest(unittest.TestCase):
             matched_ori_anchor_mode="acutance_only",
         )
         self.assertEqual(profile.matched_ori_anchor_mode, "acutance_only")
+
+    def test_psd_profile_allows_acutance_preset_input_overrides(self) -> None:
+        profile = PsdProfile(
+            name="test",
+            calibration_file="algo/deadleaf_13b10_psd_calibration.json",
+            acutance_preset_input_profile_overrides={
+                "Small Print Acutance": "algo/pr30_anchor.json",
+            },
+        )
+        self.assertEqual(
+            profile.acutance_preset_input_profile_overrides,
+            {"Small Print Acutance": "algo/pr30_anchor.json"},
+        )
 
     def test_psd_profile_allows_matched_ori_oecf_fields(self) -> None:
         profile = PsdProfile(
